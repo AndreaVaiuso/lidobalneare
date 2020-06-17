@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<menu
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="menu.xsd">
+	
+	<category name="Antipasti" picture="PIC" description="description">
+		<dish>
+			<name>Insalata caprese</name>
+			<ingredients>Pomodoro, mozzarella di bufala.</ingredients>
+			<price>5</price> <!-- Prezzi in euro -->
+		</dish>
+		
+		<dish>
+			<name>Tartine al salmone</name>
+			<ingredients>Pane, salmone fresco, uova di salmone.</ingredients>
+			<price>8.50</price>
+		</dish>
+	</category>
+	
+	<category name="Primi" picture="PIC" description="description">
+		<dish>
+			<name>Bucatini alle sarde</name>
+			<ingredients>Sarde fresche, acciuga, finocchietto selvatico, pinoli, cipolla, uvetta.</ingredients>
+			<price>12.50</price>
+		</dish>
+		
+		<dish>
+			<name>Mezze maniche alla carbonara</name>
+			<ingredients>Guanciale affumicato, pecorino romano, tuorlo d'uova bio da galline allevate a terra, pepe nero.</ingredients>
+			<price>999</price>
+		</dish>
+	</category>
+	
+	<category name="Secondi" picture="PIC" description="description">
+		<dish>
+			<name>Pesce spada arrosto</name>
+			<ingredients>Filetto di pesce spada fresco, aglio, prezzemolo, olio extravergine d'oliva.</ingredients>
+			<price>13</price>
+		</dish>
+		
+		<dish>
+			<name>Filetto di salmone</name>
+			<ingredients>Filetto di salmone fresco, aglio, prezzemolo, olio extravergine d'oliva.</ingredients>
+			<price>15</price>
+		</dish>
+	</category>
+	
+	<category name="Dolci" picture="PIC" description="description">
+		<dish>
+			<name>Macedonia di frutta</name>
+			<ingredients>Ananas, fragole, pesca, melone bianco, cantalupo, kiwi, succo d'ananas.</ingredients>
+			<price>4.50</price>
+		</dish>
+	</category>
+	
+	<category name="Bar" picture="PIC" description="description">
+		<dish>
+			<name>Caffè espresso</name>
+			<price>1.50</price>
+		</dish>
+		
+		<dish>
+			<name>Cono Algida</name>
+			<price>2.50</price>
+		</dish>
+	</category>
+</menu>

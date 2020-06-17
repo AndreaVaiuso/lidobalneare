@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>LidoBalneare</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Acme">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Akronim">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anonymous+Pro">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/menu-collapse-ultimate.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <div class="alertscreen">
+        <div class="alertwindow"><span class="lidoalerttitle">Alert screen title!</span>
+            <hr class="lidohr"><span class="logindescription">This is an accurate description of the error, or whatever you should know. Yeah, maybe something went wrong, so check your last steps and do each step with more attention</span>
+            <div class="btn-group lidobtngroup"
+                role="group"><button class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button><button class="btn btn-primary lidobtnofbtngroup" type="button">No</button></div>
+        </div>
+    </div>
+    <div class="divcontainer" style="background-image: url(&quot;assets/img/MicrosoftTeams-image.png&quot;);">
+        <nav class="navbar navbar-light navbar-expand-md lidonavbar">
+            <div class="container-fluid"><a class="navbar-brand" href="#">Lido Logo</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse"
+                    id="navcol-1">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item" role="presentation"><a class="nav-link active" href="#" style="background-color: white;border-radius: 5px;color: black;">Resturant tables editor</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Menu editor</a></li>
+                        <li class="nav-item" role="presentation"></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Orders</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="contentscreen"><span class="toptitle" style="font-family: 'Akronim';font-size: 70px;font-weight: normal;">Resturant table editor</span><span class="logindescription" style="background-color: rgb(220,220,220);">Here you can manage the active tables in the restaurant. For each of them, you can generate the QR-code to access the restaurant menu and send an order linked to the table.</span>
+            <div
+                class="contentdivscreen">
+                <div class="table-responsive table-borderless" style="text-align: center;">
+                    <table class="table table-bordered table-hover res_editor">
+                        <thead style="border-bottom: 1px solid lightgray;">
+                            <tr>
+                                <th>Table #</th>
+                                <th>QR-code</th>
+                                <th>Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><button class="btn btn-primary" type="button">Generate QR-code</button></td>
+                                <td><button class="btn btn-danger" type="button" style="display: none;">Remove table</button></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><button class="btn btn-primary" type="button">Generate QR-code</button></td>
+                                <td><button class="btn btn-danger" type="button">Remove table</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                        <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                    </ul>
+                </nav>
+        </div>
+        <hr><button class="btn btn-primary lidobtn1" type="button">Add new table</button></div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
