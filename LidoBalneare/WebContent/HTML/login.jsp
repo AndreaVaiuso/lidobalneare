@@ -19,9 +19,12 @@
 
 <body>
     <div class="divcontainer">
-        <div class="loginscreen"><span class="logintitle">Login</span><input type="text" id="emailinput" class="lidoblockstyle" placeholder="email address"><input type="password" id="passwordinput" class="lidoblockstyle" placeholder="password"><button class="btn btn-primary lidoblockstyle"
-                id="loginbutton" type="button" style="margin-top: 20px;">Login</button>
-            <hr><span class="logindescription">Aren't you registered yet? Do it now by clicking the button below. Isn't too easy right?</span><button class="btn btn-primary lidoblockstyle" id="registerbutton" type="button">Register</button></div>
+        <div class="loginscreen"><span class="logintitle">Login</span>
+        <input type="text" id="emailinput" class="lidoblockstyle" placeholder="email address">
+        <input type="password" id="passwordinput" class="lidoblockstyle" placeholder="password">
+        <button class="btn btn-primary lidoblockstyle" onclick="login()" id="loginbutton" type="button" style="margin-top: 20px;">Login</button>
+            <hr><span class="logindescription">Aren't you registered yet? Do it now by clicking the button below. Isn't too easy right?</span>
+            <button class="btn btn-primary lidoblockstyle" onclick="register()" id="registerbutton" type="button">Register</button></div>
     </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
