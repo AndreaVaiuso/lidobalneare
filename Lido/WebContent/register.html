@@ -17,20 +17,33 @@
 
 <body>
     <div class="divcontainer">
-        <div class="loginscreen"><span class="logintitle">Register</span><span class="logindescription">Now it's time to give us your precious data</span><input type="email" id="emailinputreg" class="lidoblockstyle" placeholder="Email address"><input type="password" id="passwordinputreg"
-                class="lidoblockstyle" placeholder="Password"><input type="password" id="passwordinputrepeatreg" class="lidoblockstyle" placeholder="Repeat password"><input type="text" id="birthdatereg" class="lidoblockstyle" data-provide="&quot;datepicker&quot;"
-                placeholder="Birthday">
-            <div class="form-check lidoradio"><input class="form-check-input" type="radio" id="male_check" name="sex" checked>
-            <label class="form-check-label" for="formCheck-1">Male</label>
+        <div class="loginscreen">
+        	<span class="logintitle">Register</span>
+        	<span class="logindescription">Now it's time to give us your precious data</span>
+        	
+        	<input type="email" id="emailinputreg" class="lidoblockstyle" placeholder="Email address" />
+        	<input type="password" id="passwordinputreg" class="lidoblockstyle" placeholder="Password" />
+        	<input type="password" id="passwordinputrepeatreg" class="lidoblockstyle" placeholder="Repeat password" />
+        	<input type="date" id="birthdatereg" class="lidoblockstyle" data-provide="&quot;datepicker&quot;" placeholder="Birthdate" />
+            
+            <div class="form-check lidoradio">
+            	<input class="form-check-input" type="radio" id="male_check" name="gender" checked />
+            	<label class="form-check-label" for="formCheck-1">Male</label>
             </div>
             <div class="form-check lidoradio" style="padding-left: 22px;">
-            <input class="form-check-input" type="radio" id="female_check" name="sex">
-            <label class="form-check-label" for="formCheck-2">Female</label></div>
-            <div class="form-check lidoradio" style="padding-left: 22px;"><input class="form-check-input" type="radio" id="other_check" name="sex"><label class="form-check-label" for="formCheck-2">Other</label></div>
-            <hr><button class="btn btn-primary lidoblockstyle" id="registerbuttonreg" type="button">Register</button></div>
+            	<input class="form-check-input" type="radio" id="female_check" name="gender" />
+            	<label class="form-check-label" for="formCheck-2">Female</label>
+            </div>
+            <div class="form-check lidoradio" style="padding-left: 22px;">
+            	<input class="form-check-input" type="radio" id="other_check" name="gender" />
+            	<label class="form-check-label" for="formCheck-2">Other</label>
+            </div>
+            <hr>
+            <button class="btn btn-primary lidoblockstyle" id="registerbuttonreg" type="submit">Register</button>
+        </div>
     </div>
-    <script src="assets/js/register.js"></script>
     <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/register.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 

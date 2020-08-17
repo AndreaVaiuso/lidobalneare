@@ -1,4 +1,4 @@
-package it.andreavaiuso.servlet;
+package it.lidobalneare.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,7 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import it.andreavaiuso.db.DBConnect;
+import it.lidobalneare.SHA256;
+import it.lidobalneare.db.DBConnect;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -30,13 +31,25 @@ public class RegisterServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String email = request.getParameter("username");
-		String password = request.getParameter("password");
-		System.out.println(email + " " + password);
-		DBConnect.login(email, password);
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-		out.write("Hello");
+		String email = request.getParameter("email");
+		String password1 = request.getParameter("password1");
+		String password2 = request.getParameter("password2");
+		if(password1.equals(password2)) {
+			String password = SHA256.encode(password1);
+			String birthdate = request.getParameter("birthdate");
+			String gender = request.getParameter("gender");
+			try {
+				DBConnect.register(email,password,birthdate,gender);
+			} catch (Exception e) {
+				//Registration error
+			}
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+			out.write("Hello");
+		} else {
+			// ERROR passwords not equals
+		}
+		
 	}
 
 }

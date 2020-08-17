@@ -1,4 +1,4 @@
-package it.andreavaiuso.servlet;
+package it.lidobalneare.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import it.andreavaiuso.db.DBConnect;
+import it.lidobalneare.db.DBConnect;
 
 /**
  * Servlet implementation class LoginServlet
@@ -30,10 +30,14 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String email = request.getParameter("username");
+		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		System.out.println(email + " " + password);
+		try {
 		DBConnect.login(email, password);
+		} catch (NullPointerException e) {
+			// Send to client login failure or password wrong
+		}
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		out.write("Hello");

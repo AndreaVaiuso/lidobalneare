@@ -5,7 +5,7 @@ $("#loginbutton").click(
 			console.log(username + " " + password);
 			var data = {
 					"type":"login",
-					"username":username,
+					"email":username,
 					"password":password
 			};
 			$.post("LoginServlet",data,function(data,status,xhr){
