@@ -1,0 +1,3 @@
+$("#registerbuttonreg").click(
+		alert("register")
+);
