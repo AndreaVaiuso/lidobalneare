@@ -1,4 +1,4 @@
-var showerror = function(title, description){
+function showerror(title, description){
 	document.getElementById("alerttitle").innerHTML = title;
 	document.getElementById("alertcontent").innerHTML = description;
 	document.getElementById("alertscreen").style.display = "block";
@@ -29,10 +29,17 @@ $("#registerbuttonreg").click(
 					"gender" : gender,
 			};
 			$.post("RegisterServlet",userdata,function(data,status,xhr){
-				var response = JSON.parse(data);
+				response = data;
 				if(response.type == "typerror"){
-					showerror.call("You must compile all fields!",response.field + " is empty");
-				} else if(response.type == "success"){
+					showerror("You must compile all fields!",response.missingField + " is empty");
+				}
+				else if(response.type == "alreadyexists") {
+					showerror("Account already exists","There is already an account with that email address in our servers");
+				} 
+				else if(response.type == "passwordsnotequals") {
+					showerror("Passwords are not equals","Please retype your password!");
+				} 
+				else if(response.type == "success"){
 					
 				}
 			},"json")

@@ -3,6 +3,7 @@ package it.lidobalneare.servlet;
 import java.io.IOException;
 
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,44 +33,54 @@ public class RegisterServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Entering servlet");
 		String email = request.getParameter("email");
 		String password1 = request.getParameter("password1");
 		String password2 = request.getParameter("password2");
 		String name = request.getParameter("name");
 		String surname = request.getParameter("surname");
-		
+		String birthdate = request.getParameter("birthdate");
+		System.out.println("servlet date: "+ birthdate);
 		// Checking that every field is filled.
 		String fieldError = "";	// Control string. Stays empty if no error is detected.
-		if (!email.isEmpty()) fieldError = "email";
-		if (!password1.isEmpty()) fieldError = "password1";
-		if (!password2.isEmpty()) fieldError = "password2";
-		if (!name.isEmpty()) fieldError = "name";
-		if (!surname.isEmpty()) fieldError = "surname";
+		if (email.isEmpty()) fieldError = "email";
+		else if (password1.isEmpty()) fieldError = "password";
+		else if (password2.isEmpty()) fieldError = "password";
+		else if (name.isEmpty()) fieldError = "name";
+		else if (surname.isEmpty()) fieldError = "surname";
+		else if (birthdate.isEmpty()) fieldError = "birthdate";
 		
 		if (!fieldError.isEmpty())	// If any field is empty, creates a JSON representing the error.
 		{
-			String jsonObject = "{ \"missingField\" : \"" + fieldError + "\" }";
+			String jsonObject = "{ \"type\" : \"typerror\",  \"missingField\" : \"" + fieldError + "\" }";
 			response.setContentType("text/plain");
 			PrintWriter out = response.getWriter();
 			out.append(jsonObject);
 			out.close();
+			return;
 		}
 		else if(password1.equals(password2)) {
 			String password = SHA256.encode(password1);
-			String birthdate = request.getParameter("birthdate");
 			String gender = request.getParameter("gender");
 			try {
 				DBConnect.register(email,password,birthdate,gender,name,surname);
-			} catch (Exception e) {
-				e.printStackTrace();
-				//Registration error
+			} catch (SQLException e) {
+				String jsonObject = "{ \"type\" : \"alreadyexists\" }";
+				response.setContentType("text/plain");
+				PrintWriter out = response.getWriter();
+				out.append(jsonObject);
+				out.close();
+				return;
 			}
 			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();
 			out.write("Hello");
 		} else {
-			// ERROR passwords not equals
+			String jsonObject = "{ \"type\" : \"passwordsnotequals\" }";
+			response.setContentType("text/plain");
+			PrintWriter out = response.getWriter();
+			out.append(jsonObject);
+			out.close();
+			return;
 		}
 		
 	}
