@@ -23,12 +23,17 @@
         	<span class="logintitle" style="color: red;">Failure!</span>
             <hr>
             <span class="logindescription">An error has occurred. Your account has not been activated. Please try again.</span>
-            <button class="btn btn-primary lidoblockstyle" id="registerbutton" type="button">Back</button>
+            <button class="btn btn-primary lidoblockstyle" id="backBtn" type="button">Back</button>
         </div>
     </div>
     
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+    	$("#backBtn").click(function(){
+    		location.href = "login.html";
+    	});
+    </script>
 </body>
 
 </html>
