@@ -22,7 +22,6 @@ $("#registerbuttonreg").click(
 					"birthdate" : birthdate,
 					"gender" : gender,
 			};
-			console.log("Sending ajax");
 			$.post("RegisterServlet",userdata,function(data,status,xhr){
 				alert("Done");
 			},"json")
