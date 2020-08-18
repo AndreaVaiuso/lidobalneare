@@ -29,13 +29,10 @@ public class Email {
 
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("noreplylido@gmail.com"));
-            message.setRecipients(
-                    Message.RecipientType.TO,
-                    InternetAddress.parse(email)
-            );
+            message.setRecipients( Message.RecipientType.TO, InternetAddress.parse(email));
             message.setSubject("Confirm registration to Lido");
             
-            message.setText("");
+            message.setText("To confirm your registration, please click on this link: ");
             Transport.send(message);
 
         } catch (MessagingException e) {

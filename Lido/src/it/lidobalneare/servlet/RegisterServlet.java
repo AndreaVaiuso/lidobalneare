@@ -37,7 +37,6 @@ public class RegisterServlet extends HttpServlet {
 		String password2 = request.getParameter("password2");
 		String name = request.getParameter("name");
 		String surname = request.getParameter("surname");
-		System.out.println("SERVLET: " + name + " "+ surname);
 		if(password1.equals(password2)) {
 			String password = SHA256.encode(password1);
 			String birthdate = request.getParameter("birthdate");
