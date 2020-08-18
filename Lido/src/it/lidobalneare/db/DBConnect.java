@@ -40,7 +40,11 @@ public class DBConnect {
 			String query = "SELECT * FROM customer WHERE email='"+email+"' AND password='"+password+"'";
 			ResultSet rs = getStatement().executeQuery(query);
 			if (rs.next()) {
-				return rs.getInt(7);
+				if(rs.getString(8).equals("Y")) {
+					return 1;
+				} else {
+					return 0;
+				}
 			} else {
 				throw new NullPointerException();
 			}
@@ -57,10 +61,12 @@ public class DBConnect {
 	}
 
 
-	public static void unlockAccount(String code) throws SQLException {
+	public static void unlockAccount(String code) throws SQLException, NullPointerException {
 		String query = "UPDATE customer SET active = 'Y' WHERE active = '"+code+"'";
-		getStatement().executeUpdate(query);
-		
+		int affected = getStatement().executeUpdate(query);
+		if(affected == 0) {
+			throw new NullPointerException();
+		}
 	}
 
 }

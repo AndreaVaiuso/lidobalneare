@@ -13,6 +13,9 @@ $("#loginbutton").click(	// Login button click event handler.
 				if(data.type == "loginError"){
 					showerror("Login error","Your credentials do not match");
 				}
+				else if(data.type == "notActive"){
+					showerror("Account not verified","Check your e-mail, your account must be verified before you can access!");
+				}
 				else if(data.type == "success"){
 
 				}

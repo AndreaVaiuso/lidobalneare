@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import javax.mail.MessagingException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,9 +35,13 @@ public class RegisterServlet extends HttpServlet {
     	String code = request.getParameter("usercode");
     	try {
 			DBConnect.unlockAccount(code);
-		} catch (SQLException e) {
-			
+		} catch (NullPointerException | SQLException e) {
+			e.printStackTrace();
+			RequestDispatcher view = request.getRequestDispatcher("accountValidationFailure.html");
+	    	view.forward(request, response);
 		}
+    	RequestDispatcher view = request.getRequestDispatcher("accountValidationSuccess.html");
+    	view.forward(request, response);
     	
     }
 

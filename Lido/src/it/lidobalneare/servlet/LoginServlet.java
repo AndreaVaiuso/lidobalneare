@@ -35,7 +35,23 @@ public class LoginServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		System.out.println("Login: " + email + " " + password);
 		try {
-			DBConnect.login(email, password);
+			int check = DBConnect.login(email, password);
+			if(check == 0) {
+				//Not active account
+				String jsonObject = "{ \"type\" : \"notActive\" }";
+				response.setContentType("text/plain");
+				PrintWriter out = response.getWriter();
+				out.append(jsonObject);
+				out.close();
+				return;
+			}
+			else if(check == -1) {
+				//Database error
+				
+			}
+			else if(check == 1) {
+				//Login
+			}
 		} catch (NullPointerException e) {
 			// Send to client login failure or password wrong.
 			String jsonObject = "{ \"type\" : \"loginError\" }";
