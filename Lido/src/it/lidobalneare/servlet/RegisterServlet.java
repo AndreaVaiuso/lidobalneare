@@ -1,6 +1,7 @@
 package it.lidobalneare.servlet;
 
 import java.io.IOException;
+
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
@@ -37,7 +38,24 @@ public class RegisterServlet extends HttpServlet {
 		String password2 = request.getParameter("password2");
 		String name = request.getParameter("name");
 		String surname = request.getParameter("surname");
-		if(password1.equals(password2)) {
+		
+		// Checking that every field is filled.
+		String fieldError = "";	// Control string. Stays empty if no error is detected.
+		if (!email.isEmpty()) fieldError = "email";
+		if (!password1.isEmpty()) fieldError = "password1";
+		if (!password2.isEmpty()) fieldError = "password2";
+		if (!name.isEmpty()) fieldError = "name";
+		if (!surname.isEmpty()) fieldError = "surname";
+		
+		if (!fieldError.isEmpty())	// If any field is empty, creates a JSON representing the error.
+		{
+			String jsonObject = "{ \"missingField\" : \"" + fieldError + "\" }";
+			response.setContentType("text/plain");
+			PrintWriter out = response.getWriter();
+			out.append(jsonObject);
+			out.close();
+		}
+		else if(password1.equals(password2)) {
 			String password = SHA256.encode(password1);
 			String birthdate = request.getParameter("birthdate");
 			String gender = request.getParameter("gender");
@@ -51,7 +69,6 @@ public class RegisterServlet extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			out.write("Hello");
 		} else {
-			//ciao
 			// ERROR passwords not equals
 		}
 		
