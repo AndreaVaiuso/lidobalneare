@@ -1,14 +1,15 @@
-$("#loginbutton").click(	// Login button click event handler.
+$("#loginbutton").click(	// Login button click handler.
 		function(){
-			var username = document.getElementById("emailinput").value;
-			var password = document.getElementById("passwordinput").value;
-			console.log(username + " " + password);
+			var email = $("#emailinput").val(); 
+			var password = $("#passwordinput").val();
+			console.log(email + " " + password);	// DEBUG
 			var data = {
-					"type":"login",
-					"email":username,
-					"password":password
+					"type" : "login",
+					"email" : email,
+					"password" : password,
 			};
-			$.post("LoginServlet",data,function(data,status,xhr){
+			
+			$.post("LoginServlet", data, function(data,status,xhr){
 				alert("Done");
 			},"json")
 		}
