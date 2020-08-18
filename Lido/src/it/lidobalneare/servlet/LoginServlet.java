@@ -30,12 +30,20 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String email = request.getParameter("email");
+		// Retrieve login data.
+    	String email = request.getParameter("email");
 		String password = request.getParameter("password");
+		
 		try {
-		DBConnect.login(email, password);
+			DBConnect.login(email, password);
 		} catch (NullPointerException e) {
-			// Send to client login failure or password wrong
+			// Send to client login failure or password wrong.
+			String jsonObject = "{ \"type\" : \"loginError\" }";
+			response.setContentType("text/plain");
+			PrintWriter out = response.getWriter();
+			out.append(jsonObject);
+			out.close();
+			return;
 		}
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
