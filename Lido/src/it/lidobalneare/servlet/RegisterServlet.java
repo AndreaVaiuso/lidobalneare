@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,6 +28,16 @@ public class RegisterServlet extends HttpServlet {
     public RegisterServlet() {
         super();
         // TODO Auto-generated constructor stub
+    }
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	String code = request.getParameter("usercode");
+    	try {
+			DBConnect.unlockAccount(code);
+		} catch (SQLException e) {
+			
+		}
+    	
     }
 
 	/**
@@ -70,10 +81,18 @@ public class RegisterServlet extends HttpServlet {
 				out.append(jsonObject);
 				out.close();
 				return;
+			} catch (MessagingException e2) {
+				System.err.println("Error on sending mail: ");
+				e2.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			response.setContentType("text/html");
+			String jsonObject = "{ \"type\" : \"success\" }";
+			response.setContentType("text/plain");
 			PrintWriter out = response.getWriter();
-			out.write("Hello");
+			out.append(jsonObject);
+			out.close();
+			return;
 		} else {
 			String jsonObject = "{ \"type\" : \"passwordsnotequals\" }";
 			response.setContentType("text/plain");

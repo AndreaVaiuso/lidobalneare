@@ -6,10 +6,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.mail.MessagingException;
+
+import it.lidobalneare.Email;
+
 public class DBConnect {
 	private static String url = "jdbc:mysql://localhost:3306/lidobalneare?useSSL=false&serverTimezone=UTC";
 	private static String user = "admin";
 	private static String password = "1526";
+
+
+	private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+	public static String randomAlphaNumeric(int count) {
+		StringBuilder builder = new StringBuilder();
+		while (count-- != 0) {
+			int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
+			builder.append(ALPHA_NUMERIC_STRING.charAt(character));
+		}
+		return builder.toString();
+	}
 
 
 	private static Statement getStatement() throws SQLException {
@@ -33,10 +49,21 @@ public class DBConnect {
 		}
 	}
 
-	public static void register(String email, String password, String birthdate, String gender, String name, String surname) throws SQLException {
-		System.out.println("DATE: " + birthdate);
-		String query = "INSERT INTO customer VALUES ('"+email+"','"+password+"','"+name+"','"+surname+"','"+gender+"','"+birthdate+"',null,0)";
+	public static void register(String email, String password, String birthdate, String gender, String name, String surname) throws SQLException, MessagingException {
+		String code = randomAlphaNumeric(20);
+		String query = "INSERT INTO customer VALUES ('"+email+"','"+password+"','"+name+"','"+surname+"','"+gender+"','"+birthdate+"',null,'"+code+"')";	
 		getStatement().executeUpdate(query);
+		Email.sendRegisterConfirmation(email, code);
+	}
+
+
+	public static void unlockAccount(String code) throws SQLException {
+		String query = "UPDATE customer SET active = 'Y' WHERE active = '"+code+"'";
+		getStatement().executeUpdate(query);
+		
 	}
 
 }
+
+
+
