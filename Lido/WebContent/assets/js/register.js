@@ -1,3 +1,9 @@
+var showerror = function(title, description){
+	document.getElementById("alerttitle").innerHTML = title;
+	document.getElementById("alertcontent").innerHTML = description;
+	document.getElementById("alertscreen").style.display = "block";
+}
+
 $("#registerbuttonreg").click(
 		function(){
 			var email = document.getElementById("emailinputreg").value;
@@ -23,9 +29,13 @@ $("#registerbuttonreg").click(
 					"gender" : gender,
 			};
 			$.post("RegisterServlet",userdata,function(data,status,xhr){
-				alert("Done");
+				var response = JSON.parse(data);
+				if(response.type == "typerror"){
+					showerror.call("You must compile all fields!",response.field + " is empty");
+				} else if(response.type == "success"){
+					
+				}
 			},"json")
 		}
 );
 
-console.log("Hello");
