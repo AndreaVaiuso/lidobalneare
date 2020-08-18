@@ -33,15 +33,10 @@ public class DBConnect {
 		}
 	}
 
-	public static void register(String email, String password, String birthdate, String gender) throws SQLException {
-
-		String query = "INSERT INTO customer VALUES ('"+email+"','"+password+"',"+birthdate+",'"+gender+"',null,0)";
-		ResultSet rs = getStatement().executeQuery(query);
-		if (rs.next()) {
-			System.out.println("DATABASE: " + rs.getString(1));
-		} else {
-			throw new NullPointerException();
-		}
+	public static void register(String email, String password, String birthdate, String gender, String name, String surname) throws SQLException {
+		System.out.println("DATE: " + birthdate);
+		String query = "INSERT INTO customer VALUES ('"+email+"','"+password+"','"+name+"','"+surname+"','"+gender+"','"+birthdate+"',null,0)";
+		getStatement().executeUpdate(query);
 
 	}
 
