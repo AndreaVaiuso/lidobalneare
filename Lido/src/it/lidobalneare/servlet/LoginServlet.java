@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
 		// Retrieve login data.
     	String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		
+		System.out.println("Login: " + email + " " + password);
 		try {
 			DBConnect.login(email, password);
 		} catch (NullPointerException e) {

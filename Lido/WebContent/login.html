@@ -14,10 +14,6 @@
 	<link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
 	<link rel="stylesheet" href="assets/css/menu-collapse-ultimate.css">
 	<link rel="stylesheet" href="assets/css/styles.css">
-
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-	<script src="assets/js/login.js"></script>
 </head>
 
 <body>
@@ -30,8 +26,8 @@
 				went wrong, so check your last steps and do each step with more
 				attention</span>
 			<div class="btn-group lidobtngroup" role="group">
-				<button class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button>
-				<button class="btn btn-primary lidobtnofbtngroup" type="button">No</button>
+				<button id="alertyesbtn" class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button>
+				<button id="alertnobtn" class="btn btn-primary lidobtnofbtngroup" type="button">No</button>
 			</div>
 		</div>
 	</div>
@@ -44,9 +40,13 @@
 			<hr>
 			<span class="logindescription">Aren't you registered yet? Do
 				it now by clicking the button below. Isn't too easy right?</span>
-			<button class="btn btn-primary lidoblockstyle" id="registerbutton" type="button">Register</button> <!-- Prima era type="submit" -->
+			<button class="btn btn-primary lidoblockstyle" id="registerbutton" type="submit">Register</button> <!-- Prima era type="submit" -->
 		</div>
 	</div>
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/utilityfunctions.js"></script>
+	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/js/login.js"></script>
 </body>
 
 </html>

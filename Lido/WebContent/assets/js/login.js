@@ -1,4 +1,4 @@
-$("#loginbutton").click(	// Login button click handler.
+$("#loginbutton").click(	// Login button click event handler.
 		function(){
 			var email = $("#emailinput").val(); 
 			var password = $("#passwordinput").val();
@@ -8,9 +8,13 @@ $("#loginbutton").click(	// Login button click handler.
 					"email" : email,
 					"password" : password,
 			};
-			
-			$.post("LoginServlet", userdata, function(data,status,xhr){
-				alert("Done");
+			$.post("LoginServlet",userdata,function(data,status,xhr){
+				if(data.type == "loginError"){
+					showerror("Login error","Your credentials do not match");
+				}
+				else if(data.type == "success"){
+					
+				}
 			},"json")
 		}
 );
