@@ -51,6 +51,7 @@ public class RegisterServlet extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			out.write("Hello");
 		} else {
+			//ciao
 			// ERROR passwords not equals
 		}
 		

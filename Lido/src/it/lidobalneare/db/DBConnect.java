@@ -37,7 +37,6 @@ public class DBConnect {
 		System.out.println("DATE: " + birthdate);
 		String query = "INSERT INTO customer VALUES ('"+email+"','"+password+"','"+name+"','"+surname+"','"+gender+"','"+birthdate+"',null,0)";
 		getStatement().executeUpdate(query);
-
 	}
 
 }
