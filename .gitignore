@@ -22,3 +22,11 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /.metadata/
+
+Lido/.classpath
+
+apache-tomcat-9.0.37/bin/catalina-tasks.xml
+
+apache-tomcat-9.0.37/bin/
+
+apache-tomcat-9.0.37/

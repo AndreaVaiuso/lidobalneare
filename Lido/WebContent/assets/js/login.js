@@ -1,4 +1,4 @@
-$("#loginbutton").click(
+$("#loginbutton").click(	// Login button click event handler.
 		function(){
 			var username = document.getElementById("emailinput").value;
 			var password = document.getElementById("passwordinput").value;
