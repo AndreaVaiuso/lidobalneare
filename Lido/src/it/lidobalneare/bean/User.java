@@ -8,8 +8,6 @@ public class User {
 	private String birthdate;
 	private String paypal;
 	private String active;
-
-
 	private String role;
 	
 	// Methods

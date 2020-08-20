@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,6 +41,7 @@ public class LoginServlet extends HttpServlet {
 		password = SHA256.encode(password);
 		try {
 			User user = DBConnect.login(email, password);
+			
 			if (!user.getActive().equals("Y")) {	//Not active account
 				String jsonObject = "{ \"type\" : \"notActive\" }";
 				response.setContentType("text/plain");
@@ -50,7 +52,26 @@ public class LoginServlet extends HttpServlet {
 			} else {	// Login successful.
 				HttpSession session = request.getSession();
 				
+				request.getSession().setAttribute("user", user);
 				
+				switch (user.getRole()) {
+				case "admin" :
+					RequestDispatcher rd = request.getRequestDispatcher("/adminPage.jsp");
+					rd.forward(request, response);
+					break;
+				case "customer" :
+					break;
+				case "cook" :
+					break;
+				case "ticket" :
+					break;
+				case "lifeguard" :
+					break;
+				case "info" :
+					break;
+				default:
+					break;
+				}
 			}
 		} catch (NullPointerException e) {
 			// Send to client login failure or password wrong.

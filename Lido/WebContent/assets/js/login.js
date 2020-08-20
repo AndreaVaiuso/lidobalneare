@@ -33,6 +33,6 @@ document.getElementById("passwordinput").addEventListener('keypress', function (
 
 $("#registerbutton").click(
 		function(){
-			location.href = "lregister.html";
+			location.href = "register.html";
 		}
 );

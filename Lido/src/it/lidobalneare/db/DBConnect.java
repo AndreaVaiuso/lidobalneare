@@ -40,23 +40,22 @@ public class DBConnect {
 	}
 
 	public static User login(String email, String password) throws NullPointerException, SQLException {
-		try {
-			PreparedStatement s = getStatement("SELECT * FROM user WHERE email=? AND password=?");
-			s.setString(1,email);
-			s.setString(2,password);
-			ResultSet rs = s.executeQuery();
-			if (rs.next()) {
-				User u = new User();
-				u.setEmail(rs.getString("email"));
-				u.setName(rs.getString("name"));
-				u.setSurname(rs.getString("surname"));
-				u.setGender(rs.getString("gender"));
-				u.setActive(rs.getString("active"));
-				u.setPaypal(rs.getString("paypal"));
-				u.setBirthdate(rs.getDate("birthdate").toString());
-			} else {
-				throw new NullPointerException();
-			}
+		PreparedStatement s = getStatement("SELECT * FROM user WHERE email=? AND password=?");
+		s.setString(1,email);
+		s.setString(2,password);
+		ResultSet rs = s.executeQuery();
+		if (rs.next()) {
+			User u = new User();
+			u.setEmail(rs.getString("email"));
+			u.setName(rs.getString("name"));
+			u.setSurname(rs.getString("surname"));
+			u.setGender(rs.getString("gender"));
+			u.setActive(rs.getString("active"));
+			u.setPaypal(rs.getString("paypal"));
+			u.setBirthdate(rs.getDate("birthdate").toString());
+			return u;
+		} else {
+			throw new NullPointerException();
 		}
 	}
 
