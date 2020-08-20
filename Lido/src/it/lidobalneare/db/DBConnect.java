@@ -11,6 +11,7 @@ import java.sql.Statement;
 import javax.mail.MessagingException;
 
 import it.lidobalneare.Email;
+import it.lidobalneare.bean.User;
 
 public class DBConnect {
 	private static String url = "jdbc:mysql://localhost:3306/lidobalneare?useSSL=false&serverTimezone=UTC";
@@ -38,29 +39,30 @@ public class DBConnect {
 		return st;
 	}
 
-	public static int login(String email, String password) throws NullPointerException {
+	public static User login(String email, String password) throws NullPointerException, SQLException {
 		try {
-			PreparedStatement s = getStatement("SELECT * FROM customer WHERE email=? AND password=?");
+			PreparedStatement s = getStatement("SELECT * FROM user WHERE email=? AND password=?");
 			s.setString(1,email);
 			s.setString(2,password);
 			ResultSet rs = s.executeQuery();
 			if (rs.next()) {
-				if(rs.getString(8).equals("Y")) {
-					return 1;
-				} else {
-					return 0;
-				}
+				User u = new User();
+				u.setEmail(rs.getString("email"));
+				u.setName(rs.getString("name"));
+				u.setSurname(rs.getString("surname"));
+				u.setGender(rs.getString("gender"));
+				u.setActive(rs.getString("active"));
+				u.setPaypal(rs.getString("paypal"));
+				u.setBirthdate(rs.getDate("birthdate").toString());
 			} else {
 				throw new NullPointerException();
 			}
-		} catch (SQLException ex) {
-			return -1;
 		}
 	}
 
 	public static void register(String email, String password, String birthdate, String gender, String name, String surname) throws SQLException, MessagingException, IllegalArgumentException {
 		String code = randomAlphaNumeric(20);
-		PreparedStatement st = getStatement("INSERT INTO customer VALUES (?,?,?,?,?,?,null,?,'user')");
+		PreparedStatement st = getStatement("INSERT INTO user VALUES (?,?,?,?,?,?,null,?,'user')");
 		st.setString(1,email);
 		st.setString(2,password);
 		st.setString(3,name);
@@ -74,7 +76,7 @@ public class DBConnect {
 
 
 	public static void unlockAccount(String code) throws SQLException, NullPointerException {
-		PreparedStatement st = getStatement("UPDATE customer SET active = 'Y' WHERE active = ?");
+		PreparedStatement st = getStatement("UPDATE user SET active = 'Y' WHERE active = ?");
 		st.setString(1, code);
 		int affected = st.executeUpdate();
 		if(affected == 0) {
