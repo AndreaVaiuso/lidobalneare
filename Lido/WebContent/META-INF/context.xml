@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/">
+	<Resource auth="Container"
+		driverClassName="com.mysql.cj.jdbc.Driver"
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+		maxActive="10"
+		minIdle="2"
+		maxIdle="6"
+		maxWait="1000"
+		name="jdbc/lidobalneare"
+		username="admin"
+		password="1526"
+		type="javax.sql.DataSource"
+		url="jdbc:mysql://localhost:3306/lidobalneare?useSSL=false&amp;serverTimezone=UTC"
+		testOnBorrow="true"
+		validationQuery="SELECT 1"
+	></Resource>
+	
+	<Realm className="org.apache.catalina.realm.DataSourceRealm"
+		dataSourceName="jdbc/lidobalneare"
+		localDataSource="true"
+		userTable="customer"
+		userNameCol="email"
+		userCredCol="password"
+		userRoleTable="customer"
+		roleNameCol="role"
+	></Realm>
+</Context>

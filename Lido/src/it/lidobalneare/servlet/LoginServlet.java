@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import it.lidobalneare.SHA256;
 import it.lidobalneare.db.DBConnect;
 
 /**
@@ -33,7 +34,7 @@ public class LoginServlet extends HttpServlet {
 		// Retrieve login data.
     	String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		System.out.println("Login: " + email + " " + password);
+		password = SHA256.encode(password);
 		try {
 			int check = DBConnect.login(email, password);
 			if(check == 0) {

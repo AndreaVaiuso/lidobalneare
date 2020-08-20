@@ -80,6 +80,7 @@ public class RegisterServlet extends HttpServlet {
 			try {
 				DBConnect.register(email,password,birthdate,gender,name,surname);
 			} catch (SQLException e) {
+				e.printStackTrace();
 				String jsonObject = "{ \"type\" : \"alreadyexists\" }";
 				response.setContentType("text/plain");
 				PrintWriter out = response.getWriter();
@@ -89,6 +90,8 @@ public class RegisterServlet extends HttpServlet {
 			} catch (MessagingException e2) {
 				System.err.println("Error on sending mail: ");
 				e2.printStackTrace();
+			} catch (IllegalArgumentException e3) {
+				//Invalid date
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -1,7 +1,9 @@
 package it.lidobalneare.db;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -28,17 +30,20 @@ public class DBConnect {
 	}
 
 
-	private static Statement getStatement() throws SQLException {
+	private static PreparedStatement getStatement(String query) throws SQLException {
+		
 		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver ());
 		Connection con = DriverManager.getConnection(url, user, password);
-		Statement st = con.createStatement();
+		PreparedStatement st = con.prepareStatement(query);
 		return st;
 	}
 
 	public static int login(String email, String password) throws NullPointerException {
 		try {
-			String query = "SELECT * FROM customer WHERE email='"+email+"' AND password='"+password+"'";
-			ResultSet rs = getStatement().executeQuery(query);
+			PreparedStatement s = getStatement("SELECT * FROM customer WHERE email=? AND password=?");
+			s.setString(1,email);
+			s.setString(2,password);
+			ResultSet rs = s.executeQuery();
 			if (rs.next()) {
 				if(rs.getString(8).equals("Y")) {
 					return 1;
@@ -53,17 +58,25 @@ public class DBConnect {
 		}
 	}
 
-	public static void register(String email, String password, String birthdate, String gender, String name, String surname) throws SQLException, MessagingException {
+	public static void register(String email, String password, String birthdate, String gender, String name, String surname) throws SQLException, MessagingException, IllegalArgumentException {
 		String code = randomAlphaNumeric(20);
-		String query = "INSERT INTO customer VALUES ('"+email+"','"+password+"','"+name+"','"+surname+"','"+gender+"','"+birthdate+"',null,'"+code+"')";	
-		getStatement().executeUpdate(query);
+		PreparedStatement st = getStatement("INSERT INTO customer VALUES (?,?,?,?,?,?,null,?,'user')");
+		st.setString(1,email);
+		st.setString(2,password);
+		st.setString(3,name);
+		st.setString(4,surname);
+		st.setString(5,gender);
+		st.setDate(6, Date.valueOf(birthdate));
+		st.setString(7, code);
+		st.executeUpdate();
 		Email.sendRegisterConfirmation(email, code);
 	}
 
 
 	public static void unlockAccount(String code) throws SQLException, NullPointerException {
-		String query = "UPDATE customer SET active = 'Y' WHERE active = '"+code+"'";
-		int affected = getStatement().executeUpdate(query);
+		PreparedStatement st = getStatement("UPDATE customer SET active = 'Y' WHERE active = ?");
+		st.setString(1, code);
+		int affected = st.executeUpdate();
 		if(affected == 0) {
 			throw new NullPointerException();
 		}

@@ -1,5 +1,5 @@
 function hideerror(){
-	$("#alertscreen").hide();
+	$("#alertscreen").fadeOut();
 }
 
 function showerror(title, description){
@@ -9,16 +9,7 @@ function showerror(title, description){
 	$("#alertnobtn").hide();
 	$("#alertyesbtn").html("Ok");
 	$("#alertyesbtn").click(function(){hideerror()});
-	$("#alertscreen").css("display", "block");
-	/*
-		document.getElementById("alerttitle").innerHTML = title;
-		document.getElementById("alerttitle").style.color = "red";
-		document.getElementById("alertcontent").innerHTML = description;
-		document.getElementById("alertnobtn").style.display = "none";
-		document.getElementById("alertyesbtn").innerHTML = "Ok";
-		document.getElementById("alertyesbtn").onclick = function(){hideerror()};
-		document.getElementById("alertscreen").style.display = "block";
-	 */
+	$("#alertscreen").fadeIn(3000);
 }
 
 function showalert(title, description){
@@ -28,14 +19,5 @@ function showalert(title, description){
 	$("#alertnobtn").hide();
 	$("#alertyesbtn").html("Ok");
 	$("#alertyesbtn").click(function(){hideerror()});
-	$("#alertscreen").css("display", "block");
-	/*
-		document.getElementById("alerttitle").innerHTML = title;
-		document.getElementById("alerttitle").style.color = "black";
-		document.getElementById("alertcontent").innerHTML = description;
-		document.getElementById("alertnobtn").style.display = "none";
-		document.getElementById("alertyesbtn").innerHTML = "Ok";
-		document.getElementById("alertyesbtn").onclick = function(){hideerror()};
-		document.getElementById("alertscreen").style.display = "block";
-	 */
+	$("#alertscreen").fadeIn(3000);
 }
