@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-
-<jsp:useBean id="user" class="it.lidobalneare.bean.User" />
-
-<% 
-	//it.lidobalneare.bean.User banana = (it.lidobalneare.bean.User) session.getAttribute("user");
-	System.out.println("JSP:" + user.getEmail());
-%>
-
 <!DOCTYPE html>
+<% 
+	it.lidobalneare.bean.User connecteduser = (it.lidobalneare.bean.User) session.getAttribute("user");
+	if(!connecteduser.getRole().equals("admin")){
+		System.out.println("NOT ADMIN!");
+		response.sendRedirect("errorpage.html");
+	}
+	System.out.println("JSP!");
+%>
 <html>
 
 <head>
@@ -114,3 +114,4 @@
 </body>
 
 </html>
+

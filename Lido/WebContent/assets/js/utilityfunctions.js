@@ -1,5 +1,5 @@
 function hideerror(){
-	$("#alertscreen").fadeOut();
+	$("#alertscreen").fadeOut(500);
 }
 
 function showerror(title, description){
@@ -9,7 +9,7 @@ function showerror(title, description){
 	$("#alertnobtn").hide();
 	$("#alertyesbtn").html("Ok");
 	$("#alertyesbtn").click(function(){hideerror()});
-	$("#alertscreen").fadeIn(3000);
+	$("#alertscreen").fadeIn(500);
 }
 
 function showalert(title, description){
@@ -19,5 +19,5 @@ function showalert(title, description){
 	$("#alertnobtn").hide();
 	$("#alertyesbtn").html("Ok");
 	$("#alertyesbtn").click(function(){hideerror()});
-	$("#alertscreen").fadeIn(3000);
+	$("#alertscreen").fadeIn(500);
 }

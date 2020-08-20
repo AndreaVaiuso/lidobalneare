@@ -32,7 +32,7 @@ public class DBConnect {
 
 
 	private static PreparedStatement getStatement(String query) throws SQLException {
-		
+
 		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver ());
 		Connection con = DriverManager.getConnection(url, user, password);
 		PreparedStatement st = con.prepareStatement(query);
@@ -49,10 +49,11 @@ public class DBConnect {
 			u.setEmail(rs.getString("email"));
 			u.setName(rs.getString("name"));
 			u.setSurname(rs.getString("surname"));
-			u.setGender(rs.getString("gender"));
+			u.setGender(rs.getString("sex"));
 			u.setActive(rs.getString("active"));
 			u.setPaypal(rs.getString("paypal"));
 			u.setBirthdate(rs.getDate("birthdate").toString());
+			u.setRole(rs.getString("role"));
 			return u;
 		} else {
 			throw new NullPointerException();

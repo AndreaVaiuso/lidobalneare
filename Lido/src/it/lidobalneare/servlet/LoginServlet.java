@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
 		password = SHA256.encode(password);
 		try {
 			User user = DBConnect.login(email, password);
-			
+			System.out.println("Loggin in: " + user.getEmail() + " role: " + user.getRole());
 			if (!user.getActive().equals("Y")) {	//Not active account
 				String jsonObject = "{ \"type\" : \"notActive\" }";
 				response.setContentType("text/plain");
@@ -56,9 +56,10 @@ public class LoginServlet extends HttpServlet {
 				
 				switch (user.getRole()) {
 				case "admin" :
-					RequestDispatcher rd = request.getRequestDispatcher("/adminPage.jsp");
+					System.out.println("Admin found");
+					RequestDispatcher rd = request.getRequestDispatcher("./adminPage.jsp");
 					rd.forward(request, response);
-					break;
+					return;
 				case "customer" :
 					break;
 				case "cook" :
@@ -82,12 +83,9 @@ public class LoginServlet extends HttpServlet {
 			out.close();
 			return;
 		} catch (SQLException e1) {
+			e1.printStackTrace();
 			// DB error.
 		}
-		
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-		out.write("Hello");
 		
 	}
 
