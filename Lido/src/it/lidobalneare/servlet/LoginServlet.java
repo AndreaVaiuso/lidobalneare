@@ -2,15 +2,18 @@ package it.lidobalneare.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import it.lidobalneare.SHA256;
 import it.lidobalneare.db.DBConnect;
+import it.lidobalneare.bean.User;
 
 /**
  * Servlet implementation class LoginServlet
@@ -36,22 +39,18 @@ public class LoginServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		password = SHA256.encode(password);
 		try {
-			int check = DBConnect.login(email, password);
-			if(check == 0) {
-				//Not active account
+			User user = DBConnect.login(email, password);
+			if (!user.getActive().equals("Y")) {	//Not active account
 				String jsonObject = "{ \"type\" : \"notActive\" }";
 				response.setContentType("text/plain");
 				PrintWriter out = response.getWriter();
 				out.append(jsonObject);
 				out.close();
 				return;
-			}
-			else if(check == -1) {
-				//Database error
+			} else {	// Login successful.
+				HttpSession session = request.getSession();
 				
-			}
-			else if(check == 1) {
-				//Login
+				
 			}
 		} catch (NullPointerException e) {
 			// Send to client login failure or password wrong.
@@ -61,7 +60,10 @@ public class LoginServlet extends HttpServlet {
 			out.append(jsonObject);
 			out.close();
 			return;
+		} catch (SQLException e1) {
+			// DB error.
 		}
+		
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		out.write("Hello");
