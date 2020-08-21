@@ -51,6 +51,9 @@
     <div class="divcontainer">
     	
     	<%@include  file="adminavbar.jsp" %>
+    	<script>
+    		getElementById("nav_admin").firstChild().classList.add("active");
+    	</script>
         
         <div class="contentscreen">
         	<span class="toptitle">Administration panel</span>

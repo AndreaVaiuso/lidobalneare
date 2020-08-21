@@ -1,0 +1,64 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>LidoBalneare</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Acme">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Akronim">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anonymous+Pro">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/menu-collapse-ultimate.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <div class="alertscreen">
+        <div class="alertwindow"><span class="lidoalerttitle">Alert screen title!</span>
+            <hr class="lidohr"><span class="logindescription">This is an accurate description of the error, or whatever you should know. Yeah, maybe something went wrong, so check your last steps and do each step with more attention</span>
+            <div class="btn-group lidobtngroup"
+                role="group"><button class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button><button class="btn btn-primary lidobtnofbtngroup" type="button">No</button></div>
+        </div>
+    </div>
+    <div class="divcontainer">
+        <nav class="navbar navbar-light navbar-expand-md lidonavbar">
+            <div class="container-fluid"><a class="navbar-brand" href="#">Lido Logo</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse"
+                    id="navcol-1">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item" role="presentation"><a class="nav-link active" href="#">Administration panel</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="#" style="background-color: white;border-radius: 5px;color: black;">Lido layout editor</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Resturant table editor</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Communications</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="contentscreen"><span class="toptitle">Lido layout editor</span><span class="logindescription" style="background-color: rgb(220,220,220);">If you want to manage your lido, you are in the right place.</span>
+            <div class="contentdivscreen-layout">
+                <div class="beachlayoutdiv">
+                    <div class="chair" style="top: 100px;left: 305px;">
+                        <div class="chairpopup"><input type="text" class="popupchairnameeditor" placeholder="chair name"><button class="btn btn-primary btn-sm popupbutton" type="button">create</button></div>
+                    </div>
+                    <div class="chair" style="top: 100px;left: 35px;">
+                        <div class="chairpopup"><span class="popupchairname">CHAIR A22</span><button class="btn btn-primary btn-sm popupbutton" type="button">book</button></div>
+                    </div>
+                    <div class="chair" style="top: 100px;left: 165px;background-image: url(&quot;assets/img/chair_occupied.png&quot;);">
+                        <div class="chairpopup"><span class="popupchairname">CHAIR A23</span><span class="popupName">Mario Rossi</span></div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="buttoncontainer"><button class="btn btn-primary" type="button">Add chair</button><button class="btn btn-primary" type="button">Remove chair</button></div>
+        </div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
