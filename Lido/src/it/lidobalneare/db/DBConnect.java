@@ -111,6 +111,15 @@ public class DBConnect {
 		
 		return list;
 	}
+	
+	// Returns the number of entries of the User table.
+	public static int getUserNumber() throws SQLException, NullPointerException {
+		// Preparing the query.
+		PreparedStatement s = getStatement("SELECT count(*) FROM user");
+		ResultSet r = s.executeQuery();
+		r.next();
+		return r.getInt("count(*)");
+	}
 
 }
 

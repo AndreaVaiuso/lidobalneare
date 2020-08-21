@@ -19,19 +19,36 @@
 
 <body>
     <div class="alertscreen">
-        <div class="alertwindow"><span class="lidoalerttitle">Alert screen title!</span>
-            <hr class="lidohr"><span class="logindescription">This is an accurate description of the error, or whatever you should know. Yeah, maybe something went wrong, so check your last steps and do each step with more attention</span>
-            <div class="btn-group lidobtngroup"
-                role="group"><button class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button><button class="btn btn-primary lidobtnofbtngroup" type="button">No</button></div>
+        <div class="alertwindow">
+        	<span class="lidoalerttitle">Alert screen title!</span>
+            <hr class="lidohr">
+            <span class="logindescription">This is an accurate description of the error, or whatever you should know. Yeah, maybe something went wrong, so check your last steps and do each step with more attention</span>
+            
+            <div class="btn-group lidobtngroup" role="group">
+            	<button class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button>
+            	<button class="btn btn-primary lidobtnofbtngroup" type="button">No</button>
+            </div>
         </div>
     </div>
+    
     <div class="divcontainer">
         <nav class="navbar navbar-light navbar-expand-md lidonavbar">
-            <div class="container-fluid"><a class="navbar-brand" href="#">Lido Logo</a></div>
+            <div class="container-fluid">
+            	<a class="navbar-brand" href="#">Lido Logo</a>
+			</div>
         </nav>
-        <div class="contentscreen"><span class="toptitle">Welcome back Andrea</span><span class="logindescription" style="background-color: rgb(220,220,220);">Time to have a nice vacation!</span>
-            <div class="contentdivscreen"><span style="display: block;margin-bottom: 10px;">Paypal account configured: andreavaiuso@hotmail.com</span><button class="btn btn-primary" type="button">Configure payment account&nbsp;<i class="fa fa-paypal"></i></button></div>
+        
+        <div class="contentscreen">
+        	<span class="toptitle">Welcome back Andrea</span>
+        	<span class="logindescription" style="background-color: rgb(220,220,220);">Time to have a nice vacation!</span>
+            
+            <div class="contentdivscreen">
+            	<span style="display: block;margin-bottom: 10px;">Paypal account configured: andreavaiuso@hotmail.com</span>
+            	<button class="btn btn-primary" type="button">Configure payment account&nbsp;<i class="fa fa-paypal"></i></button>
+            </div>
+            
             <hr>
+            
             <div class="contentdivscreen">
                 <div class="prenpass"><button class="btn btn-primary showqrcodebutton" type="button"><i class="fa fa-qrcode"></i></button><span class="prentitle"><strong>Pass for 4 people</strong></span><span class="prenparag">Valid from 02/10/2020 to 02/11/2020</span>
                     <span
