@@ -86,8 +86,11 @@ public class DBConnect {
 	}
 	
 	// Executes a query that returns the list of every user registered, including special ones.
-	public static ArrayList<User> getUserList() throws SQLException, NullPointerException {
-		PreparedStatement s = getStatement("SELECT * FROM user");
+	public static ArrayList<User> getUserList(int from, int to) throws SQLException, NullPointerException {
+		// Preparing the query.
+		PreparedStatement s = getStatement("SELECT * FROM user ORDER BY email LIMIT ?,?");
+		s.setInt(1, from);
+		s.setInt(2, to);
 		ResultSet r = s.executeQuery(); 
 		ArrayList<User> list = new ArrayList<User>();
 		
