@@ -39,54 +39,34 @@ public class LoginServlet extends HttpServlet {
     	String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		password = SHA256.encode(password);
+		
+		// Create response.
+		PrintWriter out = response.getWriter();
+		response.setContentType("text/plain");
+		String jsonResponse = "";
+		
 		try {
 			User user = DBConnect.login(email, password);
-			System.out.println("Loggin in: " + user.getEmail() + " role: " + user.getRole());
+			System.out.println("Loggin in: " + user.getEmail() + " role: " + user.getRole());	// DEBUG
+			
 			if (!user.getActive().equals("Y")) {	//Not active account
-				String jsonObject = "{ \"type\" : \"notActive\" }";
-				response.setContentType("text/plain");
-				PrintWriter out = response.getWriter();
-				out.append(jsonObject);
-				out.close();
-				return;
+				jsonResponse = "{ \"type\" : \"notActive\" }";
 			} else {	// Login successful.
 				HttpSession session = request.getSession();
 				
 				request.getSession().setAttribute("user", user);
 				
-				switch (user.getRole()) {
-				case "admin" :
-					System.out.println("Admin found");
-					RequestDispatcher rd = request.getRequestDispatcher("./adminPage.jsp");
-					rd.forward(request, response);
-					return;
-				case "customer" :
-					break;
-				case "cook" :
-					break;
-				case "ticket" :
-					break;
-				case "lifeguard" :
-					break;
-				case "info" :
-					break;
-				default:
-					break;
-				}
+				jsonResponse = "{ \"type\" : \"loginSuccess\" , \"role\" : " + user.getRole() + "}";
 			}
-		} catch (NullPointerException e) {
-			// Send to client login failure or password wrong.
-			String jsonObject = "{ \"type\" : \"loginError\" }";
-			response.setContentType("text/plain");
-			PrintWriter out = response.getWriter();
-			out.append(jsonObject);
-			out.close();
-			return;
-		} catch (SQLException e1) {
+		} catch (NullPointerException e) {	// Login failure or wrong password.
+			jsonResponse = "{ \"type\" : \"loginError\" }";
+		} catch (SQLException e1) {	// DB error.
 			e1.printStackTrace();
-			// DB error.
+			return;
 		}
 		
+		out.append(jsonResponse);
+		out.close();
+		return;
 	}
-
 }
