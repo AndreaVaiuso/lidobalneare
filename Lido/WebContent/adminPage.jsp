@@ -1,12 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="it.lidobalneare.bean.User" %>
+<%@ page import="it.lidobalneare.db.DBConnect" %>
 <% 
-	it.lidobalneare.bean.User connecteduser = (it.lidobalneare.bean.User) session.getAttribute("user");
-	if(!connecteduser.getRole().equals("admin")){
-		System.out.println("NOT ADMIN!");
-		response.sendRedirect("errorpage.html");
+	try{
+		User connecteduser = (User) session.getAttribute("user");
+		if(!connecteduser.getRole().equals("admin")){
+			System.out.println("NOT ADMIN!");
+			response.sendRedirect("errorpage.html");
+			return;
+		}
+	} catch (NullPointerException e){
+		response.sendRedirect("login.html");
 	}
-	System.out.println("JSP!");
+	
 %>
 <html>
 
@@ -41,41 +49,59 @@
     </div>
     
     <div class="divcontainer">
-        <nav class="navbar navbar-light navbar-expand-md lidonavbar">
-            <div class="container-fluid">
-            	<a class="navbar-brand" href="#">Lido Logo</a>
-            	<button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1">
-	            	<span class="sr-only">Toggle navigation</span>
-	            	<span class="navbar-toggler-icon"></span>
-            	</button>
-            	
-                <div class="collapse navbar-collapse" id="navcol-1">
-                    <ul class="nav navbar-nav">
-                        <li class="nav-item" role="presentation"><a class="nav-link active" href="#" style="background-color: white;border-radius: 5px;">Administration panel</a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Lido layout editor</a></li>
-                        <li class="nav-item" role="presentation"></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Communications</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+    	
+    	<%@include  file="adminavbar.jsp" %>
         
         <div class="contentscreen">
         	<span class="toptitle">Administration panel</span>
         	<span class="logindescription" style="background-color: rgb(220,220,220);">If you want to manage your lido, you are in the right place.</span>
             <div class="contentdivscreen">
                 <div class="table-responsive table-borderless">
-                    <table class="table table-bordered table-hover">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Email</th>
                                 <th>Name</th>
                                 <th>Surname</th>
-                                <th>Age</th>
-                                <th>Birthday</th>
+                                <th>Gender</th>
+                                <th>Birth date</th>
                             </tr>
                         </thead>
                         <tbody>
+                        <%
+                        String cp = request.getParameter("currentPage");
+                        int currentPage = 1;
+                        try{
+                        	currentPage = Integer.valueOf(cp);
+                        } catch(NumberFormatException e){
+                        	currentPage = 1;
+                        }
+                        int itemsPerPage = 10;
+                        
+                        int firstElement = (currentPage-1)*itemsPerPage;
+                        int lastElement = firstElement + itemsPerPage;
+                        ArrayList<User> users = DBConnect.getUserList(firstElement,lastElement);
+                        int userNumber = DBConnect.getUserNumber();
+                        int pages = (int) Math.ceil(userNumber / itemsPerPage) + 1;
+                        
+                        try {
+                        	for(int i = 0; i < users.size(); i++){
+                        		User u = users.get(i);
+                        %>
+                        	<tr id="table_entry_<%=i%>" onclick="selectRow(<%=i%>,'<%=u.getEmail()%>')">
+                        		<td><%= u.getEmail() %></td>
+                                <td><%= u.getName() %></td>
+                                <td><%= u.getSurname() %></td>
+                                <td><%= u.getGender() %></td>
+                                <td><%= u.getBirthdate() %></td>
+                        	</tr>
+                        <% 
+                        	}
+                        } catch (java.lang.IndexOutOfBoundsException e) {}
+                        System.out.println("Current page: " + currentPage + ", Pages:" + pages);
+                        %>
+                        
+                        <!-- 
                             <tr>
                                 <td>name1.surname.@server.com</td>
                                 <td>Andrea</td>
@@ -90,18 +116,36 @@
                                 <td>24</td>
                                 <td>13/04/1996</td>
                             </tr>
+                        -->
                         </tbody>
                     </table>
                 </div>
                 <nav>
                     <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                    	<% 
+                    	if(currentPage != 1){
+                    		%>
+                    		<li class="page-item"><a class="page-link" href="#" aria-label="Previous" onclick="goToPage(<%=currentPage-1 %>)"><span aria-hidden="true">«</span></a></li>
+                    		<%
+                    	}
+
+                        for(int i=0;i<pages;i++){
+                        	if(i==(currentPage-1)){
+                        	%>
+                            <li class="page-item"><a class="page-link" style="color:black"><%= i+1 %></a></li>
+                            <%
+                        	} else {
+                        	%>
+                        	<li class="page-item"><a class="page-link" href="#" onclick="goToPage(<%=i+1%>)"><%= i+1 %></a></li>
+                        	<%
+                        	}
+                        }
+                        if(currentPage != pages){
+                        %>
+                        <li class="page-item"><a class="page-link" href="#" aria-label="Next" onclick="goToPage(<%=currentPage+1 %>)"><span aria-hidden="true">»</span></a></li>
+                    	<%
+                    	}
+                    	%>
                     </ul>
                 </nav>
             </div>
@@ -109,7 +153,11 @@
             <div class="buttoncontainer"><button class="btn btn-primary" type="button">See subscription informations</button><button class="btn btn-primary" type="button">Check prenotations</button></div>
         </div>
     </div>
+    <script>
+    	
+    </script>
     <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/admin.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 

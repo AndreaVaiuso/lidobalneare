@@ -16,8 +16,25 @@ $("#loginbutton").click(	// Login button click event handler.
 				else if(data.type == "notActive"){
 					showerror("Account not verified","Check your e-mail, your account must be verified before you can access!");
 				}
-				else if(data.type == "success"){
-
+				else if(data.type == "loginSuccess"){
+					switch(data.role){
+					case "admin":
+						location.href = "adminPage.jsp";
+						break;
+					case "customer":
+						break;
+					case "cook":
+						break;
+					case "ticket":
+						break;
+					case "lifeguard":
+						break;
+					case "info":
+						break;
+					default:
+						location.href = "errorpage.html";
+						break;
+					}
 				}
 			},"json")
 		}

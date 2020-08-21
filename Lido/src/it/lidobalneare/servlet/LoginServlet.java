@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		response.setContentType("text/plain");
 		String jsonResponse = "";
-		
+		HttpSession session = null;
 		try {
 			User user = DBConnect.login(email, password);
 			System.out.println("Loggin in: " + user.getEmail() + " role: " + user.getRole());	// DEBUG
@@ -52,11 +52,10 @@ public class LoginServlet extends HttpServlet {
 			if (!user.getActive().equals("Y")) {	//Not active account
 				jsonResponse = "{ \"type\" : \"notActive\" }";
 			} else {	// Login successful.
-				HttpSession session = request.getSession();
+				session = request.getSession();
+				session.setAttribute("user", user);
 				
-				request.getSession().setAttribute("user", user);
-				
-				jsonResponse = "{ \"type\" : \"loginSuccess\" , \"role\" : " + user.getRole() + "}";
+				jsonResponse = "{ \"type\" : \"loginSuccess\" , \"role\" : \"" + user.getRole() + "\"}";
 			}
 		} catch (NullPointerException e) {	// Login failure or wrong password.
 			jsonResponse = "{ \"type\" : \"loginError\" }";
