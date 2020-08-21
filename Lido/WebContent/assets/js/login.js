@@ -9,7 +9,9 @@ $("#loginbutton").click(	// Login button click event handler.
 					"email" : email,
 					"password" : password,
 			};
+			document.getElementById("ajaxloaderscreen").display = "block";
 			$.post("LoginServlet",userdata,function(data,status,xhr){
+				document.getElementById("ajaxloaderscreen").display = "none";
 				if(data.type == "loginError"){
 					showerror("Login error","Your credentials do not match");
 				}

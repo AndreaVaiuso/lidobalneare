@@ -443,6 +443,19 @@ body, html {
   height: 40px;
 }
 
+.ajaxloader {
+  position: absolute;
+  background-image: url("../../assets/img/ajax.gif");
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 800px;
+  height: 600px;
+  border-radius: 30px;
+}
+
 @media (max-width: 890px) {
   .menuCategoriesPanel {
     display: block;

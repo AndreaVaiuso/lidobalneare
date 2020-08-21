@@ -11,3 +11,11 @@ function selectRow(i,email){
 	selectedUser = email;
 	document.getElementById("table_entry_"+i).className= "tablerowselected";
 }
+
+document.getElementById("admin_subscriptioninfobutton").onclick = function(){
+	
+};
+
+document.getElementById("admin_checkprenotationbutton").onclick = function(){
+	
+};
