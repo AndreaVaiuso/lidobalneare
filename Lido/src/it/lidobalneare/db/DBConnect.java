@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.mail.MessagingException;
 
@@ -82,6 +83,30 @@ public class DBConnect {
 		if(affected == 0) {
 			throw new NullPointerException();
 		}
+	}
+	
+	// Executes a query that returns the list of every user registered, including special ones.
+	public static ArrayList<User> getUserList() throws SQLException, NullPointerException {
+		PreparedStatement s = getStatement("SELECT * FROM user");
+		ResultSet r = s.executeQuery(); 
+		ArrayList<User> list = new ArrayList<User>();
+		
+		// Generate the ArrayList.
+		while (r.next()) {
+			User u = new User();
+			u.setEmail(r.getString("email"));
+			u.setName(r.getString("name"));
+			u.setSurname(r.getString("surname"));
+			u.setGender(r.getString("sex"));
+			u.setActive(r.getString("active"));
+			u.setPaypal(r.getString("paypal"));
+			u.setBirthdate(r.getDate("birthdate").toString());
+			u.setRole(r.getString("role"));
+			
+			list.add(u);
+		}
+		
+		return list;
 	}
 
 }
