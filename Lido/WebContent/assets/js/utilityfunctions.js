@@ -21,3 +21,7 @@ function showalert(title, description){
 	$("#alertyesbtn").click(function(){hideerror()});
 	$("#alertscreen").fadeIn(500);
 }
+
+function showerror(){
+	showerror("Whoops!","Something went wrong! Please try again later!");
+}

@@ -5,7 +5,7 @@
 <jsp:useBean id="connecteduser" class="it.lidobalneare.bean.User" scope="session" />
 <% 
 	try{
-		if(!connecteduser.getRole().equals("customer") || !connecteduser.getRole().equals("admin")){
+		if(!connecteduser.getRole().equals("customer")){
 			response.sendRedirect("./errorpage.html");
 			return;
 		}
@@ -117,6 +117,7 @@
 		</div>
 	</div>
 	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/home.js"></script>
 	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 

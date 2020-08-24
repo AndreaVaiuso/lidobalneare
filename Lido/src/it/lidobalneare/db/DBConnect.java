@@ -120,6 +120,12 @@ public class DBConnect {
 		return r.getInt("count(*)");
 	}
 
+
+	public static void setUserPaypal(String email, String parameter) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 
 
