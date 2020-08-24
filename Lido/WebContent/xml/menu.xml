@@ -4,7 +4,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="menu.xsd">
 	
-	<category name="Antipasti" picture="PIC" description="description">
+	<category name="Appetizers">
 		<dish>
 			<name>Insalata caprese</name>
 			<ingredients>Pomodoro, mozzarella di bufala.</ingredients>
@@ -18,7 +18,7 @@
 		</dish>
 	</category>
 	
-	<category name="Primi" picture="PIC" description="description">
+	<category name="First dishes">
 		<dish>
 			<name>Bucatini alle sarde</name>
 			<ingredients>Sarde fresche, acciuga, finocchietto selvatico, pinoli, cipolla, uvetta.</ingredients>
@@ -28,13 +28,13 @@
 		<dish>
 			<name>Mezze maniche alla carbonara</name>
 			<ingredients>Guanciale affumicato, pecorino romano, tuorlo d'uova bio da galline allevate a terra, pepe nero.</ingredients>
-			<price>999</price>
+			<price>99.99</price>
 		</dish>
 	</category>
 	
-	<category name="Secondi" picture="PIC" description="description">
+	<category name="Second dishes">
 		<dish>
-			<name>Pesce spada arrosto</name>
+			<name>Filetto di pesce spada</name>
 			<ingredients>Filetto di pesce spada fresco, aglio, prezzemolo, olio extravergine d'oliva.</ingredients>
 			<price>13</price>
 		</dish>
@@ -46,7 +46,7 @@
 		</dish>
 	</category>
 	
-	<category name="Dolci" picture="PIC" description="description">
+	<category name="Desserts">
 		<dish>
 			<name>Macedonia di frutta</name>
 			<ingredients>Ananas, fragole, pesca, melone bianco, cantalupo, kiwi, succo d'ananas.</ingredients>
@@ -54,14 +54,14 @@
 		</dish>
 	</category>
 	
-	<category name="Bar" picture="PIC" description="description">
+	<category name="Bar">
 		<dish>
 			<name>Caffè espresso</name>
 			<price>1.50</price>
 		</dish>
 		
 		<dish>
-			<name>Cono Algida</name>
+			<name>Cornetto Algida</name>
 			<price>2.50</price>
 		</dish>
 	</category>
