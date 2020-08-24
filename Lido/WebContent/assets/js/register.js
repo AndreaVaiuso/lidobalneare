@@ -1,11 +1,11 @@
 
 $("#registerbuttonreg").click(
 		function(){
-			var email = document.getElementById("emailinputreg").value;
-			var name = document.getElementById("nameinputreg").value;
-			var surname = document.getElementById("surnameinputreg").value;
-			var password1 = document.getElementById("passwordinputreg").value;
-			var password2 = document.getElementById("passwordinputrepeatreg").value;
+			var email = $("#emailinputreg").val();
+			var name = $("#nameinputreg").val();
+			var surname = $("#surnameinputreg").val();
+			var password1 = $("#passwordinputreg").val();
+			var password2 = $("#passwordinputrepeatreg").val();
 			var birthdate = $("#birthdatereg").val();
 			var gender;
 

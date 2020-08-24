@@ -1,35 +1,43 @@
 <script>
-		function logout() {
-			alert("Logging out");
-			$.get("Logout");
-		}
-	</script>
+	function logout() {
+		alert("Logging out");
+		$.get("Logout");
+	}
+</script>
+	
 <nav class="navbar navbar-light navbar-expand-md lidonavbar">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="#">Lido Logo</a>
-		<button class="navbar-toggler" data-toggle="collapse"
-			data-target="#navcol-1">
-			<span class="sr-only">Toggle navigation</span> <span
-				class="navbar-toggler-icon"></span>
+		
+		<button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="navbar-toggler-icon"></span>
 		</button>
 
-		<!-- IMPORTANT: on importing, remember to set the active link using
-		getElementById("LI_ELEMENT_ID").firstChild().classList.add("active"); -->
+		<!--
+			IMPORTANT: on importing, remember to set the active link using
+			document.getElementById("LI_ELEMENT_ID").firstChild().classList.add("active");
+		-->
 
 		<div id="navcol-1" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-				<li id="nav_admin" class="nav-item" role="presentation"><a
-					class="nav-link" href="adminPage.jsp">Administration panel</a></li>
+				<li id="nav_admin" class="nav-item" role="presentation">
+					<a class="nav-link" href="adminPage.jsp">Administration panel</a>
+				</li>
 
-				<li id="nav_layout" class="nav-item" role="presentation"><a
-					class="nav-link" href="layoutEditor.jsp">Lido layout editor</a></li>
+				<li id="nav_layout" class="nav-item" role="presentation">
+					<a class="nav-link" href="layoutEditor.jsp">Lido layout editor</a>
+				</li>
 
+				<!--
 				<li id="nav_communications" class="nav-item" role="presentation">
 					<a class="nav-link" href="communications.jsp">Communications</a>
 				</li>
+				-->
 
-				<li id="nav_logout" class="nav-item" role="presentation"><a
-					class="nav-link" href="Logout">Logout</a></li>
+				<li class="nav-item" role="presentation">
+					<a class="nav-link" href="Logout">Logout</a>
+				</li>
 			</ul>
 		</div>
 	</div>
