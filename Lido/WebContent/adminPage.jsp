@@ -9,13 +9,14 @@
 		User connecteduser = (User) session.getAttribute("user");
 		if(!connecteduser.getRole().equals("admin")){
 			System.out.println("NOT ADMIN!");
-			response.sendRedirect("errorpage.html");
+			response.sendRedirect("./errorpage.html");
 			return;
 		}
 	} catch (NullPointerException e){
+		System.out.println("Session deleted");
 		response.sendRedirect("login.html");
+		return;
 	}
-	
 %>
 <html>
 
@@ -41,45 +42,6 @@
 </head>
 
 <body>
-<<<<<<< Updated upstream
-    <div class="alertscreen">
-        <div class="alertwindow">
-        	<span class="lidoalerttitle">Alert screen title!</span>
-            <hr class="lidohr">
-            <span class="logindescription">This is an accurate description of the error, or whatever you should know. 
-            	Yeah, maybe something went wrong, so check your last steps and do each step with more attention</span>
-            <div class="btn-group lidobtngroup" role="group">
-            	<button class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button>
-            	<button class="btn btn-primary lidobtnofbtngroup" type="button">No</button>
-            </div>
-        </div>
-    </div>
-    
-    <div class="divcontainer">
-    	
-    	<%@include  file="adminavbar.jsp" %>
-    	<script>
-    		getElementById("nav_admin").firstChild().classList.add("active");
-    	</script>
-        
-        <div class="contentscreen">
-        	<span class="toptitle">Administration panel</span>
-        	<span class="logindescription" style="background-color: rgb(220,220,220);">If you want to manage your lido, you are in the right place.</span>
-            <div class="contentdivscreen">
-                <div class="table-responsive table-borderless">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Email</th>
-                                <th>Name</th>
-                                <th>Surname</th>
-                                <th>Gender</th>
-                                <th>Birth date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <%
-=======
 	<div class="alertscreen">
 		<div class="alertwindow">
 			<span class="lidoalerttitle">Alert screen title!</span>
@@ -97,9 +59,9 @@
 
 	<div class="divcontainer">
 
-		<%@include file="adminavbar.jsp"%>
+		<%@include file="adminavbar.html"%>
 		<script>
-        	document.getElementById("nav_admin").style = "background-color: white; border-radius:6px; padding-left: 5px";
+        	document.getElementById("nav_admin").firstChild().classList.add("active");
         </script>
 		<div class="contentscreen">
 			<span class="toptitle">Administration panel</span> <span
@@ -120,7 +82,6 @@
 						</thead>
 						<tbody>
 							<%
->>>>>>> Stashed changes
                         String cp = request.getParameter("currentPage");
                         int currentPage = 1;
                         try{
@@ -151,7 +112,6 @@
 							<% 
                         	}
                         } catch (java.lang.IndexOutOfBoundsException e) {}
-                        System.out.println("Current page: " + currentPage + ", Pages:" + pages);
                         %>
 
 							<!-- 

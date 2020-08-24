@@ -33,7 +33,6 @@ public class DBConnect {
 
 
 	private static PreparedStatement getStatement(String query) throws SQLException {
-
 		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver ());
 		Connection con = DriverManager.getConnection(url, user, password);
 		PreparedStatement st = con.prepareStatement(query);
@@ -84,7 +83,7 @@ public class DBConnect {
 			throw new NullPointerException();
 		}
 	}
-	
+
 	// Executes a query that returns the list of every user registered, including special ones.
 	public static ArrayList<User> getUserList(int from, int to) throws SQLException, NullPointerException {
 		// Preparing the query.
@@ -93,7 +92,7 @@ public class DBConnect {
 		s.setInt(2, to);
 		ResultSet r = s.executeQuery(); 
 		ArrayList<User> list = new ArrayList<User>();
-		
+
 		// Generate the ArrayList.
 		while (r.next()) {
 			User u = new User();
@@ -105,13 +104,13 @@ public class DBConnect {
 			u.setPaypal(r.getString("paypal"));
 			u.setBirthdate(r.getDate("birthdate").toString());
 			u.setRole(r.getString("role"));
-			
+
 			list.add(u);
 		}
-		
+
 		return list;
 	}
-	
+
 	// Returns the number of entries of the User table.
 	public static int getUserNumber() throws SQLException, NullPointerException {
 		// Preparing the query.

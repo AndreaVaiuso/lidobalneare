@@ -47,7 +47,6 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = null;
 		try {
 			User user = DBConnect.login(email, password);
-			System.out.println("Loggin in: " + user.getEmail() + " role: " + user.getRole());	// DEBUG
 			
 			if (!user.getActive().equals("Y")) {	//Not active account
 				jsonResponse = "{ \"type\" : \"notActive\" }";
