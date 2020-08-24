@@ -24,6 +24,7 @@ $("#loginbutton").click(	// Login button click event handler.
 						location.href = "adminPage.jsp";
 						break;
 					case "customer":
+						location.href = "home.jsp"
 						break;
 					case "cook":
 						break;

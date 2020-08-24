@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
 				jsonResponse = "{ \"type\" : \"notActive\" }";
 			} else {	// Login successful.
 				session = request.getSession();
-				session.setAttribute("user", user);
+				session.setAttribute("connecteduser", user);
 				
 				jsonResponse = "{ \"type\" : \"loginSuccess\" , \"role\" : \"" + user.getRole() + "\"}";
 			}

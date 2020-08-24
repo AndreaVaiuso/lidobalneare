@@ -2,11 +2,11 @@
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <%@ page import="java.util.ArrayList"%>
-<%@ page import="it.lidobalneare.bean.User"%>
 <%@ page import="it.lidobalneare.db.DBConnect"%>
+<%@ page import="it.lidobalneare.bean.User"%>
+<jsp:useBean id="connecteduser" class="it.lidobalneare.bean.User" scope="session" />
 <% 
 	try{
-		User connecteduser = (User) session.getAttribute("user");
 		if(!connecteduser.getRole().equals("admin")){
 			System.out.println("NOT ADMIN!");
 			response.sendRedirect("./errorpage.html");
@@ -42,17 +42,20 @@
 </head>
 
 <body>
-	<div class="alertscreen">
+	<div id="ajaxloaderscreen" class="alertscreen" style="display: none">
+		<div class="ajaxloader"></div>
+	</div>
+	<div id="alertscreen" class="alertscreen" style="display : none">
 		<div class="alertwindow">
-			<span class="lidoalerttitle">Alert screen title!</span>
+			<span id="alerttitle" class="lidoalerttitle">Alert screen title!</span>
 			<hr class="lidohr">
-			<span class="logindescription">This is an accurate description
+			<span id="alertcontent" class="logindescription">This is an accurate description
 				of the error, or whatever you should know. Yeah, maybe something
 				went wrong, so check your last steps and do each step with more
 				attention</span>
 			<div class="btn-group lidobtngroup" role="group">
-				<button class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button>
-				<button class="btn btn-primary lidobtnofbtngroup" type="button">No</button>
+				<button id="alertyesbtn" class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button>
+				<button id="alertnobtn" class="btn btn-primary lidobtnofbtngroup" type="button">No</button>
 			</div>
 		</div>
 	</div>
