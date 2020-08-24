@@ -79,7 +79,8 @@
 
 		<%@include file="adminavbar.html"%>
 		<script>
-        	document.getElementById("nav_admin").firstChild().classList.add("active");
+        	document.getElementById("nav_admin").classList.add("active");
+        	document.getElementById("nav_admin").style = "background-color : white; border-radius : 3px"
         </script>
         
 		<div class="contentscreen">

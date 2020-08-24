@@ -29,6 +29,5 @@ $("#send_btn").click(
 	function(){
 		var msg = $("#msg").val();
 		
-		
 	}
 );
