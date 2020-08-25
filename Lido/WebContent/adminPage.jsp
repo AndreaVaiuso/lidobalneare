@@ -44,6 +44,7 @@
 	<div id="ajaxloaderscreen" class="alertscreen" style="display: none">
 		<div class="ajaxloader"></div>
 	</div>
+
 	<div id="alertscreen" class="alertscreen" style="display : none">
 		<div class="alertwindow">
 
@@ -181,7 +182,6 @@
 			<hr>
 			
 			<div class="buttoncontainer">
-				<button id="admin_subscriptioninfobutton" class="btn btn-primary" type="button">See subscription informations</button>
 				<button id="admin_checkreservationbutton" class="btn btn-primary" type="button">Check reservations</button>
 				<button class="btn btn-primary" type="button" onclick='$("#communication_form").toggle();'>Send communication</button>
 			</div>

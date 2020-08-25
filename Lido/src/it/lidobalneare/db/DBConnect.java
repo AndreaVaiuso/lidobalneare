@@ -6,12 +6,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.mail.MessagingException;
 
 import it.lidobalneare.Email;
+import it.lidobalneare.bean.Booking;
+import it.lidobalneare.bean.Pass;
 import it.lidobalneare.bean.User;
 
 public class DBConnect {
@@ -126,6 +127,44 @@ public class DBConnect {
 		
 	}
 
+	public static ArrayList<Pass> getCustomerPasses (String email) throws SQLException, NullPointerException {
+		PreparedStatement s = getStatement("SELECT * FROM pass WHERE email = ?");
+		s.setString(1, email);
+		ResultSet r = s.executeQuery();
+		ArrayList<Pass> list = new ArrayList<Pass>();
+		
+		while (r.next()) {
+			Pass p = new Pass();
+			p.setPass_email(r.getString("pass_email"));
+			p.setPass_begin(r.getDate("pass_begin"));
+			p.setPass_end(r.getDate("pass_end"));
+			p.setPass_people_num(r.getString("pass_people_num"));
+			p.setSeat(r.getString("seat"));
+			
+			list.add(p);
+		}
+		
+		return list;
+	}
+	
+	public static ArrayList<Booking> getCustomerBookings (String email) throws SQLException, NullPointerException {
+		PreparedStatement s = getStatement("SELECT * FROM booking WHERE email = ?");
+		s.setString(1, email);
+		ResultSet r = s.executeQuery();
+		ArrayList<Booking> list = new ArrayList<Booking>();
+		
+		while (r.next()) {
+			Booking b = new Booking();
+			b.setEmail(r.getString("email"));
+			b.setDay(r.getDate("day"));
+			b.setTime_slot(r.getInt("time_slot"));
+			b.setSeat(r.getString("seat"));
+			
+			list.add(b);
+		}
+		
+		return list;
+	}
 }
 
 

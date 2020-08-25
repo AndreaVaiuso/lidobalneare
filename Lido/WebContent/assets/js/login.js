@@ -3,15 +3,20 @@ $("#loginbutton").click(	// Login button click event handler.
 		function(){
 			var email = $("#emailinput").val(); 
 			var password = $("#passwordinput").val();
-			console.log(email + " " + password);	// DEBUG
+			//console.log(email + " " + password);	// DEBUG
 			var userdata = {
 					"type" : "login",
 					"email" : email,
 					"password" : password,
 			};
-			document.getElementById("ajaxloaderscreen").display = "block";
-			$.post("LoginServlet",userdata,function(data,status,xhr){
-				document.getElementById("ajaxloaderscreen").display = "none";
+			
+			//document.getElementById("ajaxloaderscreen").display = "block";
+			$("#ajaxloaderscreen").toggle();
+			
+			$.post("LoginServlet",userdata,function(data){
+				//document.getElementById("ajaxloaderscreen").display = "none";
+				$("#ajaxloaderscreen").toggle();
+				
 				if(data.type == "loginError"){
 					showerror("Login error","Your credentials do not match");
 				}
