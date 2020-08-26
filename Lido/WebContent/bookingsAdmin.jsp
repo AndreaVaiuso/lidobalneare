@@ -1,4 +1,29 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" session="true" %>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.Date"%>
+<%@ page import="java.util.Calendar"%>
+<%@ page import="it.lidobalneare.db.DBConnect"%>
+<%@ page import="it.lidobalneare.bean.User"%>
+<%@ page import="it.lidobalneare.bean.Pass"%>
+<%@ page import="it.lidobalneare.bean.Booking"%>
+<jsp:useBean id="connecteduser" class="it.lidobalneare.bean.User" scope="session" />
+
+<% 
+	try{
+		if(!connecteduser.getRole().equals("admin")){
+			System.out.println("NOT ADMIN!");
+			response.sendRedirect("./errorpage.html");
+			return;
+		}
+	} catch (NullPointerException e){
+		System.out.println("Session deleted");
+		response.sendRedirect("login.html");
+		return;
+	}
+
+	String customer = (String) session.getAttribute("customer");
+	Date today = Calendar.getInstance().getTime();
+%>
 
 <!DOCTYPE html>
 
@@ -23,11 +48,15 @@
 </head>
 
 <body>
+	<div id="ajaxloaderscreen" class="alertscreen" style="display: none">
+		<div class="ajaxloader"></div>
+	</div>
+	
     <div class="alertscreen">
         <div class="alertwindow">
         	<span class="lidoalerttitle">Alert screen title!</span>
             <hr class="lidohr">
-            <span class="logindescription">This is an accurate description of the error, or whatever you should know. Yeah, maybe something went wrong, so check your last steps and do each step with more attention</span>
+            <span class="logindescription">Description of the error</span>
             
             <div class="btn-group lidobtngroup" role="group">
             	<button class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button>
@@ -35,6 +64,43 @@
            	</div>
         </div>
     </div>
+    
+    <!-- Pass edit form box -->
+	<div id="pass_edit_form" class="alertscreen">
+		<div class="alertwindow">
+			<span class="lidoalerttitle">Edit pass</span>
+			<hr class="lidohr" />
+			
+			<input id="pass_email" type="text" class="lidoblockstyle" placeholder='Email address' />
+			<input id="pass_begin" type="text" class="lidoblockstyle" placeholder='Start date' />
+			<input id="pass_end" type="text" class="lidoblockstyle" placeholder='End date' />
+			<input id="pass_people_num" type="text" class="lidoblockstyle" placeholder='Number of people' />
+			<input id="pass_seat" type="text" class="lidoblockstyle" placeholder='Seat name' />
+			
+			<div class="btn-group lidobtngroup" role="group">
+				<button class="btn btn-primary lidobtnofbtngroup" type="button" onclick="applyPass()">Apply</button>
+				<button class="btn btn-primary lidobtnofbtngroup" type="button" onclick='$("#pass_edit_form").toggle();'>Cancel</button>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Booking edit form box -->
+	<div id="booking_edit_form" class="alertscreen">
+		<div class="alertwindow">
+			<span class="lidoalerttitle">Edit booking</span>
+			<hr class="lidohr" />
+			
+			<input id="book_email" type="text" class="lidoblockstyle" placeholder='Email address' />
+			<input id="book_day" type="text" class="lidoblockstyle" placeholder='Start date' />
+			<input id="book_slot" type="text" class="lidoblockstyle" placeholder='End date' />
+			<input id="book_seat" type="text" class="lidoblockstyle" placeholder='Seat name' />
+			
+			<div class="btn-group lidobtngroup" role="group">
+				<button class="btn btn-primary lidobtnofbtngroup" type="button" onclick="applyBooking()">Apply</button>
+				<button class="btn btn-primary lidobtnofbtngroup" type="button" onclick='$("#booking_edit_form").toggle();'>Cancel</button>
+			</div>
+		</div>
+	</div>
     
     <div class="divcontainer">
         <%@include file="adminavbar.html"%>
@@ -45,42 +111,107 @@
         
         <div class="contentscreen">
         	<span class="toptitle">Reservations</span>
-        	<span class="logindescription" style="background-color: rgb(220,220,220);">Customer: CUSTOMER_NAME</span>
+        	<span class="logindescription" style="background-color: rgb(220,220,220);">Customer: <%= session.getAttribute("customer") %></span>
             
             <div class="contentdivscreen">
-                <div class="prenpass">
+            <% 
+            // Passes
+            ArrayList<Pass> passes = new ArrayList<Pass>();
+            
+            try {
+            	passes = DBConnect.getCustomerPasses(customer);
+            } catch (Exception e) {
+            	e.printStackTrace();
+            }
+            
+            for (int i = 0; i < passes.size(); i++) {
+            	if ( passes.get(i).getPass_begin().before(today) && passes.get(i).getPass_end().after(today) ) {
+            	%>
+                <div class="prenpass" onclick="selectPass(
+                  <%= passes.get(i).getPass_email() %>,
+                  <%= passes.get(i).getPass_begin() %>,
+                  <%= passes.get(i).getPass_end() %>,
+                  <%= passes.get(i).getPass_people_num() %>,
+                  <%= passes.get(i).getSeat() %>)">
                 	<button class="btn btn-primary showqrcodebutton" type="button"><i class="fa fa-qrcode"></i></button>
-                	<span class="prentitle"><strong>Pass for 4 people</strong></span>
-                	<span class="prenparag">Valid from 02/10/2020 to 02/11/2020</span>
-                    <span class="validlabel" style="color: green;">VALID</span>
+                	<span class="prentitle"><strong>Pass for <%= passes.get(i).getPass_people_num() %> people</strong></span>
+                	<span class="prenparag">Valid from <%= passes.get(i).getPass_begin() %> to <%= passes.get(i).getPass_end() %></span>
+		            <span class="validlabel" style="color: limegreen;">VALID</span>
                 </div>
-                
+                <%
+                } else {
+                %>
                 <div class="prenpass">
-                	<button class="btn btn-outline-secondary showqrcodebutton" type="button" disabled=""><i class="fa fa-qrcode"></i></button>
-                	<span class="prentitle"><strong>Pass for 4 people</strong></span>
-                	<span class="prenparag">Valid from 02/09/2020 to 02/10/2020</span>
-                    <span class="validlabel" style="color: red;">EXPIRIED</span>
+                	<button class="btn btn-outline-secondary showqrcodebutton" type="button" disabled><i class="fa fa-qrcode"></i></button>
+                	<span class="prentitle"><strong>Pass for <%= passes.get(i).getPass_people_num() %> people</strong></span>
+                	<span class="prenparag">Valid from <%= passes.get(i).getPass_begin() %> to <%= passes.get(i).getPass_end() %></span>
+		            <span class="validlabel" style="color: red;">EXPIRIED</span>
                 </div>
-                
+            	<%
+                }
+            }
+            %>
                 <hr>
-                
-                <div class="prenpass">
-                	<button class="btn btn-primary showqrcodebutton" type="button"><i class="fa fa-qrcode"></i></button>
-                	<span class="prentitle">01/10/2020 for 4 people</span>
-                	<span class="prenparag">Time slot: 15:00 - 20:00</span>
+            <%
+            // Bookings
+            ArrayList<Booking> bookings = new ArrayList<Booking>();
+            
+            try {
+            	bookings = DBConnect.getCustomerBookings(customer);
+            } catch (Exception e1) {
+            	e1.printStackTrace();
+            }
+            
+            for (int i = 0; i < bookings.size(); i++) {
+            %>
+                <div class="prenpass" onclick="selectBooking(
+                  <%= bookings.get(i).getEmail() %>,
+                  <%= bookings.get(i).getDay() %>,
+                  <%= bookings.get(i).getTime_slot() %>,
+                  <%= bookings.get(i).getSeat() %>)">
+                	<button class="btn btn-primary showqrcodebutton" type="button" 
+                	  <% if (bookings.get(i).getDay().after(today)) { %> disabled <% } %>>
+                		<i class="fa fa-qrcode"></i>
+                	</button>
+                	<span class="prentitle"><%= bookings.get(i).getDay() %> for NUM_PEOPLE people</span>
+                	<%
+               		switch ( bookings.get(i).getTime_slot() ) {
+               			case 1 :
+               				%>
+               				<span class="prenparag">Time slot: 9:00 - 12:00</span>
+               				<%
+               				break;
+               			case 2 :
+               				%>
+               				<span class="prenparag">Time slot: 12:00 - 15:00</span>
+               				<%
+               				break;
+               			case 3 :
+               				%>
+               				<span class="prenparag">Time slot: 15:00 - 18:00</span>
+               				<%
+               				break;
+               			default :
+               				break;
+               		}
+               		%>
                 </div>
+            <%
+            }
+            %>
             </div>
             
             <hr>
             
             <div class="buttoncontainer">
-            	<button class="btn btn-primary" type="button">Edit reservation</button>
+            	<button class="btn btn-primary" type="button" onclick="editReservation()">Edit reservation</button>
             	<button class="btn btn-primary" type="button">Back</button>
             </div>
         </div>
     </div>
     
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/bookings.js"></script>
 </body>
 
 </html>

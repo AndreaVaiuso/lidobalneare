@@ -67,7 +67,7 @@
 			<span class="lidoalerttitle">Send communication</span>
 			<hr class="lidohr" />
 			
-			<input id="msg" type="text" class="lidoblockstyle" placeholder='Type here the message you want to display on the info monitors, then press "Send".' />
+			<input id="msg" type="text" class="lidoblockstyle" placeholder='Type here the message, then press "Send".' />
 			
 			<div class="btn-group lidobtngroup" role="group">
 				<button id="send_btn" class="btn btn-primary lidobtnofbtngroup" type="button">Send</button>
@@ -105,16 +105,20 @@
 						<%
                         String cp = request.getParameter("currentPage");
                         int currentPage = 1;
-                        try{
+                        
+                        try {
                         	currentPage = Integer.valueOf(cp);
                         } catch(NumberFormatException e){
                         	currentPage = 1;
                         }
+                        
                         int itemsPerPage = 10;
                         
                         int firstElement = (currentPage-1)*itemsPerPage;
                         int lastElement = firstElement + itemsPerPage;
+                        
                         ArrayList<User> users = DBConnect.getUserList(firstElement,lastElement);
+                        
                         int userNumber = DBConnect.getUserNumber();
                         int pages = (int) Math.ceil(userNumber / itemsPerPage) + 1;
                         

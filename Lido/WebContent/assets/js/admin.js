@@ -40,20 +40,20 @@ $("#admin_checkreservationbutton").click(
 			// Prepare request JSON.
 			var customer = { "customer" : selectedUser };
 			
-			/*
-			CAMBIO DI PROGRAMMA. Fare la post della nuova pagina con a parametro
-			l'email dell'utente, poi far fare la seguente post a quella pagina.
-			*/
-			
 			// Do POST.
-			$.post("BookingAdminServlet", customer, function(data, status, xhr) {
+			$.post("AdminServlet", customer, function(data) {
 				$("ajaxloaderscreen").toggle();
 				
-				
-			},"text")
+				if (data.type == "success") {
+					location.href = "bookingsAdmin.jsp";
+				} else {
+					location.href = "errorpage.html";
+				}
+			},"json");
 		}
 	}
 );
+
 
 $("#send_btn").click(
 	function (){

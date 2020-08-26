@@ -2,23 +2,27 @@ package it.lidobalneare.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;  
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import it.lidobalneare.bean.Booking;
 import it.lidobalneare.bean.Pass;
 import it.lidobalneare.db.DBConnect;
 
 /**
- * Servlet implementation class BookingAdmin
+ * Servlet implementation class BookingAdminServlet
  */
-@WebServlet("/BookingAdmin")
+@WebServlet("/BookingAdminServlet")
 public class BookingAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -42,52 +46,96 @@ public class BookingAdminServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Retrieve selected user in admin panel.
-		String customer = request.getParameter("customer");
-		ArrayList<Pass> passes = new ArrayList<Pass>();
-		ArrayList<Booking> bookings = new ArrayList<Booking>();
+		String jsonString = request.getParameter("jsonData");
+        JSONArray objs = null;
+        JSONObject p = null, 
+        		   n = null;
+        
+        PrintWriter out = response.getWriter();
+		response.setContentType("text/plain");
+        
+        try {
+        	objs = new JSONArray(jsonString);
+        	p = objs.getJSONObject(0);
+        	n = objs.getJSONObject(1);
+        } catch (JSONException e) {
+        	e.printStackTrace();
+        	String jsonResponse = "{ \"type\" : \"error\" }";
+    		out.append(jsonResponse);
+    		out.close();
+    		return;
+        }
 		
-		// DB Queries.
-		try {
-			passes = DBConnect.getCustomerPasses(customer);
-			bookings = DBConnect.getCustomerBookings(customer);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return;
+		if ( !p.isNull("pass_email") ) { // It's a Pass object.
+			Pass prev = new Pass();
+			Pass next = new Pass();
+			
+			try {
+				prev.setPass_email(p.getString("pass_email"));
+				prev.setPass_begin(Date.valueOf(p.getString("pass_begin")));
+				prev.setPass_end(Date.valueOf(p.getString("pass_end")));
+				prev.setPass_people_num(p.getInt("pass_people_num"));
+				prev.setSeat(p.getString("seat"));
+				
+				next.setPass_email(n.getString("pass_email"));
+				next.setPass_begin(Date.valueOf(n.getString("pass_begin")));
+				next.setPass_end(Date.valueOf(n.getString("pass_end")));
+				next.setPass_people_num(n.getInt("pass_people_num"));
+				next.setSeat(n.getString("seat"));
+			} catch (JSONException e) {
+	        	e.printStackTrace();
+	        	String jsonResponse = "{ \"type\" : \"error\" }";
+	    		out.append(jsonResponse);
+	    		out.close();
+	    		return;
+	        }
+			
+			try {
+				DBConnect.updatePass(prev, next);
+			} catch (SQLException e) {
+	        	e.printStackTrace();
+	        	String jsonResponse = "{ \"type\" : \"error\" }";
+	    		out.append(jsonResponse);
+	    		out.close();
+	    		return;
+	        }
+		} else if ( !p.isNull("email") ) {	// It's a Booking object.
+			Booking prev = new Booking();
+			Booking next = new Booking();
+			
+			try {
+				prev.setEmail(p.getString("email"));
+				prev.setDay(Date.valueOf(p.getString("day")));
+				prev.setTime_slot(p.getInt("time_slot"));
+				prev.setSeat(p.getString("seat"));
+				
+				next.setEmail(n.getString("email"));
+				next.setDay(Date.valueOf(n.getString("day")));
+				next.setTime_slot(n.getInt("time_slot"));
+				next.setSeat(n.getString("seat"));
+			} catch (JSONException e) {
+	        	e.printStackTrace();
+	        	String jsonResponse = "{ \"type\" : \"error\" }";
+	    		out.append(jsonResponse);
+	    		out.close();
+	    		return;
+	        }
+			
+			try {
+				DBConnect.updateBooking(prev, next);
+			} catch (SQLException e) {
+	        	e.printStackTrace();
+	        	String jsonResponse = "{ \"type\" : \"error\" }";
+	    		out.append(jsonResponse);
+	    		out.close();
+	    		return;
+	        }
+			
+			String jsonResponse = "{ \"type\" : \"success\" }";
+    		out.append(jsonResponse);
+    		out.close();
+    		return;
 		}
-
-		response.setContentType("text/xml");
-		PrintWriter out = response.getWriter();
-		out.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
-				+ "<reservations>"
-				+ "<passes>");
-		
-		for (int i = 0; i < passes.size(); i++) {
-			out.append("<pass>");
-			out.append("<pass_email>" + passes.get(i).getPass_email() + "</pass_email>");
-			out.append("<pass_begin>" + passes.get(i).getPass_begin() + "</pass_begin>");
-			out.append("<pass_end>" + passes.get(i).getPass_end() + "</pass_end>");
-			out.append("<pass_people_num>" + passes.get(i).getPass_people_num() + "</pass_people_num>");
-			out.append("<pass_seat>" + passes.get(i).getSeat() + "</pass_seat>");
-			out.append("</pass>");
-		}
-		
-		out.append("</passes>"
-				+ "<bookings>");
-		
-		for (int i = 0; i < bookings.size(); i++) {
-			out.append("<booking>");
-			out.append("<book_email>" + bookings.get(i).getEmail() + "</book_email>");
-			out.append("<book_day>" + bookings.get(i).getDay() + "</book_day>");
-			out.append("<book_time_slot>" + bookings.get(i).getTime_slot() + "</book_time_slot>");
-			out.append("<book_seat>" + bookings.get(i).getSeat() + "</book_seat>");
-			out.append("</booking>");
-		}
-		
-		out.append("</bookings>"
-				+ "</reservations>");
-		
-		out.close();
-		return;
 	}
+
 }

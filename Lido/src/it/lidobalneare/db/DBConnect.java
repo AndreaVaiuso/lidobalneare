@@ -165,7 +165,46 @@ public class DBConnect {
 		
 		return list;
 	}
+	
+	public static void updatePass (Pass prev, Pass next) throws SQLException, NullPointerException {
+		PreparedStatement s = getStatement("UPDATE pass "
+										 + "SET pass_email = ?, pass_begin = ?, pass_end = ?, pass_people_num = ?, seat = ? "
+										 + "WHERE pass_email = ?, pass_begin = ?, pass_end = ?, pass_people_num = ?, seat = ?;");
+		
+		// SET clause.
+		s.setString(1, prev.getPass_email());
+		s.setDate(2, prev.getPass_begin());
+		s.setDate(3, prev.getPass_end());
+		s.setInt(4, prev.getPass_people_num());
+		s.setString(5, prev.getSeat());
+		
+		// WHERE clause.
+		s.setString(6, next.getPass_email());
+		s.setDate(7, next.getPass_begin());
+		s.setDate(8, next.getPass_end());
+		s.setInt(9, next.getPass_people_num());
+		s.setString(10, next.getSeat());
+		
+		s.executeUpdate();
+	}
+	
+	public static void updateBooking (Booking prev, Booking next) throws SQLException, NullPointerException {
+		PreparedStatement s = getStatement("UPDATE booking "
+				 + "SET email = ?, day = ?, time_slot = ?, seat = ? "
+				 + "WHERE email = ?, day = ?, time_slot = ?, seat = ?;");
+
+		// SET clause.
+		s.setString(1, prev.getEmail());
+		s.setDate(2, prev.getDay());
+		s.setInt(4, prev.getTime_slot());
+		s.setString(5, prev.getSeat());
+		
+		// WHERE clause.
+		s.setString(6, next.getEmail());
+		s.setDate(7, next.getDay());
+		s.setInt(9, next.getTime_slot());
+		s.setString(10, next.getSeat());
+		
+		s.executeUpdate();
+	}
 }
-
-
-
