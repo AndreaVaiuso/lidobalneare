@@ -16,7 +16,6 @@ $("#loginbutton").click(	// Login button click event handler.
 		$.post("LoginServlet",userdata,function(data){
 			//document.getElementById("ajaxloaderscreen").display = "none";
 			$("#ajaxloaderscreen").toggle();
-			
 			if(data.type == "loginError"){
 				showerror("Login error","Your credentials do not match");
 			}

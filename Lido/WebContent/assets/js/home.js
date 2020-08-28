@@ -15,7 +15,7 @@ $("#configurepaypalbtn").click(function(){
 				$("#alertscreen").fadeOut(500);
 			} else {
 				$("#alertscreen").fadeOut(500);
-				showError();
+				showDefaultError();
 			}
 		});
 		

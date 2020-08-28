@@ -126,21 +126,6 @@ public class DBConnect {
 	public static void setUserPaypal(String email, String paypal) {
 		// TODO Auto-generated method stub
 	}
-	
-	public static ArrayList<Chair> getChairLayout() throws SQLException{
-		PreparedStatement s = getStatement("SELECT * FROM chair_schema");
-		ResultSet r = s.executeQuery(); 
-		ArrayList<Chair> list = new ArrayList<Chair>();
-		while (r.next()) {
-			Chair c = new Chair();
-			c.setChairname(r.getString("chairname"));
-			c.setPrice(r.getDouble("price"));
-			c.setX(r.getInt("pos_x"));
-			c.setY(r.getInt("pos_y"));
-			list.add(c);
-		}
-		return list;
-	}
 
 	public static ArrayList<Pass> getCustomerPasses (String email) throws SQLException, NullPointerException {
 		PreparedStatement s = getStatement("SELECT * FROM pass WHERE email = ?");
@@ -153,7 +138,7 @@ public class DBConnect {
 			p.setPass_email(r.getString("pass_email"));
 			p.setPass_begin(r.getDate("pass_begin"));
 			p.setPass_end(r.getDate("pass_end"));
-			p.setPass_people_num(r.getString("pass_people_num"));
+			p.setPass_people_num(r.getInt("pass_people_num"));
 			p.setSeat(r.getString("seat"));
 			
 			list.add(p);
@@ -222,14 +207,73 @@ public class DBConnect {
 		
 		s.executeUpdate();
 	}
+	
+	public static ArrayList<Chair> getChairLayout() throws SQLException{
+		PreparedStatement s = getStatement("SELECT * FROM chair_schema");
+		ResultSet r = s.executeQuery(); 
+		ArrayList<Chair> list = new ArrayList<Chair>();
+		while (r.next()) {
+			Chair c = new Chair();
+			c.setChairname(r.getString("chairname"));
+			c.setPrice(r.getDouble("price"));
+			c.setX(r.getInt("pos_x"));
+			c.setY(r.getInt("pos_y"));
+			c.setDailyPrice(r.getDouble("dailyprice"));
+			c.setPassPrice(r.getDouble("passprice"));
+			c.setDetails(r.getString("details"));
+			list.add(c);
+		}
+		return list;
+	}
 
-	public static void addChairToLayout(String chairname, double price, int x, int y) throws SQLException {
-		PreparedStatement s = getStatement("INSERT INTO chair_schema VALUES (?,?,?) ");
+	public static void addChairToLayout(String chairname, double price, double dailyPrice, double passPrice, int x, int y, String note) throws SQLException {
+		PreparedStatement s = getStatement("INSERT INTO chair_schema VALUES (?,?,?,?,?,?,?) ");
+		s.setString(1, chairname);
+		s.setInt(2, x);
+		s.setInt(3, y);
+		s.setDouble(4, price);
+		s.setDouble(5, dailyPrice);
+		s.setDouble(6, passPrice);
+		s.setString(7, note);
+		s.executeUpdate();
+	}
+
+
+	public static void moveChair(String chairname, Integer x, Integer y) throws SQLException {
+		PreparedStatement s = getStatement("UPDATE chair_schema SET pos_x=?,pos_y=? WHERE chairname=?");
+		s.setInt(1, x);
+		s.setInt(2, y);
+		s.setString(3, chairname);
+		s.executeUpdate();
+	}
+	
+	public static void updateChair(String chairname, double price, double dailyPrice, double passPrice, String note) throws SQLException {
+		PreparedStatement s = getStatement("UPDATE chair_schema SET chairname=?, price=?, dailyprice=?, passprice=?, details=? WHERE chairname=?");
 		s.setString(1, chairname);
 		s.setDouble(2, price);
-		s.setInt(3, x);
-		s.setInt(4, y);
+		s.setDouble(3,dailyPrice);
+		s.setDouble(4, passPrice);
+		s.setString(5, note);
+		s.setString(6, chairname);
 		s.executeUpdate();
+	}
+
+	public static Chair getChairInfo(String chair) throws SQLException {
+		PreparedStatement s = getStatement("SELECT * FROM chair_schema WHERE chairname = ?");
+		s.setString(1, chair);
+		ResultSet r = s.executeQuery(); 
+		Chair c = new Chair();
+		if (r.next()) {
+			c.setChairname(r.getString("chairname"));
+			c.setPrice(r.getDouble("price"));
+			c.setX(r.getInt("pos_x"));
+			c.setY(r.getInt("pos_y"));
+			c.setDailyPrice(r.getDouble("dailyprice"));
+			c.setPassPrice(r.getDouble("passprice"));
+			c.setDetails(r.getString("details"));
+			return c;
+		} else return null;
+		
 	}
 
 }

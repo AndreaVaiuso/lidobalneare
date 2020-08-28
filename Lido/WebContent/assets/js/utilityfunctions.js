@@ -22,6 +22,6 @@ function showalert(title, description){
 	$("#alertscreen").fadeIn(500);
 }
 
-function showerror(){
+function showDefaulterror(){
 	showerror("Whoops!","Something went wrong! Please try again later!");
 }

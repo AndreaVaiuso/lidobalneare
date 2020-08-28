@@ -37,20 +37,57 @@
 </head>
 
 <body>
-	<div class="alertscreen">
+	<div id="ajaxloaderscreen" class="alertscreen" style="display: none">
+		<div class="ajaxloader"></div>
+	</div>
+	<div id="alertscreen" class="alertscreen" style="display : none">
 		<div class="alertwindow">
-			<span class="lidoalerttitle">Alert screen title!</span>
+
+			<span id="alerttitle" class="lidoalerttitle">Alert screen title!</span>
 			<hr class="lidohr">
-			<span class="logindescription">This is an accurate description
+			<span id="alertcontent" class="logindescription">This is an accurate description
 				of the error, or whatever you should know. Yeah, maybe something
 				went wrong, so check your last steps and do each step with more
 				attention</span>
 			<div class="btn-group lidobtngroup" role="group">
-				<button class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button>
-				<button class="btn btn-primary lidobtnofbtngroup" type="button">No</button>
+				<button id="alertyesbtn" class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button>
+				<button id="alertnobtn" class="btn btn-primary lidobtnofbtngroup" type="button">No</button>
 			</div>
 		</div>
 	</div>
+	
+	<div id="newchairwindow" class="alertscreen" style="display : none">
+		<div class="alertwindow">
+
+			<span id="newchairTitle" class="lidoalerttitle">Add a new chair to lido layout</span>
+			<hr class="lidohr">
+			
+			<span class="logindescription"> Chair name: </span>
+			<input class="lidoblockstyle" type="text" id="chairname_field" placeholder="Chair Name">
+			
+			<span class="logindescription"> Price per time slot: </span>
+			<input class="lidoblockstyle" type="number" id="timeslot_price_field" placeholder="Price per time slot">  
+			
+			<span class="logindescription"> All day price: </span>
+			<input class="lidoblockstyle" type="number" id="allday_price_field" placeholder="All day price">
+			
+			<span class="logindescription"> Pass price: </span>
+			<input class="lidoblockstyle" type="number" id="pass_price_field" placeholder="Pass price"> 
+			
+			<span class="logindescription"> Note: </span>
+			<input class="lidoblockstyle" type="text" id="note_field" placeholder="..."> 
+			
+			<div class="btn-group lidobtngroup" role="group">
+				<button id="createchairbtn" class="btn btn-primary lidobtnofbtngroup" type="button" >Create</button>
+				<button id="updatechairbtn" class="btn btn-primary lidobtnofbtngroup" type="button" style="display:none" >Update</button>
+				<button id="cancelbtn" class="btn btn-primary lidobtnofbtngroup" type="button" >Cancel</button>
+			</div>
+			
+			
+		</div>
+	</div>
+	
+	
 	<div class="divcontainer">
 
 		<%@include file="adminavbar.html"%>
