@@ -28,12 +28,6 @@ $("#admin_checkreservationbutton").click(
 		if (selectedUser == null) {
 			// Show an error message.
 			showerror("No customer selected.", "Please select a user first.");
-			/*
-			$("#alerttitle").text("No customer selected.");
-			$("#alertcontent").text("Please select a user first.");
-			$("#alertscreen").toggle();
-			*/
-			return;
 		} else {
 			$("#ajaxloaderscreen").toggle();
 			
@@ -41,15 +35,10 @@ $("#admin_checkreservationbutton").click(
 			var customer = { "customer" : selectedUser };
 			
 			// Do POST.
-			$.post("AdminServlet", customer, function(data) {
+			$.post("AdminServlet", customer, function() {
 				$("ajaxloaderscreen").toggle();
-				
-				if (data.type == "success") {
-					location.href = "bookingsAdmin.jsp";
-				} else {
-					location.href = "errorpage.html";
-				}
-			},"json");
+				location.href = "bookingsAdmin.jsp";
+			});
 		}
 	}
 );

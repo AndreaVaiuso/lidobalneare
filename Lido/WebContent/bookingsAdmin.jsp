@@ -48,59 +48,44 @@
 </head>
 
 <body>
-	<div id="ajaxloaderscreen" class="alertscreen" style="display: none">
-		<div class="ajaxloader"></div>
-	</div>
-	
-    <div class="alertscreen">
-        <div class="alertwindow">
-        	<span class="lidoalerttitle">Alert screen title!</span>
-            <hr class="lidohr">
-            <span class="logindescription">Description of the error</span>
-            
-            <div class="btn-group lidobtngroup" role="group">
-            	<button class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button>
-            	<button class="btn btn-primary lidobtnofbtngroup" type="button">No</button>
-           	</div>
-        </div>
-    </div>
+	<%@include file="alertbox.html"%>
     
     <!-- Pass edit form box -->
-	<div id="pass_edit_form" class="alertscreen">
+	<form id="pass_edit_form" class="alertscreen">
 		<div class="alertwindow">
 			<span class="lidoalerttitle">Edit pass</span>
 			<hr class="lidohr" />
 			
-			<input id="pass_email" type="text" class="lidoblockstyle" placeholder='Email address' />
-			<input id="pass_begin" type="text" class="lidoblockstyle" placeholder='Start date' />
-			<input id="pass_end" type="text" class="lidoblockstyle" placeholder='End date' />
-			<input id="pass_people_num" type="text" class="lidoblockstyle" placeholder='Number of people' />
-			<input id="pass_seat" type="text" class="lidoblockstyle" placeholder='Seat name' />
+			<input id="pass_email" type="text" class="lidoblockstyle" placeholder='Email address' required />
+			<input id="pass_begin" type="text" class="lidoblockstyle" placeholder='Start date' required />
+			<input id="pass_end" type="text" class="lidoblockstyle" placeholder='End date' required />
+			<input id="pass_people_num" type="text" class="lidoblockstyle" placeholder='Number of people' required />
+			<input id="pass_seat" type="text" class="lidoblockstyle" placeholder='Seat name' required />
 			
 			<div class="btn-group lidobtngroup" role="group">
-				<button class="btn btn-primary lidobtnofbtngroup" type="button" onclick="applyPass()">Apply</button>
+				<button class="btn btn-primary lidobtnofbtngroup" type="submit" onclick="applyPass()">Apply</button>
 				<button class="btn btn-primary lidobtnofbtngroup" type="button" onclick='$("#pass_edit_form").toggle();'>Cancel</button>
 			</div>
 		</div>
-	</div>
+	</form>
 	
 	<!-- Booking edit form box -->
-	<div id="booking_edit_form" class="alertscreen">
+	<form id="booking_edit_form" class="alertscreen">
 		<div class="alertwindow">
 			<span class="lidoalerttitle">Edit booking</span>
 			<hr class="lidohr" />
 			
-			<input id="book_email" type="text" class="lidoblockstyle" placeholder='Email address' />
-			<input id="book_day" type="text" class="lidoblockstyle" placeholder='Start date' />
-			<input id="book_slot" type="text" class="lidoblockstyle" placeholder='End date' />
-			<input id="book_seat" type="text" class="lidoblockstyle" placeholder='Seat name' />
+			<input id="book_email" type="text" class="lidoblockstyle" placeholder='Email address' required />
+			<input id="book_day" type="text" class="lidoblockstyle" placeholder='Start date' required />
+			<input id="book_slot" type="text" class="lidoblockstyle" placeholder='End date' required />
+			<input id="book_seat" type="text" class="lidoblockstyle" placeholder='Seat name' required />
 			
 			<div class="btn-group lidobtngroup" role="group">
-				<button class="btn btn-primary lidobtnofbtngroup" type="button" onclick="applyBooking()">Apply</button>
+				<button class="btn btn-primary lidobtnofbtngroup" type="submit" onclick="applyBooking()">Apply</button>
 				<button class="btn btn-primary lidobtnofbtngroup" type="button" onclick='$("#booking_edit_form").toggle();'>Cancel</button>
 			</div>
 		</div>
-	</div>
+	</form>
     
     <div class="divcontainer">
         <%@include file="adminavbar.html"%>
@@ -151,7 +136,7 @@
                 }
             }
             %>
-                <hr>
+            	<hr>
             <%
             // Bookings
             ArrayList<Booking> bookings = new ArrayList<Booking>();
@@ -205,7 +190,7 @@
             
             <div class="buttoncontainer">
             	<button class="btn btn-primary" type="button" onclick="editReservation()">Edit reservation</button>
-            	<button class="btn btn-primary" type="button">Back</button>
+            	<button class="btn btn-primary" type="button" onclick="back()">Back</button>
             </div>
         </div>
     </div>

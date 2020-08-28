@@ -17,7 +17,7 @@ import it.lidobalneare.db.DBConnect;
 /**
  * Servlet implementation class SetPaypalAccount
  */
-@WebServlet("/Admin")
+@WebServlet("/AdminServlet")
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -33,38 +33,39 @@ public class AdminServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
+		User user = (User) request.getSession().getAttribute("connecteduser");
 		PrintWriter out = response.getWriter();
-		User user = (User) session.getAttribute("connecteduser");
-		if(user == null) {
+		String jsonResponse = "{ \"type\" : \"success\" }";
+		
+		if (user == null) {
 			response.sendRedirect("login.html");
-			out.close();
-			return;
-		}
-		if(request.getParameter("paypal") != null) {
-			DBConnect.setUserPaypal(user.getEmail(),request.getParameter("paypal"));
-			out.append("{ \"type\" : \" success \"}");
-			out.close();
-		} else if(request.getParameter("chair") != null && user.getRole().equals("admin")) {
+		} else if (request.getParameter("paypal") != null) {
+			DBConnect.setUserPaypal(user.getEmail(), request.getParameter("paypal"));
+			out.append(jsonResponse);
+		} else if (request.getParameter("chair") != null && user.getRole().equals("admin")) {
 			try {
-				DBConnect.addChairToLayout(request.getParameter("chair"),Double.valueOf(request.getParameter("price")),Integer.valueOf(request.getParameter("x")),Integer.valueOf(request.getParameter("y")));
+				DBConnect.addChairToLayout(request.getParameter("chair"),
+										   Double.valueOf(request.getParameter("price")),
+										   Integer.valueOf(request.getParameter("x")),
+										   Integer.valueOf(request.getParameter("y")));
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			out.append("{ \"type\" : \" success \"}");
-			out.close();
-		}
+			out.append(jsonResponse);
+		}	
 		
+		out.close();
+		return;
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String customer = request.getParameter("customer"); 
+		request.getSession().setAttribute("customer", customer); 
+		return; 
+	} 
 }
