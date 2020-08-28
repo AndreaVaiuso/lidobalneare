@@ -13,6 +13,7 @@ import javax.mail.MessagingException;
 import it.lidobalneare.Email;
 import it.lidobalneare.bean.Booking;
 import it.lidobalneare.bean.Pass;
+import it.lidobalneare.bean.Chair;
 import it.lidobalneare.bean.User;
 
 public class DBConnect {
@@ -122,9 +123,23 @@ public class DBConnect {
 	}
 
 
-	public static void setUserPaypal(String email, String parameter) {
+	public static void setUserPaypal(String email, String paypal) {
 		// TODO Auto-generated method stub
-		
+	}
+	
+	public static ArrayList<Chair> getChairLayout() throws SQLException{
+		PreparedStatement s = getStatement("SELECT * FROM chair_schema");
+		ResultSet r = s.executeQuery(); 
+		ArrayList<Chair> list = new ArrayList<Chair>();
+		while (r.next()) {
+			Chair c = new Chair();
+			c.setChairname(r.getString("chairname"));
+			c.setPrice(r.getDouble("price"));
+			c.setX(r.getInt("pos_x"));
+			c.setY(r.getInt("pos_y"));
+			list.add(c);
+		}
+		return list;
 	}
 
 	public static ArrayList<Pass> getCustomerPasses (String email) throws SQLException, NullPointerException {
@@ -207,4 +222,14 @@ public class DBConnect {
 		
 		s.executeUpdate();
 	}
+
+	public static void addChairToLayout(String chairname, double price, int x, int y) throws SQLException {
+		PreparedStatement s = getStatement("INSERT INTO chair_schema VALUES (?,?,?) ");
+		s.setString(1, chairname);
+		s.setDouble(2, price);
+		s.setInt(3, x);
+		s.setInt(4, y);
+		s.executeUpdate();
+	}
+
 }

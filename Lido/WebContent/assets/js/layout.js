@@ -40,6 +40,20 @@ function hideChairPopup(){
 }
 
 function addChairToLayout(id){
+	var chairname = $("#"+id+"_name").val();
+	var price = $("#"+id+"_price").val();
+	var x = document.getElementById(id).offsetLeft;
+	var y = document.getElementById(id).offsetTop;
+	$.get("Admin?chair="+chairname+"&price="+price+"&x="+x+"&y="+y,function(response){
+		if(response.type="success"){
+			
+		} else {
+			
+		}
+	});
+}
+
+function removeChairToLayout(id){
 	
 }
 
@@ -48,9 +62,10 @@ $("#addchairbtn").click(function(){
 	var newchair = '<div class="chair" id="chair_'+chaircount+'" draggable="true" ondragstart="onDragStart(event,\'chair_'+chaircount+'\')" ' +
 	'onmouseover="showChairPopup(\'chair_'+chaircount+'\')" onmouseout="hideChairPopup()" style="top: 0px; left: 0px;">' +
 			'<div class="chairpopup" style="display: none">' +
-				'<input type="text" class="popupchairnameeditor"'+
-					'placeholder="chair name">'+
+				'<input type="text" class="chair_'+chaircount+'_name" placeholder="chair name">'+
+				'<input type="text" class="chair_'+chaircount+'_price" placeholder="chair name">'+
 				'<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="addChairToLayout(\'chair_'+chaircount+'\')">create</button>'+
+				'<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="removeChairToLayout(\'chair_'+chaircount+'\')">delete</button>'+
 			'</div>' +
 		'</div>';
 	document.getElementById("beachlayoutdiv").innerHTML += newchair;

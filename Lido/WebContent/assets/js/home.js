@@ -10,7 +10,7 @@ $("#configurepaypalbtn").click(function(){
 		$("#alertscreen").fadeOut(500);
 	})
 	$("#alertyesbtn").click(function(){
-		$.get("SetPaypalAccount?paypal="+$("#paypal_input").val(),function(data){
+		$.get("Admin?paypal="+$("#paypal_input").val(),function(data){
 			if(data.type="success"){
 				$("#alertscreen").fadeOut(500);
 			} else {
