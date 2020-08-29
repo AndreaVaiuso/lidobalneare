@@ -23,9 +23,7 @@ function onDrop(event) {
 	currentDragging.style.left = dragx + "px" ;
 	currentDragging.style.top = dragy + "px" ;
 	
-	$.get("Admin?movedchair="+currentDraggingChairName+"&x="+dragx+"&y="+dragy,function(response){
-		
-	});
+	$.get("Admin?movedchair="+currentDraggingChairName+"&x="+dragx+"&y="+dragy);
 }
 
 function showChairPopup(id) {
@@ -44,31 +42,14 @@ function hideChairPopup(){
 	}
 }
 
-/*
-function addChairToLayout(id){
-	var chairname = $("#"+id+"_name").val();
-	var price = $("#"+id+"_price").val();
-	var x = document.getElementById(id).offsetLeft;
-	var y = document.getElementById(id).offsetTop;
-	$.get("AdminServlet?chair="+chairname+"&price="+price+"&x="+x+"&y="+y,function(response){
-		if(response.type="success"){
-			
-		} else {
-			
-		}
-	}, "json");
-}
-*/
-
 function updateChairToLayout(chairname){
 	let chairinfo;
-	$.get("Admin?chairequest="+chairname,function(response){
-		if(response.type="success"){
+	$.get("Admin?chairrequest="+chairname,function(response){
+		if(response.type=="success"){
 			chairinfo = response;
-			alert(chairinfo.price);
 			$("#chairname_field").val(chairinfo.chairname);
 			$("#timeslot_price_field").val(chairinfo.price);
-			$("#allday_price_field").val(chairinfo.daylyprice);
+			$("#allday_price_field").val(chairinfo.dailyprice);
 			$("#pass_price_field").val(chairinfo.passprice);
 			$("#note_field").val(chairinfo.details);
 			$("#updatechairbtn").show();
@@ -83,7 +64,17 @@ function updateChairToLayout(chairname){
 }
 
 function removeChairFromLayout(chairname){
-	
+	showquery("Delete " + chairname,"Are you sure you want to delete this chair? (This operation cannot be done if the chair is already booked by customers. In that case, please remove first prenotation for this chair)", 
+			function(){
+		$.get("Admin?deletechair="+chairname,function(response){
+			if(response.type=="success"){
+				location.href = "layoutEditor.jsp"
+			} else {
+				showDefaultError();
+				return;
+			}
+		});
+	});
 }
 
 $("#createchairbtn").click(function(){
@@ -93,13 +84,13 @@ $("#createchairbtn").click(function(){
 	let passprice = $("#pass_price_field").val();
 	let details = $("#note_field").val();
 	$.get("Admin?chair="+chairname+"&price="+price+"&x=0&y=0&dailyprice="+dailyprice+"&passprice="+passprice+"&details="+details,function(response){
-		if(response.type="success"){
+		if(response.type=="success"){
 			$("#newchairwindow").fadeOut(500);
 			location.href = "layoutEditor.jsp";
-		} else if(response.type="duplicate") {
+		} else if(response.type=="duplicate") {
 			$("#newchairwindow").fadeOut(500);
 			showError("Duplicate chair", "A chair with that name already exists, please try again");
-		} else if(response.type="fielderror") {
+		} else if(response.type=="fielderror") {
 			$("#newchairwindow").fadeOut(500);
 			showError("Field error", "Missing informations or type error for fields! Please retype chair informations");
 		}
@@ -137,3 +128,16 @@ $("#addchairbtn").click(function(){
 	$("#createchairbtn").show();
 	$("#newchairwindow").fadeIn(500);
 });
+
+window.onload = function() { 
+	  var buttonFile = document.getElementById("buttonFile");
+	  var file = document.getElementById("fileupload");
+
+	  buttonFile.onclick = function() {
+	    document.getElementById("fileupload").click();
+	  };
+
+	  file.onchange = function() {
+	    alert("Function not working now, please ask to developer: " + file.files[0].name);
+	  };
+	};

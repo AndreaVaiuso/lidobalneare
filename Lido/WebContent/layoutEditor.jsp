@@ -105,12 +105,13 @@
 			<hr>
 			<div class="buttoncontainer">
 				<button id="addchairbtn" class="btn btn-primary" type="button">Add chair</button>
-				<button class="btn btn-primary" type="button">Remove chair</button>
-				<button class="btn btn-primary" type="button">Edit background image</button>
+				<input type="file" id="fileupload" accept=".jpg, .png, .jpeg" style="display:none">
+				<button id="buttonFile" class="btn btn-primary" type="button">Edit background image</button>
 			</div>
 		</div>
 	</div>
 	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/alert.js"></script>
 	<script src="assets/js/layout.js"></script>
 	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>

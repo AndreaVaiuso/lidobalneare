@@ -276,4 +276,20 @@ public class DBConnect {
 		
 	}
 
+	public static void deleteChair(String chairname) throws SQLException {
+		PreparedStatement s = getStatement("DELETE FROM chair_schema WHERE chairname=?");
+		s.setString(1, chairname);
+		s.executeUpdate();
+	}
+	
+	public static Booking getChairOccupied(String name, String date, int timeslot) {
+		try {
+			PreparedStatement s = getStatement("");
+			return null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }

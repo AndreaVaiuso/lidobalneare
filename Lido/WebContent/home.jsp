@@ -45,6 +45,13 @@
 			<div class="container-fluid">
 				<a class="navbar-brand" href="#">Lido Logo</a>
 			</div>
+			<div id="navcol-1" class="collapse navbar-collapse">
+			<ul class="nav navbar-nav">
+				<li class="nav-item" role="presentation">
+						<a class="nav-link" href="Logout">Logout</a>
+					</li>
+			</ul>
+		</div>
 		</nav>
 		<div class="contentscreen">
 			<span class="toptitle">Welcome back <jsp:getProperty name="connecteduser" property="name"/> <jsp:getProperty name="connecteduser" property="surname"/></span><span
@@ -93,12 +100,12 @@
 			</div>
 			<hr>
 			<div class="buttoncontainer">
-				<button class="btn btn-primary" type="button">Buy a pass</button>
-				<button class="btn btn-primary" type="button">Book a place</button>
+				<button id="reservationbtn" class="btn btn-primary" type="button">Make your reservation</button>
 			</div>
 		</div>
 	</div>
 	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/alert.js"></script>
 	<script src="assets/js/home.js"></script>
 	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>

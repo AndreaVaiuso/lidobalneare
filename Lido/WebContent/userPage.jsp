@@ -75,8 +75,8 @@
             </div>
         </div>
     </div>
-    
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/alert.js"></script>
 </body>
 
 </html>

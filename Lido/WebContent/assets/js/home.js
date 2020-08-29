@@ -23,3 +23,7 @@ $("#configurepaypalbtn").click(function(){
 	$("#alertyesbtn").html("Apply");
 	$("#alertscreen").fadeIn(500);
 });
+
+$("#reservationbtn").click(function(){
+	location.href = "reservation.jsp";
+});
