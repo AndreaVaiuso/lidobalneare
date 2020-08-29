@@ -15,30 +15,29 @@
 	<link rel="stylesheet" href="assets/css/menu-collapse-ultimate.css">
 	<link rel="stylesheet" href="assets/css/styles.css">
 	
-	
+	<script src="assets/js/jquery.min.js"></script>
 </head>
 
 <body>
+	<!-- Loading animation -->
 	<div id="ajaxloaderscreen" class="alertscreen" style="display: none">
-		<div class="ajaxloader"></div>
+		<div class="ajaxloader" style="background-color: white"></div>
 	</div>
-	<div id="alertscreen" class="alertscreen" style="display : none">
+	
+	<!-- Alert box -->
+	<div id="alertscreen" class="alertscreen" style="display : none;">
 		<div class="alertwindow">
-			<span id="alerttitle" class="lidoalerttitle">Alert screen title!</span>
+			<span id="alerttitle" class="lidoalerttitle">Alert screen title</span>
 			<hr class="lidohr">
-			<span id="alertcontent" class="logindescription">This is an accurate description
-				of the error, or whatever you should know. Yeah, maybe something
-				went wrong, so check your last steps and do each step with more
-				attention</span>
+			<span id="alertcontent" class="logindescription">Description of the error</span>
 			<div class="btn-group lidobtngroup" role="group">
-				<button id="alertyesbtn" class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button>
-				<button id="alertnobtn" class="btn btn-primary lidobtnofbtngroup" type="button">No</button>
+				<button id="alertbtn" class="btn btn-primary lidobtnofbtngroup" type="button" onclick='$("#alertscreen").fadeOut(500);'>OK</button>
 			</div>
 		</div>
 	</div>
 	
 	<div class="divcontainer">
-		<div class="loginscreen">
+		<form class="loginscreen">
 			<span class="logintitle">Register</span>
 			<span class="logindescription">Now it's time to give us your precious data</span>
 			<input type="email" id="emailinputreg" class="lidoblockstyle" pattern=".+@[a-z]+.[a-z]+" placeholder="Email address" />
@@ -62,12 +61,12 @@
 			</div>
 			<hr>
 			<button class="btn btn-primary lidoblockstyle" id="registerbuttonreg" type="button">Register</button>
-		</div>
+		</form>
 	</div>
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/utilityfunctions.js"></script>
+	
 	<script src="assets/js/register.js"></script>
 	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/js/alert.js"></script>
 </body>
 
 </html>

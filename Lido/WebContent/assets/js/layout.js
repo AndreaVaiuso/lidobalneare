@@ -16,7 +16,6 @@ function onDragStart(event,id,chairname){
 }
 
 function onDrop(event) {
-	
 	movx = event.clientX - drag_left;
 	movy = event.clientY - drag_top;
 	dragx = currentDragging.offsetLeft + movx;
@@ -51,13 +50,13 @@ function addChairToLayout(id){
 	var price = $("#"+id+"_price").val();
 	var x = document.getElementById(id).offsetLeft;
 	var y = document.getElementById(id).offsetTop;
-	$.get("Admin?chair="+chairname+"&price="+price+"&x="+x+"&y="+y,function(response){
+	$.get("AdminServlet?chair="+chairname+"&price="+price+"&x="+x+"&y="+y,function(response){
 		if(response.type="success"){
 			
 		} else {
 			
 		}
-	});
+	}, "json");
 }
 */
 

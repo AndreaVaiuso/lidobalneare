@@ -19,7 +19,7 @@ import it.lidobalneare.db.DBConnect;
 /**
  * Servlet implementation class SetPaypalAccount
  */
-@WebServlet("/Admin")
+@WebServlet("/AdminServlet")
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public class AdminServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
+		User user = (User) request.getSession().getAttribute("connecteduser");
 		PrintWriter out = response.getWriter();
 		response.setContentType("text/plain");
 		User user = (User) session.getAttribute("connecteduser");

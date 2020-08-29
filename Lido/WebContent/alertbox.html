@@ -1,0 +1,18 @@
+<!-- Loading animation -->
+<div id="ajaxloaderscreen" class="alertscreen" style="display: none">
+	<div class="ajaxloader" style="background-color: white"></div>
+</div>
+
+<!-- Alert box -->
+<div id="alertscreen" class="alertscreen" style="display : none;">
+	<div class="alertwindow">
+		<span id="alerttitle" class="lidoalerttitle">Alert screen title</span>
+		<hr class="lidohr">
+		<span id="alertcontent" class="logindescription">Description of the error</span>
+		<div class="btn-group lidobtngroup" role="group">
+			<button id="alertbtn" class="btn btn-primary lidobtnofbtngroup" type="button" onclick='$("#alertscreen").fadeOut(500);'>OK</button>
+		</div>
+	</div>
+</div>
+
+<script src="assets/js/alert.js"></script>

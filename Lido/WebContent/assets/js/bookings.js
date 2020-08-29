@@ -23,6 +23,7 @@ function selectBooking (email, day, slot, seat) {
 	};
 }
 
+// Opens the form for editing the selected reservation, wether it be a pass or a single booking.
 function editReservation () {
 	if ( "pass_email" in reservation ) {	// It's a Pass object.
 		$("pass_edit_form").toggle();
@@ -76,4 +77,8 @@ function applyPass () {
 			} 
 		},"json");
 	}
+}
+
+function back () {
+	location.href = "adminPage.jsp";
 }
