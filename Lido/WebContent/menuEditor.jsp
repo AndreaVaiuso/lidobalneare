@@ -5,27 +5,31 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
     
     <title>LidoBalneare</title>
     
     <script src="assets/js/jquery.min.js"></script>
     
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Acme">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Akronim">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anonymous+Pro">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700">
-    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/css/menu-collapse-ultimate.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Acme" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Akronim" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anonymous+Pro" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" />
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css" />
+    <link rel="stylesheet" href="assets/css/menu-collapse-ultimate.css" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 
 <body>
     <div class="topDivBkg">
     	<img class="titleimage" src="assets/img/menuEditorLogo.png" />
     </div>
+    
+    <%@include file="navRestaurant.html"%>
+    <script>
+    	document.getElementById("res_menu").classList.add("active");
+    </script>
     
     <div class="menuContainerDiv" style="display: table;">
         <div class="menuCategoriesPanel">
@@ -43,7 +47,7 @@
             	
                 <div class="card-img-overlay">
                     <h4>First dishes</h4>
-                    <p class="lidoparagraph">We love pasta with fishes</p>
+                    <p class="lidoparagraph">We love pasta with fish</p>
                 </div>
             </div>
             
@@ -52,7 +56,7 @@
             	
                 <div class="card-img-overlay">
                     <h4>Second dishes</h4>
-                    <p class="lidoparagraph">Meat, fishes, veg</p>
+                    <p class="lidoparagraph">Meat, fish, veg</p>
                 </div>
             </div>
             
@@ -70,7 +74,7 @@
             	
                 <div class="card-img-overlay">
                     <h4>Bar</h4>
-                    <p class="lidoparagraph">Espresso only, hate non italian coffee</p>
+                    <p class="lidoparagraph">Espresso only, hate non-italian coffee</p>
                 </div>
             </div>
         </div>
@@ -86,12 +90,12 @@
             </div>
             
             <div class="card menuMenuItem">
-                <div class="card-body">
-                	<input type="text" class="dishInsert h4" placeholder="Dish name" />
-                	<input type="text" class="dishInsert h6" style="display: block;" placeholder="Price" />
-                	<input type="text" class="dishInsert ingredients" style="display: block;" placeholder="Ingredients" />
-                    <button class="btn btn-primary" type="button">Add</button>
-                </div>
+                <form class="card-body">
+                	<input type="text" class="dishInsert h4" placeholder="Dish name" required />
+                	<input type="text" class="dishInsert h6" style="display: block;" placeholder="Price" required />
+                	<input type="text" class="dishInsert ingredients" style="display: block;" placeholder="Ingredients" required />
+                    <button class="btn btn-primary" type="submit">Add</button>
+                </form>
             </div>
         </div>
         

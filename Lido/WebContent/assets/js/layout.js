@@ -23,7 +23,7 @@ function onDrop(event) {
 	currentDragging.style.left = dragx + "px" ;
 	currentDragging.style.top = dragy + "px" ;
 	
-	$.get("Admin?movedchair="+currentDraggingChairName+"&x="+dragx+"&y="+dragy);
+	$.get("AdminServlet?movedchair="+currentDraggingChairName+"&x="+dragx+"&y="+dragy);
 }
 
 function showChairPopup(id) {
@@ -44,7 +44,7 @@ function hideChairPopup(){
 
 function updateChairToLayout(chairname){
 	let chairinfo;
-	$.get("Admin?chairrequest="+chairname,function(response){
+	$.get("AdminServlet?chairrequest="+chairname,function(response){
 		if(response.type=="success"){
 			chairinfo = response;
 			$("#chairname_field").val(chairinfo.chairname);
@@ -66,7 +66,7 @@ function updateChairToLayout(chairname){
 function removeChairFromLayout(chairname){
 	showquery("Delete " + chairname,"Are you sure you want to delete this chair? (This operation cannot be done if the chair is already booked by customers. In that case, please remove first prenotation for this chair)", 
 			function(){
-		$.get("Admin?deletechair="+chairname,function(response){
+		$.get("AdminServlet?deletechair="+chairname,function(response){
 			if(response.type=="success"){
 				location.href = "layoutEditor.jsp"
 			} else {

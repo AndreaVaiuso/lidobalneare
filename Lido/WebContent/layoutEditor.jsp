@@ -88,7 +88,7 @@
 	
 	
 	<div class="divcontainer">
-		<%@include file="adminavbar.html"%>
+		<%@include file="navAdmin.html"%>
 		<script>
 			document.getElementById("nav_layout").classList.add("active");
 			document.getElementById("nav_layout").style = "background-color : white; border-radius : 3px"

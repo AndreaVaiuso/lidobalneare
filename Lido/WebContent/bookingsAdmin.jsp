@@ -11,7 +11,6 @@
 <% 
 	try{
 		if(!connecteduser.getRole().equals("admin")){
-			System.out.println("NOT ADMIN!");
 			response.sendRedirect("./errorpage.html");
 			return;
 		}
@@ -30,8 +29,7 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     
     <title>LidoBalneare</title>
     
@@ -88,10 +86,9 @@
 	</form>
     
     <div class="divcontainer">
-        <%@include file="adminavbar.html"%>
+        <%@include file="navAdmin.html"%>
 		<script>
         	document.getElementById("nav_admin").classList.add("active");
-        	document.getElementById("nav_admin").style = "background-color : white; border-radius : 3px"
         </script>
         
         <div class="contentscreen">

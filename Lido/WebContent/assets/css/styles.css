@@ -1,14 +1,14 @@
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
 .bkg {
   background-image: url("../../assets/img/wallpaper.jpg");
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-}
-
-body, html {
-  height: 100%;
-  margin: 0;
 }
 
 .divcontainer {
@@ -40,10 +40,6 @@ body, html {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
-}
-
-#registerbutton {
-  margin-top: 10px;
 }
 
 .logintitle {
@@ -121,6 +117,13 @@ body, html {
   font-size: 25px;
   background-color: rgba(255,255,255,0);
   font-weight: 700;
+}
+
+/* Used in the restaurant pages */
+.toptitle.menu {
+	font-family: 'Akronim';
+	font-size: 70px;
+	font-weight: normal;
 }
 
 .alertscreen {
@@ -257,6 +260,12 @@ body, html {
   padding-top: 20px;
 }
 
+span.orders {
+	font-family: 'Akronim';
+	font-size: 98px;
+	color: rgb(240,240,240);
+}
+
 .topDivBkg {
   background-image: url("../../assets/img/MicrosoftTeams-image.png");
   background-repeat: no-repeat;
@@ -269,6 +278,8 @@ body, html {
 .titleimage {
   width: 50%;
   max-width: 500px;
+  margin-top : 50px;
+  filter: brightness(0%) contrast(200%) hue-rotate(0deg) invert(100%);
 }
 
 .orderButton {
@@ -459,6 +470,17 @@ body, html {
   width: 800px;
   height: 600px;
   border-radius: 30px;
+}
+
+#registerbutton {
+  margin-top: 10px;
+}
+
+#show_order_btn {
+	position: absolute;
+	display: inline-block;
+	right: 30px;
+	margin-top: 10px;
 }
 
 @media (max-width: 890px) {

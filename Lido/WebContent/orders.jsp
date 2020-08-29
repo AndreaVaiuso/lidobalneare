@@ -5,26 +5,30 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
 
     <title>LidoBalneare</title>    
     
     <script src="assets/js/jquery.min.js"></script>
 
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Acme">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Akronim">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anonymous+Pro">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700">
-    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/css/menu-collapse-ultimate.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Acme" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Akronim" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anonymous+Pro" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" />
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css" />
+    <link rel="stylesheet" href="assets/css/menu-collapse-ultimate.css" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 
 <body>
+	<%@include file="navRestaurant.html"%>
+    <script>
+    	document.getElementById("res_orders").classList.add("active");
+    </script>
+	
     <div class="topDivBkg">
-    	<span id="orders">Orders</span>
+    	<span id="orders" style="padding-top: 80px;">Orders</span>
     </div>
     
     <div class="menuContainerDivKitchen">

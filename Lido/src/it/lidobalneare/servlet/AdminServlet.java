@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import it.lidobalneare.bean.Chair;
 import it.lidobalneare.bean.User;
@@ -19,7 +18,7 @@ import it.lidobalneare.db.DBConnect;
 /**
  * Servlet implementation class SetPaypalAccount
  */
-@WebServlet("/Admin")
+@WebServlet("/AdminServlet")
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -90,7 +89,5 @@ public class AdminServlet extends HttpServlet {
 		String customer = request.getParameter("customer"); 
 		request.getSession().setAttribute("customer", customer); 
 		return; 
-
 	}
-
 }

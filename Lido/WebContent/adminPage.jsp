@@ -60,7 +60,7 @@
 
 	<div class="divcontainer">
 
-		<%@include file="adminavbar.html"%>
+		<%@include file="navAdmin.html"%>
 		<script>
         	document.getElementById("nav_admin").classList.add("active");
         	document.getElementById("nav_admin").style = "background-color : white; border-radius : 3px"
@@ -96,13 +96,13 @@
                         
                         int itemsPerPage = 10;
                         
-                        int firstElement = (currentPage-1)*itemsPerPage;
+                        int firstElement = (currentPage - 1) * itemsPerPage;
                         int lastElement = firstElement + itemsPerPage;
                         
                         ArrayList<User> users = DBConnect.getUserList(firstElement,lastElement);
                         
-                        int userNumber = DBConnect.getUserNumber();
-                        int pages = (int) Math.ceil(userNumber / itemsPerPage) + 1;
+                        //int userNumber = DBConnect.getUserNumber();
+                        int pages = (int) Math.ceil( users.size() / itemsPerPage ) + 1;
                         
                         try {
                         	for(int i = 0; i < users.size(); i++){
@@ -123,44 +123,46 @@
 						</tbody>
 					</table>
 				</div>
+				
 				<nav>
 					<ul class="pagination">
 						<% 
-                    	if(currentPage != 1){
-                   		%>
+				    	if(currentPage != 1){
+				   		%>
 							<li class="page-item">
 								<a class="page-link" href="#" aria-label="Previous" onclick="goToPage(<%=currentPage-1 %>)">
 									<span aria-hidden="true">«</span>
 								</a>
 							</li>
 						<%
-                    	}
-
-                        for(int i=0;i<pages;i++){
-                        	if(i==(currentPage-1)){
-                        	%>
+				    	}
+						
+				        for (int i = 0; i < pages; i++) {
+				        	if ( i == (currentPage - 1) ) {
+				        	%>
 								<li class="page-item">
 									<a class="page-link" style="color: black"><%= i+1 %></a>
 								</li>
 							<%
-                        	} else {
-                        	%>
+				           	} else {
+				           	%>
 								<li class="page-item">
 									<a class="page-link" href="#" onclick="goToPage(<%=i+1%>)"><%= i+1 %></a>
 								</li>
 							<%
-                        	}
-                        }
-                        if (currentPage != pages) {
-                        %>
+				        	}
+				        }
+				        
+				        if (currentPage != pages) {
+				        %>
 							<li class="page-item">
 								<a class="page-link" href="#" aria-label="Next" onclick="goToPage(<%=currentPage+1 %>)">
 									<span aria-hidden="true">»</span>
 								</a>
 							</li>
 						<%
-                    	}
-                    	%>
+				      	}
+				      	%>
 					</ul>
 				</nav>
 			</div>
