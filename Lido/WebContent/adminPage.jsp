@@ -63,7 +63,7 @@
 		<%@include file="navAdmin.html"%>
 		<script>
         	document.getElementById("nav_admin").classList.add("active");
-        	document.getElementById("nav_admin").style = "background-color : white; border-radius : 3px"
+        	//document.getElementById("nav_admin").style = "background-color : white; border-radius : 3px"
         </script>
         
 		<div class="contentscreen">

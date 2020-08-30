@@ -25,14 +25,14 @@ function selectBooking (email, day, slot, seat) {
 
 // Opens the form for editing the selected reservation, wether it be a pass or a single booking.
 function editReservation () {
-	if ( "pass_email" in reservation ) {	// It's a Pass object.
+	if ( reservation.hasOwnProperty("pass_email") ) {	// It's a Pass object.
 		$("pass_edit_form").toggle();
 		$("pass_email").val(reservation["pass_email"]);
 		$("pass_begin").val(reservation["pass_begin"]);
 		$("pass_end").val(reservation["pass_end"]);
 		$("pass_people_num").val(reservation["pass_people_num"]);
 		$("pass_seat").val(reservation["seat"]);
-	} else if ( "email" in reservation ) {	// It's a Booking object.
+	} else if ( reservation.hasOwnProperty("email") ) {	// It's a Booking object.
 		$("booking_edit_form").toggle();
 		$("book_email").val(reservation["email"]);
 		$("book_day").val(reservation["day"]);

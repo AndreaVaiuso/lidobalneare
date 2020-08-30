@@ -14,6 +14,7 @@ import it.lidobalneare.Email;
 import it.lidobalneare.bean.Booking;
 import it.lidobalneare.bean.Pass;
 import it.lidobalneare.bean.Chair;
+import it.lidobalneare.bean.Dish;
 import it.lidobalneare.bean.User;
 
 public class DBConnect {
@@ -359,8 +360,34 @@ public class DBConnect {
 		s.executeUpdate();
 	}
 	
-	public static void makePass(String email, String begin, String end, int peoplenum, String chair) {
-		
+	public static void makePass(String email, String begin, String end, int peoplenum, String chair) throws SQLException {
+		PreparedStatement s = getStatement("INSERT INTO pass VALUES (?,?,?,?,?)");
+		s.setString(1, email);
+		s.setDate(2, Date.valueOf(begin));
+		s.setDate(3, Date.valueOf(end));
+		s.setInt(4, peoplenum);
+		s.setString(5, chair);
+		s.executeUpdate();
 	}
-
+	
+	public static ArrayList<Dish> getDishesByCategory(String category) throws SQLException {
+		PreparedStatement s = getStatement("SELECT * FROM dish WHERE category = ?");
+		s.setString(1, category);
+		ResultSet r = s.executeQuery();
+		
+		ArrayList<Dish> list = new ArrayList<Dish>();
+		
+		while (r.next()) {
+			Dish d = new Dish();
+			d.setName(r.getString("dishname"));
+			d.setCategory(category);
+			d.setIngredients(r.getString("ingredients"));
+			d.setPrice(r.getDouble("price"));
+			
+			list.add(d);
+		}
+		
+		return list;
+	}
+	
 }

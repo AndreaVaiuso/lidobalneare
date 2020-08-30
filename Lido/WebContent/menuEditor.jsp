@@ -1,4 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="it.lidobalneare.db.DBConnect"%>
+<%@ page import="it.lidobalneare.bean.Dish" %>
+<jsp:useBean id="connecteduser" class="it.lidobalneare.bean.User" scope="session" />
+
+<% 
+	try{
+		if(!connecteduser.getRole().equals("cook")){
+			response.sendRedirect("./errorpage.html");
+			return;
+		}
+	} catch (NullPointerException e){
+		System.out.println("Session deleted");
+		response.sendRedirect("login.html");
+		return;
+	}
+%>
 
 <!DOCTYPE html>
 
@@ -31,18 +48,33 @@
     	document.getElementById("res_menu").classList.add("active");
     </script>
     
+    <%
+    ArrayList<Dish> dishes = new ArrayList<Dish>();
+    %>
+    
     <div class="menuContainerDiv" style="display: table;">
         <div class="menuCategoriesPanel">
-            <div class="card lidocard">
+            <div id="appetizers_card" class="card lidocard" onclick='cardOpen("#appetizers_card"); <% 
+            	try {
+            		dishes = DBConnect.getDishesByCategory("Appetizers");
+            	} catch (Exception e) {
+            		e.printStackTrace();
+            	}
+              %>'>
             	<img class="card-img w-100 d-block" src="assets/img/appetizers.jpg" />
-            	
                 <div class="card-img-overlay">
                     <h4>Appetizers</h4>
                     <p class="lidoparagraph">A selection of fresh appetizers</p>
                 </div>
             </div>
             
-            <div class="card lidocard">
+            <div id="fist_dishes_card" class="card lidocard" onclick='cardOpen("#fist_dishes_card"); <% 
+            	try {
+            		dishes = DBConnect.getDishesByCategory("First dishes");
+            	} catch (Exception e) {
+            		e.printStackTrace();
+            	}
+              %>'>
             	<img class="card-img w-100 d-block" src="assets/img/first.jpg" />
             	
                 <div class="card-img-overlay">
@@ -51,7 +83,13 @@
                 </div>
             </div>
             
-            <div class="card lidocard">
+            <div id="second_dishes_card" class="card lidocard" onclick='cardOpen("#second_dishes_card"); <% 
+            	try {
+            		dishes = DBConnect.getDishesByCategory("Second dishes");
+            	} catch (Exception e) {
+            		e.printStackTrace();
+            	}
+              %>'>
             	<img class="card-img w-100 d-block" src="assets/img/second.jpg" />
             	
                 <div class="card-img-overlay">
@@ -60,7 +98,13 @@
                 </div>
             </div>
             
-            <div class="card lidocard">
+            <div id="desserts_card" class="card lidocard" onclick='cardOpen("#desserts_card"); <% 
+            	try {
+            		dishes = DBConnect.getDishesByCategory("Desserts");
+            	} catch (Exception e) {
+            		e.printStackTrace();
+            	}
+              %>'>
             	<img class="card-img w-100 d-block" src="assets/img/dessert.jpg" />
             	
                 <div class="card-img-overlay">
@@ -69,7 +113,13 @@
                 </div>
             </div>
             
-            <div class="card lidocard">
+            <div id="bar_card" class="card lidocard" onclick='cardOpen("#bar_card"); <% 
+            	try {
+            		dishes = DBConnect.getDishesByCategory("Bar");
+            	} catch (Exception e) {
+            		e.printStackTrace();
+            	}
+              %>'>
             	<img class="card-img w-100 d-block" src="assets/img/bar.jpg" />
             	
                 <div class="card-img-overlay">
@@ -80,14 +130,20 @@
         </div>
         
         <div class="menuMenuPanel">
+        	<%
+        	for (int i = 0; i < dishes.size(); i++) {
+        	%>
             <div class="card menuMenuItem">
                 <div class="card-body">
-                    <h4 class="card-title">Mezze maniche alla carbonara</h4>
-                    <h6 class="text-muted card-subtitle mb-2">999.99&euro;</h6>
-                    <p class="card-text">Guanciale affumicato, pecorino romano, tuorlo d'uova bio da galline allevate a terra, pepe nero.<br></p>
+                    <h4 class="card-title"><%= dishes.get(i).getName() %></h4>
+                    <h6 class="text-muted card-subtitle mb-2"><%= dishes.get(i).getPrice() %>&euro;</h6>
+                    <p class="card-text"><%= dishes.get(i).getIngredients() %><br /></p>
                     <button class="btn btn-primary" type="button">Edit</button>
                 </div>
             </div>
+            <%
+        	}
+            %>
             
             <div class="card menuMenuItem">
                 <form class="card-body">
@@ -103,6 +159,7 @@
     </div>
     
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/menu.js"></script>
 </body>
 
 </html>
