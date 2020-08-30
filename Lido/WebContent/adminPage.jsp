@@ -8,7 +8,7 @@
 
 <% 
 	try{
-		if(!connecteduser.getRole().equals("admin")){
+		if(!connecteduser.isAdmin()){
 			System.out.println("NOT ADMIN!");
 			response.sendRedirect("./errorpage.html");
 			return;

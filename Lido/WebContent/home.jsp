@@ -5,7 +5,7 @@
 
 <% 
 	try{
-		if(!connecteduser.getRole().equals("customer")){
+		if(!connecteduser.isCustomer()){
 			response.sendRedirect("./errorpage.html");
 			return;
 		}

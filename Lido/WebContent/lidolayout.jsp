@@ -4,7 +4,6 @@
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="it.lidobalneare.bean.Chair"%>
 <%@ page import="it.lidobalneare.bean.User"%>
-<%@ page import="it.lidobalneare.bean.Booking"%>
 <%@ page import="it.lidobalneare.db.DBConnect"%>
 <div class="contentdivscreen-layout">
 	<div style="overflow-x: auto">
@@ -19,7 +18,7 @@
 			ArrayList<Chair> chairSchema = DBConnect.getChairLayout();
 			for(int i = 0; i<chairSchema.size();i++){
 				
-				if(cntusr.getRole().equals("admin")){
+				if(cntusr.isAdmin()){
 					%>
 					<div class="chair"  id="chair_<%=i%>" draggable="true" ondragstart="onDragStart(event,'chair_<%=i%>','<%= chairSchema.get(i).getChairname() %>')"
 						onmouseover="showChairPopup('chair_<%=i%>')" onmouseout="hideChairPopup()" style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
@@ -31,7 +30,7 @@
 						</div> 
 					</div>
 					<%
-				} else if(cntusr.getRole().equals("customer") || cntusr.getRole().equals("ticket")){
+				} else if(cntusr.isCustomer() || cntusr.isTicket()){
 					String date = request.getParameter("date");
 					if(date==null){
 						DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -43,8 +42,8 @@
 					try{
 						timeslot = Integer.valueOf(request.getParameter("timeslot"));
 					} catch (Exception e){}
-					Booking b = DBConnect.getChairOccupied(chairSchema.get(i).getChairname(),date,timeslot);
-					if(b==null){
+
+					if(!DBConnect.getChairOccupied(chairSchema.get(i).getChairname(),date,timeslot)){
 						%>
 						<div class="chair"  id="chair_<%=i%>" onmouseover="showChairPopup('chair_<%=i%>')" onmouseout="hideChairPopup()" style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
 							<div class="chairpopup" style="display: none">
@@ -71,7 +70,7 @@
 						<%
 					}
 					
-				} else if(cntusr.getRole().equals("lifeguard")){
+				} else if(cntusr.isLifeGuard() || cntusr.isInfoMonitor()){
 					//TODO Watch prenotations
 				}
 

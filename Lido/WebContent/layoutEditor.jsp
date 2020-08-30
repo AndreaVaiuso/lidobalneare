@@ -3,7 +3,7 @@
 
 <%
 	try {
-		if (!connecteduser.getRole().equals("admin")) {
+		if (!connecteduser.isAdmin()) {
 			System.out.println("NOT ADMIN!");
 			response.sendRedirect("./errorpage.html");
 			return;
@@ -36,6 +36,7 @@
 </head>
 
 <body>
+	
 	<div id="ajaxloaderscreen" class="alertscreen" style="display: none">
 		<div class="ajaxloader"></div>
 	</div>

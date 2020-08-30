@@ -10,7 +10,7 @@
 
 <% 
 	try{
-		if(!connecteduser.getRole().equals("admin")){
+		if(!connecteduser.isAdmin()){
 			response.sendRedirect("./errorpage.html");
 			return;
 		}
@@ -193,6 +193,7 @@
     </div>
     
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/alert.js"></script>
     <script src="assets/js/bookings.js"></script>
 </body>
 

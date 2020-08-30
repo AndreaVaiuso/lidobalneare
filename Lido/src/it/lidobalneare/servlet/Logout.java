@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class Logout
  */
-@WebServlet("/LogoutServlet")
+@WebServlet("/Logout")
 public class Logout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -28,7 +28,7 @@ public class Logout extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getSession().setAttribute("user", null);
+		request.getSession().setAttribute("connecteduser", null);
 		request.getSession().invalidate();
 		RequestDispatcher view = request.getRequestDispatcher("login.html");
     	view.forward(request, response);

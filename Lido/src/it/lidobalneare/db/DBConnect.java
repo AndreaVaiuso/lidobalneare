@@ -115,19 +115,22 @@ public class DBConnect {
 
 	// Returns the number of entries of the User table.
 	public static int getUserNumber() throws SQLException, NullPointerException {
-		// Preparing the query.
 		PreparedStatement s = getStatement("SELECT count(*) FROM user");
 		ResultSet r = s.executeQuery();
 		r.next();
 		return r.getInt("count(*)");
 	}
 
-
-	public static void setUserPaypal(String email, String paypal) {
-		// TODO Auto-generated method stub
+	//Change user's Paypal account
+	public static void setUserPaypal(String email, String paypal) throws SQLException {
+		PreparedStatement s = getStatement("UPDATE user SET paypal=? WHERE email=?");
+		s.setString(1, paypal);
+		s.setString(2, email);
+		s.executeUpdate();
 	}
 
-	public static ArrayList<Pass> getCustomerPasses (String email) throws SQLException, NullPointerException {
+	
+	public static ArrayList<Pass> getCustomerPasses(String email) throws SQLException, NullPointerException {
 		PreparedStatement s = getStatement("SELECT * FROM pass WHERE email = ?");
 		s.setString(1, email);
 		ResultSet r = s.executeQuery();
@@ -147,15 +150,15 @@ public class DBConnect {
 		return list;
 	}
 	
-	public static ArrayList<Booking> getCustomerBookings (String email) throws SQLException, NullPointerException {
-		PreparedStatement s = getStatement("SELECT * FROM booking WHERE email = ?");
+	public static ArrayList<Booking> getCustomerBookings(String email) throws SQLException, NullPointerException {
+		PreparedStatement s = getStatement("SELECT * FROM booking WHERE pass_email = ?");
 		s.setString(1, email);
 		ResultSet r = s.executeQuery();
 		ArrayList<Booking> list = new ArrayList<Booking>();
 		
 		while (r.next()) {
 			Booking b = new Booking();
-			b.setEmail(r.getString("email"));
+			b.setEmail(r.getString("pass_email"));
 			b.setDay(r.getDate("day"));
 			b.setTime_slot(r.getInt("time_slot"));
 			b.setSeat(r.getString("seat"));
@@ -166,7 +169,7 @@ public class DBConnect {
 		return list;
 	}
 	
-	public static void updatePass (Pass prev, Pass next) throws SQLException, NullPointerException {
+	public static void updatePass(Pass prev, Pass next) throws SQLException, NullPointerException {
 		PreparedStatement s = getStatement("UPDATE pass "
 										 + "SET pass_email = ?, pass_begin = ?, pass_end = ?, pass_people_num = ?, seat = ? "
 										 + "WHERE pass_email = ?, pass_begin = ?, pass_end = ?, pass_people_num = ?, seat = ?;");
@@ -188,7 +191,7 @@ public class DBConnect {
 		s.executeUpdate();
 	}
 	
-	public static void updateBooking (Booking prev, Booking next) throws SQLException, NullPointerException {
+	public static void updateBooking(Booking prev, Booking next) throws SQLException, NullPointerException {
 		PreparedStatement s = getStatement("UPDATE booking "
 				 + "SET email = ?, day = ?, time_slot = ?, seat = ? "
 				 + "WHERE email = ?, day = ?, time_slot = ?, seat = ?;");
@@ -208,7 +211,7 @@ public class DBConnect {
 		s.executeUpdate();
 	}
 	
-	public static ArrayList<Chair> getChairLayout() throws SQLException{
+	public static ArrayList<Chair> getChairLayout() throws SQLException {
 		PreparedStatement s = getStatement("SELECT * FROM chair_schema");
 		ResultSet r = s.executeQuery(); 
 		ArrayList<Chair> list = new ArrayList<Chair>();
@@ -275,6 +278,14 @@ public class DBConnect {
 		} else return null;
 		
 	}
+	
+	public static boolean existsPrenotation(String chairname) throws SQLException {
+		PreparedStatement s = getStatement("(SELECT seat FROM booking WHERE seat = ?) UNION (SELECT seat FROM pass WHERE seat = ?)");
+		s.setString(1, chairname);
+		s.setString(2, chairname);
+		ResultSet rs = s.executeQuery();
+		if(rs.next()) return true; else return false;
+	}
 
 	public static void deleteChair(String chairname) throws SQLException {
 		PreparedStatement s = getStatement("DELETE FROM chair_schema WHERE chairname=?");
@@ -282,14 +293,74 @@ public class DBConnect {
 		s.executeUpdate();
 	}
 	
-	public static Booking getChairOccupied(String name, String date, int timeslot) {
+	public static boolean getChairOccupied(String chair, String date, int timeslot) {
 		try {
-			PreparedStatement s = getStatement("");
-			return null;
+			PreparedStatement s = null;
+			if(timeslot == 0) {
+				s = getStatement(""
+						+ "SELECT * FROM booking b "
+						+ "WHERE b.seat = ? AND b.day = ? ");
+			} else {
+				s = getStatement(""
+						+ "SELECT * FROM booking b "
+						+ "WHERE b.seat = ? AND b.day = ? AND (b.time_slot = ? OR b.time_slot = 0) ");
+				s.setInt(3, timeslot);
+			}
+			s.setString(1, chair);
+			s.setDate(2, Date.valueOf(date));
+			PreparedStatement s2 = getStatement(""
+					+ "SELECT * FROM pass p "
+					+ "WHERE p.seat = ? AND p.pass_begin <= ? AND ? <= p.pass_end ");
+			s2.setString(1, chair);
+			s2.setDate(2, Date.valueOf(date));
+			s2.setDate(3, Date.valueOf(date));
+			ResultSet r1 = s.executeQuery();
+			ResultSet r2 = s2.executeQuery();
+			if(r1.next() || r2.next()) return true; else return false;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return true;
 		}
-		return null;
+	}
+	
+	public static boolean getChairOccupied(String chair, String begin, String end) {
+		try {
+			PreparedStatement s = getStatement(""
+					+ "SELECT * FROM pass p "
+					+ "WHERE p.seat = ? AND (p.pass_begin <= ? AND ? <= p.pass_end) OR (p.pass_begin <= ? AND ? <= p.pass_end)");
+			s.setString(1, chair);
+			s.setDate(2, Date.valueOf(begin));
+			s.setDate(3, Date.valueOf(begin));
+			s.setDate(4, Date.valueOf(end));
+			s.setDate(5, Date.valueOf(end));
+			PreparedStatement s2 = getStatement(""
+					+ "SELECT * FROM booking b "
+					+ "WHERE b.seat = ? AND (? <= b.day AND b.day <= ?)");
+			s2.setString(1, chair);
+			s2.setDate(2, Date.valueOf(begin));
+			s2.setDate(3, Date.valueOf(end));
+			
+			ResultSet r1 = s.executeQuery();
+			ResultSet r2 = s2.executeQuery();
+			if(r1.next() || r2.next()) return true; else return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return true;
+		}
+	}
+
+
+	public static void makeReservation(String email, String chair, String date, int timeslot) throws SQLException {
+		PreparedStatement s = getStatement("INSERT INTO booking VALUES (?,?,?,?)");
+		s.setString(1, email);
+		s.setDate(2, Date.valueOf(date));
+		s.setInt(3, timeslot);
+		s.setString(4, chair);
+		s.executeUpdate();
+	}
+	
+	public static void makePass(String email, String begin, String end, int peoplenum, String chair) {
+		
 	}
 
 }

@@ -23,28 +23,29 @@ function onDrop(event) {
 	currentDragging.style.left = dragx + "px" ;
 	currentDragging.style.top = dragy + "px" ;
 	
-	$.get("AdminServlet?movedchair="+currentDraggingChairName+"&x="+dragx+"&y="+dragy);
+	$.get("Admin?request=movechair&chair="+currentDraggingChairName+"&x="+dragx+"&y="+dragy);
 }
 
 function showChairPopup(id) {
 	var chair = document.getElementById(id);
 	var popup = chair.firstElementChild;
 	if(chair.offsetTop <= 80){
-		popup.style.bottom = "-70px";
-	} else popup.style.bottom = "70px";
+		popup.style.bottom = "-40px";
+	} else popup.style.bottom = "40px";
 	popup.style.display = "block";
 }
 
 function hideChairPopup(){
-	var chairs = document.getElementsByClassName("chair");
-	for(let i = 0; i<chairs.length; i++){
-		chairs[i].firstElementChild.style.display = "none";
+	var chairspopup = document.getElementsByClassName("chairpopup");
+	for(let i = 0; i<chairspopup.length; i++){
+		chairspopup[i].style.display = "none";
 	}
 }
 
+
 function updateChairToLayout(chairname){
 	let chairinfo;
-	$.get("AdminServlet?chairrequest="+chairname,function(response){
+	$.get("Admin?request=chairinfo&chair="+chairname,function(response){
 		if(response.type=="success"){
 			chairinfo = response;
 			$("#chairname_field").val(chairinfo.chairname);
@@ -66,9 +67,14 @@ function updateChairToLayout(chairname){
 function removeChairFromLayout(chairname){
 	showquery("Delete " + chairname,"Are you sure you want to delete this chair? (This operation cannot be done if the chair is already booked by customers. In that case, please remove first prenotation for this chair)", 
 			function(){
-		$.get("AdminServlet?deletechair="+chairname,function(response){
+		$.get("Admin?request=deletechair&chair="+chairname,function(response){
 			if(response.type=="success"){
 				location.href = "layoutEditor.jsp"
+			} else if(response.type=="exists"){
+				showerror("Delete failed","One or more prenotations exists for this chair. Please remove it from administration panel and try again",function(){
+					location.href = "layoutEditor.jsp"
+				});
+				return;
 			} else {
 				showDefaultError();
 				return;
@@ -83,7 +89,7 @@ $("#createchairbtn").click(function(){
 	let dailyprice = $("#allday_price_field").val();
 	let passprice = $("#pass_price_field").val();
 	let details = $("#note_field").val();
-	$.get("Admin?chair="+chairname+"&price="+price+"&x=0&y=0&dailyprice="+dailyprice+"&passprice="+passprice+"&details="+details,function(response){
+	$.get("Admin?request=addchair&chair="+chairname+"&price="+price+"&x=0&y=0&dailyprice="+dailyprice+"&passprice="+passprice+"&details="+details,function(response){
 		if(response.type=="success"){
 			$("#newchairwindow").fadeOut(500);
 			location.href = "layoutEditor.jsp";

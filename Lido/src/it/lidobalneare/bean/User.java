@@ -1,14 +1,14 @@
 package it.lidobalneare.bean;
 
 public class User {
-	private String email;
-	private String name;
-	private String surname;
-	private String gender;
-	private String birthdate;
-	private String paypal;
-	private String active;
-	private String role;
+	private String email = "";
+	private String name = "";
+	private String surname = "";
+	private String gender = "";
+	private String birthdate = "";
+	private String paypal = "";
+	private String active = "";
+	private String role = "";
 	
 	// Methods
 	public String getEmail() {
@@ -73,5 +73,24 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+	
+	public boolean isAdmin() {
+		if(getRole().equals("admin")) return true; else return false;
+	}
+	public boolean isCustomer() {
+		if(getRole().equals("customer")) return true; else return false;
+	}
+	public boolean isCook() {
+		if(getRole().equals("cook")) return true; else return false;
+	}
+	public boolean isTicket() {
+		if(getRole().equals("ticket")) return true; else return false;
+	}
+	public boolean isInfoMonitor() {
+		if(getRole().equals("info")) return true; else return false;
+	}
+	public boolean isLifeGuard() {
+		if(getRole().equals("lifeguard")) return true; else return false;
 	}
 }
