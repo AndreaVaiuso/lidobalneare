@@ -100,7 +100,7 @@
             <% 
             // Passes
             ArrayList<Pass> passes = new ArrayList<Pass>();
-            System.out.println(passes);
+            //System.out.println(passes);
             try {
             	passes = DBConnect.getCustomerPasses(customer);
             } catch (Exception e) {
@@ -110,7 +110,11 @@
             for (int i = 0; i < passes.size(); i++) {
             	if ( passes.get(i).getPass_end().after(today) ) {
             	%>
-                <div class="prenpass" onclick="selectPass('<%= passes.get(i).getPass_email() %>','<%= passes.get(i).getPass_begin() %>','<%= passes.get(i).getPass_end() %>','<%= passes.get(i).getSeat() %>')">
+                <div class="prenpass" onclick="selectPass('<%= passes.get(i).getPass_email() // String
+                									 %>', '<%= passes.get(i).getPass_begin() // Date
+                									 %>', '<%= passes.get(i).getPass_end() // Date
+                									 %>', '<%= passes.get(i).getSeat() // String
+                									 %>') ">
                 	<button class="btn btn-primary showqrcodebutton" type="button"><i class="fa fa-qrcode"></i></button>
                 	<span class="prenparag">PASS: Valid from <%= passes.get(i).getPass_begin() %> to <%= passes.get(i).getPass_end() %></span>
 		            <span class="prenparag" style="color: limegreen; font-weight: bold">VALID</span>
@@ -118,15 +122,18 @@
                 <%
                 } else {
                 %>
-                <div class="prenpass">
+                <div class="prenpass" onclick="selectPass('<%= passes.get(i).getPass_email() // String
+                									 %>', '<%= passes.get(i).getPass_begin() // Date
+                									 %>', '<%= passes.get(i).getPass_end() // Date
+                									 %>', '<%= passes.get(i).getSeat() // String
+                									 %>')">
                 	<button class="btn btn-outline-secondary showqrcodebutton" type="button" disabled><i class="fa fa-qrcode"></i></button>
                 	<span class="prenparag">PASS: Valid from <%= passes.get(i).getPass_begin() %> to <%= passes.get(i).getPass_end() %></span>
 		            <span class="prenparag" style="color: red; font-weight: bold">EXPIRIED</span>
                 </div>
             	<%
                 }
-            }
-            %>
+            } %>
             	<hr>
             <%
             // Bookings
@@ -138,15 +145,17 @@
             	e1.printStackTrace();
             }
             
-            for (int i = 0; i < bookings.size(); i++) {
-            %>
-                <div class="prenpass" onclick="selectBooking('<%= bookings.get(i).getEmail() %>','<%= bookings.get(i).getDay() %>',<%= bookings.get(i).getTime_slot() %>,'<%= bookings.get(i).getSeat() %>')">
+            for (int i = 0; i < bookings.size(); i++) { %>
+                <div class="prenpass" onclick="selectBooking('<%= bookings.get(i).getEmail() // String
+                										%>', '<%= bookings.get(i).getDay() // String
+                										%>',  <%= bookings.get(i).getTime_slot() // Int
+                										%>,  '<%= bookings.get(i).getSeat() // String
+                										%>')">
                 	<button class="btn btn-primary showqrcodebutton" type="button" 
-                	  <% 
-                	  if (today.after(bookings.get(i).getDay())) { %> disabled <% } %>>
+                	  <% if (today.after(bookings.get(i).getDay())) { %> disabled <% } %>>
                 		<i class="fa fa-qrcode"></i>
                 	</button>
-                	<span class="prentitle"><%= bookings.get(i).getDay() %></span>
+                	<span class="prentitle">Valid for: <%= bookings.get(i).getDay() %></span>
                 	<%
                		switch ( bookings.get(i).getTime_slot() ) {
                			case 0 :
@@ -171,12 +180,9 @@
                				break;
                			default :
                				break;
-               		}
-               		%>
+               		}		%>
                 </div>
-            <%
-            }
-            %>
+            <% } %>
             </div>
             
             <hr>

@@ -130,7 +130,7 @@ ArrayList<Dish> dishes = new ArrayList<Dish>();
                 <div class="card-body">
                     <h4 class="card-title"><%= dishes.get(i).getName() %></h4>
                     <h6 class="text-muted card-subtitle mb-2"><%= dishes.get(i).getPrice() %>&euro;</h6>
-                    <p class="card-text"><%= dishes.get(i).getIngredients() %>Guanciale affumicato, pecorino romano, tuorlo d'uova bio da galline allevate a terra, pepe nero.<br></p>
+                    <p class="card-text"><%= dishes.get(i).getIngredients() %><br /></p>
                     <button class="btn btn-primary" type="button">Add to your order</button>
                 </div>
             </div>

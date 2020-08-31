@@ -6,11 +6,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 
 import javax.mail.MessagingException;
@@ -376,11 +371,11 @@ public class DBConnect {
 		s.executeUpdate();
 	}
 	
+	// Return the list of dishes grouped in the chosen category. Used in menu.jsp and menuEditor.jsp.
 	public static ArrayList<Dish> getDishesByCategory(String category) throws SQLException {
 		PreparedStatement s = getStatement("SELECT * FROM dish WHERE category = ?");
 		s.setString(1, category);
 		ResultSet r = s.executeQuery();
-		
 		ArrayList<Dish> list = new ArrayList<Dish>();
 		
 		while (r.next()) {
@@ -389,7 +384,6 @@ public class DBConnect {
 			d.setCategory(category);
 			d.setIngredients(r.getString("ingredients"));
 			d.setPrice(r.getDouble("price"));
-			
 			list.add(d);
 		}
 		
