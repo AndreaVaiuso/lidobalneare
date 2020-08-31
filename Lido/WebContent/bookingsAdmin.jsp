@@ -57,7 +57,6 @@
 			<input id="pass_email" type="text" class="lidoblockstyle" placeholder='Email address' required />
 			<input id="pass_begin" type="text" class="lidoblockstyle" placeholder='Start date' required />
 			<input id="pass_end" type="text" class="lidoblockstyle" placeholder='End date' required />
-			<input id="pass_people_num" type="text" class="lidoblockstyle" placeholder='Number of people' required />
 			<input id="pass_seat" type="text" class="lidoblockstyle" placeholder='Seat name' required />
 			
 			<div class="btn-group lidobtngroup" role="group">
@@ -109,14 +108,8 @@
             for (int i = 0; i < passes.size(); i++) {
             	if ( passes.get(i).getPass_begin().before(today) && passes.get(i).getPass_end().after(today) ) {
             	%>
-                <div class="prenpass" onclick="selectPass(
-                  <%= passes.get(i).getPass_email() %>,
-                  <%= passes.get(i).getPass_begin() %>,
-                  <%= passes.get(i).getPass_end() %>,
-                  <%= passes.get(i).getPass_people_num() %>,
-                  <%= passes.get(i).getSeat() %>)">
+                <div class="prenpass" onclick="selectPass(<%= passes.get(i).getPass_email() %>,<%= passes.get(i).getPass_begin() %>,<%= passes.get(i).getPass_end() %>,<%= passes.get(i).getSeat() %>)">
                 	<button class="btn btn-primary showqrcodebutton" type="button"><i class="fa fa-qrcode"></i></button>
-                	<span class="prentitle"><strong>Pass for <%= passes.get(i).getPass_people_num() %> people</strong></span>
                 	<span class="prenparag">Valid from <%= passes.get(i).getPass_begin() %> to <%= passes.get(i).getPass_end() %></span>
 		            <span class="validlabel" style="color: limegreen;">VALID</span>
                 </div>
@@ -125,7 +118,6 @@
                 %>
                 <div class="prenpass">
                 	<button class="btn btn-outline-secondary showqrcodebutton" type="button" disabled><i class="fa fa-qrcode"></i></button>
-                	<span class="prentitle"><strong>Pass for <%= passes.get(i).getPass_people_num() %> people</strong></span>
                 	<span class="prenparag">Valid from <%= passes.get(i).getPass_begin() %> to <%= passes.get(i).getPass_end() %></span>
 		            <span class="validlabel" style="color: red;">EXPIRIED</span>
                 </div>
@@ -133,7 +125,7 @@
                 }
             }
             %>
-            	<hr>
+            	<hr class="lidohr">
             <%
             // Bookings
             ArrayList<Booking> bookings = new ArrayList<Booking>();
@@ -146,18 +138,19 @@
             
             for (int i = 0; i < bookings.size(); i++) {
             %>
-                <div class="prenpass" onclick="selectBooking(
-                  <%= bookings.get(i).getEmail() %>,
-                  <%= bookings.get(i).getDay() %>,
-                  <%= bookings.get(i).getTime_slot() %>,
-                  <%= bookings.get(i).getSeat() %>)">
+                <div class="prenpass" onclick="selectBooking(<%= bookings.get(i).getEmail() %>,<%= bookings.get(i).getDay() %>,<%= bookings.get(i).getTime_slot() %>,<%= bookings.get(i).getSeat() %>)">
                 	<button class="btn btn-primary showqrcodebutton" type="button" 
                 	  <% if (bookings.get(i).getDay().after(today)) { %> disabled <% } %>>
                 		<i class="fa fa-qrcode"></i>
                 	</button>
-                	<span class="prentitle"><%= bookings.get(i).getDay() %> for NUM_PEOPLE people</span>
+                	<span class="prentitle"><%= bookings.get(i).getDay() %></span>
                 	<%
                		switch ( bookings.get(i).getTime_slot() ) {
+               			case 0 :
+               				%>
+               				<span class="prenparag">Time slot: all day</span>
+               				<%
+               				break;
                			case 1 :
                				%>
                				<span class="prenparag">Time slot: 9:00 - 12:00</span>
