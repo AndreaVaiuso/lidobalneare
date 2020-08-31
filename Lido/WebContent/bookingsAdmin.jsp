@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" session="true" %>
 <%@ page import="java.util.ArrayList"%>
-<%@ page import="java.util.Date"%>
+<%@ page import="java.sql.Date"%>
 <%@ page import="java.util.Calendar"%>
 <%@ page import="it.lidobalneare.db.DBConnect"%>
 <%@ page import="it.lidobalneare.bean.User"%>
@@ -21,7 +21,9 @@
 	}
 
 	String customer = (String) session.getAttribute("customer");
-	Date today = Calendar.getInstance().getTime();
+	java.util.Date javatoday = Calendar.getInstance().getTime();
+	java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+	Date today = Date.valueOf(dateFormat.format(javatoday));
 %>
 
 <!DOCTYPE html>
@@ -98,7 +100,7 @@
             <% 
             // Passes
             ArrayList<Pass> passes = new ArrayList<Pass>();
-            
+            System.out.println(passes);
             try {
             	passes = DBConnect.getCustomerPasses(customer);
             } catch (Exception e) {
@@ -106,26 +108,26 @@
             }
             
             for (int i = 0; i < passes.size(); i++) {
-            	if ( passes.get(i).getPass_begin().before(today) && passes.get(i).getPass_end().after(today) ) {
+            	if ( passes.get(i).getPass_end().after(today) ) {
             	%>
-                <div class="prenpass" onclick="selectPass(<%= passes.get(i).getPass_email() %>,<%= passes.get(i).getPass_begin() %>,<%= passes.get(i).getPass_end() %>,<%= passes.get(i).getSeat() %>)">
+                <div class="prenpass" onclick="selectPass('<%= passes.get(i).getPass_email() %>','<%= passes.get(i).getPass_begin() %>','<%= passes.get(i).getPass_end() %>','<%= passes.get(i).getSeat() %>')">
                 	<button class="btn btn-primary showqrcodebutton" type="button"><i class="fa fa-qrcode"></i></button>
-                	<span class="prenparag">Valid from <%= passes.get(i).getPass_begin() %> to <%= passes.get(i).getPass_end() %></span>
-		            <span class="validlabel" style="color: limegreen;">VALID</span>
+                	<span class="prenparag">PASS: Valid from <%= passes.get(i).getPass_begin() %> to <%= passes.get(i).getPass_end() %></span>
+		            <span class="prenparag" style="color: limegreen; font-weight: bold">VALID</span>
                 </div>
                 <%
                 } else {
                 %>
                 <div class="prenpass">
                 	<button class="btn btn-outline-secondary showqrcodebutton" type="button" disabled><i class="fa fa-qrcode"></i></button>
-                	<span class="prenparag">Valid from <%= passes.get(i).getPass_begin() %> to <%= passes.get(i).getPass_end() %></span>
-		            <span class="validlabel" style="color: red;">EXPIRIED</span>
+                	<span class="prenparag">PASS: Valid from <%= passes.get(i).getPass_begin() %> to <%= passes.get(i).getPass_end() %></span>
+		            <span class="prenparag" style="color: red; font-weight: bold">EXPIRIED</span>
                 </div>
             	<%
                 }
             }
             %>
-            	<hr class="lidohr">
+            	<hr>
             <%
             // Bookings
             ArrayList<Booking> bookings = new ArrayList<Booking>();
@@ -138,9 +140,10 @@
             
             for (int i = 0; i < bookings.size(); i++) {
             %>
-                <div class="prenpass" onclick="selectBooking(<%= bookings.get(i).getEmail() %>,<%= bookings.get(i).getDay() %>,<%= bookings.get(i).getTime_slot() %>,<%= bookings.get(i).getSeat() %>)">
+                <div class="prenpass" onclick="selectBooking('<%= bookings.get(i).getEmail() %>','<%= bookings.get(i).getDay() %>',<%= bookings.get(i).getTime_slot() %>,'<%= bookings.get(i).getSeat() %>')">
                 	<button class="btn btn-primary showqrcodebutton" type="button" 
-                	  <% if (bookings.get(i).getDay().after(today)) { %> disabled <% } %>>
+                	  <% 
+                	  if (today.after(bookings.get(i).getDay())) { %> disabled <% } %>>
                 		<i class="fa fa-qrcode"></i>
                 	</button>
                 	<span class="prentitle"><%= bookings.get(i).getDay() %></span>

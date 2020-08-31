@@ -137,7 +137,7 @@ public class DBConnect {
 
 	
 	public static ArrayList<Pass> getCustomerPasses(String email) throws SQLException, NullPointerException {
-		PreparedStatement s = getStatement("SELECT * FROM pass WHERE email = ?");
+		PreparedStatement s = getStatement("SELECT * FROM pass WHERE pass_email = ?");
 		s.setString(1, email);
 		ResultSet r = s.executeQuery();
 		ArrayList<Pass> list = new ArrayList<Pass>();
