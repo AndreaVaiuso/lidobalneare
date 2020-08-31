@@ -4,6 +4,22 @@ var drag_left;
 var drag_top;
 var chaircount = 0;
 
+function showChairPopup(id) {
+	var chair = document.getElementById(id);
+	var popup = chair.firstElementChild;
+	if(chair.offsetTop <= 80){
+		popup.style.bottom = "-40px";
+	} else popup.style.bottom = "40px";
+	popup.style.display = "block";
+}
+
+function hideChairPopup(){
+	var chairspopup = document.getElementsByClassName("chairpopup");
+	for(let i = 0; i<chairspopup.length; i++){
+		chairspopup[i].style.display = "none";
+	}
+}
+
 function onDragOver(event) {
   event.preventDefault();
 }
@@ -25,23 +41,6 @@ function onDrop(event) {
 	
 	$.get("Admin?request=movechair&chair="+currentDraggingChairName+"&x="+dragx+"&y="+dragy);
 }
-
-function showChairPopup(id) {
-	var chair = document.getElementById(id);
-	var popup = chair.firstElementChild;
-	if(chair.offsetTop <= 80){
-		popup.style.bottom = "-40px";
-	} else popup.style.bottom = "40px";
-	popup.style.display = "block";
-}
-
-function hideChairPopup(){
-	var chairspopup = document.getElementsByClassName("chairpopup");
-	for(let i = 0; i<chairspopup.length; i++){
-		chairspopup[i].style.display = "none";
-	}
-}
-
 
 function updateChairToLayout(chairname){
 	let chairinfo;
@@ -65,22 +64,26 @@ function updateChairToLayout(chairname){
 }
 
 function removeChairFromLayout(chairname){
-	showquery("Delete " + chairname,"Are you sure you want to delete this chair? (This operation cannot be done if the chair is already booked by customers. In that case, please remove first prenotation for this chair)", 
-			function(){
-		$.get("Admin?request=deletechair&chair="+chairname,function(response){
-			if(response.type=="success"){
-				location.href = "layoutEditor.jsp"
-			} else if(response.type=="exists"){
-				showerror("Delete failed","One or more prenotations exists for this chair. Please remove it from administration panel and try again",function(){
-					location.href = "layoutEditor.jsp"
+	$.get("Admin?request=existsprenotation&chair="+chairname,function(response){
+		if(response.type == "exists"){
+			showerror("Delete failed","One or more prenotations exists for this chair. Please remove it from administration panel and try again");
+		} else {
+			showquery("Delete " + chairname,"Are you sure you want to delete this chair? (This operation cannot be done if the chair is already booked by customers. In that case, please remove first prenotation for this chair)", 
+					function(){
+				$.get("Admin?request=deletechair&chair="+chairname,function(response){
+					if(response.type=="success"){
+						location.href = "layoutEditor.jsp"
+					} else {
+						showDefaultError();
+						return;
+					}
 				});
-				return;
-			} else {
-				showDefaultError();
-				return;
-			}
-		});
+			});
+		}
 	});
+	
+	
+	
 }
 
 $("#createchairbtn").click(function(){

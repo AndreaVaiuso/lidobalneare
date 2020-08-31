@@ -15,9 +15,6 @@ import it.lidobalneare.bean.Chair;
 import it.lidobalneare.bean.User;
 import it.lidobalneare.db.DBConnect;
 
-/**
- * Servlet implementation class SetPaypalAccount
- */
 @WebServlet("/Admin")
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -57,12 +54,21 @@ public class AdminServlet extends HttpServlet {
 				out.append(jsonResponse);
 				break;
 			case "deletechair":
+				System.out.println("DELETE");
 				boolean exists = DBConnect.existsPrenotation(request.getParameter("chair"));
+				
 				if(exists) {
 					out.append("{ \"type\" : \"exists\"}");
 				} else {
 					DBConnect.deleteChair(request.getParameter("chair"));
 					out.append(jsonResponse);
+				}
+				break;
+			case "existsprenotation":
+				if(DBConnect.existsPrenotation(request.getParameter("chair"))) {
+					out.append("{ \"type\" : \"exists\"}");
+				} else {
+					out.append("{ \"type\" : \"notexists\"}");
 				}
 				break;
 			}

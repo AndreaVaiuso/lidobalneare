@@ -1,4 +1,3 @@
-
 $("#registerbuttonreg").click(
 		function(){
 			var email = $("#emailinputreg").val();

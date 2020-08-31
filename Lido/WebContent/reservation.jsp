@@ -42,7 +42,6 @@
 	</div>
 	<div id="alertscreen" class="alertscreen" style="display : none">
 		<div class="alertwindow">
-
 			<span id="alerttitle" class="lidoalerttitle">Alert screen title!</span>
 			<hr class="lidohr">
 			<span id="alertcontent" class="logindescription">This is an accurate description
@@ -91,7 +90,7 @@
 				<button id="backbtn" class="btn btn-primary" type="button"
 					onclick="javascript:location.href='home.jsp'">Back to home</button>
 				<button id="passbtn" class="btn btn-primary" type="button"
-					onclick="javascript:location.href='pass.jsp'">Buy a season
+					onclick="javascript:location.href='pass.jsp?pass=yes'">Buy a season
 					pass</button>
 			</div>
 		</div>

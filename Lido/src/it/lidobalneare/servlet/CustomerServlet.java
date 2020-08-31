@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.text.ParseException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -52,14 +53,21 @@ public class CustomerServlet extends HttpServlet {
 				DBConnect.makeReservation(user.getEmail(),request.getParameter("chair"),request.getParameter("date"),Integer.parseInt(request.getParameter("timeslot")));
 				out.append(jsonResponse);
 				break;
+			case "pass":
+				DBConnect.makePass(user.getEmail(), request.getParameter("start"), Integer.parseInt(request.getParameter("duration")), request.getParameter("chair"));
+				out.append(jsonResponse);
+				break;
 			}
 		} catch (NumberFormatException e) {
+			e.printStackTrace();
 			out.append("{ \"type\" : \"fielderror\"}");	
 		} catch (SQLIntegrityConstraintViolationException e) {
+			e.printStackTrace();
 			out.append("{ \"type\" : \"duplicate\"}");		
 		} catch (SQLException e) {
+			e.printStackTrace();
 			out.append("{ \"type\" : \"error\"}");
-		} 
+		}
 		out.close();
 		/*
 		if(request.getParameter("paypal") != null) {

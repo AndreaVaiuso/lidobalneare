@@ -25,5 +25,5 @@ $("#configurepaypalbtn").click(function(){
 });
 
 $("#reservationbtn").click(function(){
-	location.href = "reservation.jsp";
+	location.href = "reservation.jsp?pass=no";
 });

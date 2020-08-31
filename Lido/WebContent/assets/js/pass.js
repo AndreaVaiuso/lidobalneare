@@ -13,11 +13,12 @@ function hideChairPopup(){
 		chairspopup[i].style.display = "none";
 	}
 }
+
 function bookchair(chairname){
 	let bookdate = $("#datefield").val();
-	let booktimeslot = document.getElementById("timeslotSelect").selectedIndex;
-	showquery("Confirm your booking","You are going to book chair " + chairname + " for " + bookdate + ". A payment module will be opened before",function(){
-		$.get("Customer?request=book&chair="+chairname+"&date="+bookdate+"&timeslot="+booktimeslot,function(response){
+	let booktimeslot = document.getElementById("timeslotSelect").selectedIndex + 1;
+	showquery("Confirm your pass","You are going to buy a pass for the chair " + chairname + " that begins on " + bookdate + " for the duration of " + booktimeslot + " month(s)",function(){
+		$.get("Customer?request=pass&chair="+chairname+"&start="+bookdate+"&duration="+booktimeslot,function(response){
 			if(response.type=="success"){
 				showalert("Done","Your reservation has been created. We have sent an email with all details",function(){
 					location.href = "home.jsp";
@@ -30,7 +31,8 @@ function bookchair(chairname){
 }
 
 function updateLayout(){
-	location.href = "reservation.jsp?pass=no&date="+$("#datefield").val()+"&timeslot="+$("#timeslotSelect :selected").val();
+	let booktimeslot = document.getElementById("timeslotSelect").selectedIndex;
+	location.href = "pass.jsp?pass=yes&date="+$("#datefield").val()+"&timeslot="+booktimeslot;
 }
 
 urlParam = function(name){

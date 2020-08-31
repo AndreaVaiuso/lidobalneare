@@ -6,6 +6,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 import javax.mail.MessagingException;
@@ -151,14 +156,14 @@ public class DBConnect {
 	}
 	
 	public static ArrayList<Booking> getCustomerBookings(String email) throws SQLException, NullPointerException {
-		PreparedStatement s = getStatement("SELECT * FROM booking WHERE pass_email = ?");
+		PreparedStatement s = getStatement("SELECT * FROM booking WHERE email = ?");
 		s.setString(1, email);
 		ResultSet r = s.executeQuery();
 		ArrayList<Booking> list = new ArrayList<Booking>();
 		
 		while (r.next()) {
 			Booking b = new Booking();
-			b.setEmail(r.getString("pass_email"));
+			b.setEmail(r.getString("email"));
 			b.setDay(r.getDate("day"));
 			b.setTime_slot(r.getInt("time_slot"));
 			b.setSeat(r.getString("seat"));
@@ -321,22 +326,25 @@ public class DBConnect {
 		}
 	}
 	
-	public static boolean getChairOccupied(String chair, String begin, String end) {
+	
+	public static boolean getChairPassOccupied(String chair, String begin, int timeinterval) {
 		try {
+			Date beg = Date.valueOf(begin);
+			Date end = new Date(beg.getTime() +  (31l*24l*60l*60l*1000l)*timeinterval);
 			PreparedStatement s = getStatement(""
 					+ "SELECT * FROM pass p "
-					+ "WHERE p.seat = ? AND (p.pass_begin <= ? AND ? <= p.pass_end) OR (p.pass_begin <= ? AND ? <= p.pass_end)");
+					+ "WHERE p.seat = ? AND ((p.pass_begin <= ? AND ? <= p.pass_end) OR (p.pass_begin <= ? AND ? <= p.pass_end))");
 			s.setString(1, chair);
-			s.setDate(2, Date.valueOf(begin));
-			s.setDate(3, Date.valueOf(begin));
-			s.setDate(4, Date.valueOf(end));
-			s.setDate(5, Date.valueOf(end));
+			s.setDate(2, beg);
+			s.setDate(3, beg);
+			s.setDate(4, end);
+			s.setDate(5, end);
 			PreparedStatement s2 = getStatement(""
 					+ "SELECT * FROM booking b "
 					+ "WHERE b.seat = ? AND (? <= b.day AND b.day <= ?)");
 			s2.setString(1, chair);
-			s2.setDate(2, Date.valueOf(begin));
-			s2.setDate(3, Date.valueOf(end));
+			s2.setDate(2, beg);
+			s2.setDate(3, end);
 			
 			ResultSet r1 = s.executeQuery();
 			ResultSet r2 = s2.executeQuery();
@@ -357,11 +365,13 @@ public class DBConnect {
 		s.executeUpdate();
 	}
 	
-	public static void makePass(String email, String begin, String end, String chair) throws SQLException {
-		PreparedStatement s = getStatement("INSERT INTO pass VALUES (?,?,?,?,?)");
+	public static void makePass(String email, String begin, int timeinterval, String chair) throws SQLException {
+		Date beg = Date.valueOf(begin);
+		Date end = new Date(beg.getTime() +  (31l*24l*60l*60l*1000l)*timeinterval);
+		PreparedStatement s = getStatement("INSERT INTO pass VALUES (?,?,?,?)");
 		s.setString(1, email);
-		s.setDate(2, Date.valueOf(begin));
-		s.setDate(3, Date.valueOf(end));
+		s.setDate(2, beg);
+		s.setDate(3, end);
 		s.setString(4, chair);
 		s.executeUpdate();
 	}

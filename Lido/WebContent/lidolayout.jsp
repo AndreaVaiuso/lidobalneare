@@ -20,16 +20,21 @@
 				
 				if(cntusr.isAdmin()){
 					%>
-					<div class="chair"  id="chair_<%=i%>" draggable="true" ondragstart="onDragStart(event,'chair_<%=i%>','<%= chairSchema.get(i).getChairname() %>')"
-						onmouseover="showChairPopup('chair_<%=i%>')" onmouseout="hideChairPopup()" style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
-						<div class="chairpopup" style="display: none">
-							<span class="popupchairname" id="chair_<%=i%>_name"><%= chairSchema.get(i).getChairname() %></span>
-							<hr>
-							<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="updateChairToLayout('<%= chairSchema.get(i).getChairname() %>')">Update</button>
-							<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="removeChairFromLayout('<%= chairSchema.get(i).getChairname() %>')">Delete</button>
-						</div> 
-					</div>
-					<%
+			<div class="chair" id="chair_<%=i%>" draggable="true"
+				ondragstart="onDragStart(event,'chair_<%=i%>','<%= chairSchema.get(i).getChairname() %>')"
+				onmouseover="showChairPopup('chair_<%=i%>')"
+				onmouseout="hideChairPopup()"
+				style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
+				<div class="chairpopup" style="display: none">
+					<span class="popupchairname" id="chair_<%=i%>_name"><%= chairSchema.get(i).getChairname() %></span>
+					<hr>
+					<button class="btn btn-primary btn-sm popupbutton" type="button"
+						onclick="updateChairToLayout('<%= chairSchema.get(i).getChairname() %>')">Update</button>
+					<button class="btn btn-primary btn-sm popupbutton" type="button"
+						onclick="removeChairFromLayout('<%= chairSchema.get(i).getChairname() %>')">Delete</button>
+				</div>
+			</div>
+			<%
 				} else if(cntusr.isCustomer() || cntusr.isTicket()){
 					String date = request.getParameter("date");
 					if(date==null){
@@ -39,35 +44,61 @@
 					}
 					
 					int timeslot = 0;
+					boolean isPass = false;
 					try{
 						timeslot = Integer.valueOf(request.getParameter("timeslot"));
+						isPass = request.getParameter("pass").equals("yes");
 					} catch (Exception e){}
-
-					if(!DBConnect.getChairOccupied(chairSchema.get(i).getChairname(),date,timeslot)){
+					boolean occupied = true;
+					if(!isPass) {occupied = DBConnect.getChairOccupied(chairSchema.get(i).getChairname(),date,timeslot);}
+					else occupied = DBConnect.getChairPassOccupied(chairSchema.get(i).getChairname(),date,timeslot+1);
+					if(!occupied){
 						%>
-						<div class="chair"  id="chair_<%=i%>" onmouseover="showChairPopup('chair_<%=i%>')" onmouseout="hideChairPopup()" style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
-							<div class="chairpopup" style="display: none">
-								<span class="popupchairname" id="chair_<%=i%>_name"><%= chairSchema.get(i).getChairname() %></span>
-								<span class="popupchairname" id="chair_<%=i%>_price">Price: 
-								<% 
+			<div class="chair" id="chair_<%=i%>"
+				onmouseover="showChairPopup('chair_<%=i%>')"
+				onmouseout="hideChairPopup()"
+				style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
+				<div class="chairpopup" style="display: none">
+					<span class="popupchairname" id="chair_<%=i%>_name"><%= chairSchema.get(i).getChairname() %></span>
+					<%
+								if(!isPass){
+									%>
+					<span class="popupchairname" id="chair_<%=i%>_price">Price:
+						<% 
 								if(timeslot == 0){
-									%> <%= chairSchema.get(i).getDailyPrice() %>  <% 
+									%> <%= chairSchema.get(i).getDailyPrice() %> <% 
 								} else {
-									%> <%= chairSchema.get(i).getPrice() %>  <% 
+									%> <%= chairSchema.get(i).getPrice() %> <% 
 								}
-								%> &euro;</span> 
-								<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="bookchair('<%= chairSchema.get(i).getChairname() %>')">Book</button>
-							</div> 
-						</div>
-						<%
+								%> &euro;
+					</span>
+					<button class="btn btn-primary btn-sm popupbutton" type="button"
+						onclick="bookchair('<%= chairSchema.get(i).getChairname() %>')">Book</button>
+					<%
+								} else {
+									%>
+					<span class="popupchairname" id="chair_<%=i%>_price">Price: <%= chairSchema.get(i).getPassPrice() * (timeslot+1) %>&euro;
+					</span>
+					<button class="btn btn-primary btn-sm popupbutton" type="button"
+						onclick="bookchair('<%= chairSchema.get(i).getChairname() %>')">Book</button>
+					<%
+								}
+								%>
+				</div>
+			</div>
+			<%
 					} else {
 						%>
-						<div class="chairoccupied"  id="chair_<%=i%>" onmouseover="showChairPopup('chair_<%=i%>')" onmouseout="hideChairPopup()" style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
-							<div class="chairpopup" style="display: none">
-								<span class="popupchairname" id="chair_<%=i%>_name">Chair unavailable</span>
-							</div> 
-						</div>
-						<%
+			<div class="chairoccupied" id="chair_<%=i%>"
+				onmouseover="showChairPopup('chair_<%=i%>')"
+				onmouseout="hideChairPopup()"
+				style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
+				<div class="chairpopup" style="display: none">
+					<span class="popupchairname" id="chair_<%=i%>_name">Chair
+						unavailable</span>
+				</div>
+			</div>
+			<%
 					}
 					
 				} else if(cntusr.isLifeGuard() || cntusr.isInfoMonitor()){
