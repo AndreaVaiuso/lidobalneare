@@ -2,7 +2,6 @@ package it.lidobalneare.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,19 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import it.lidobalneare.bean.RestaurantTables;
-import it.lidobalneare.db.DBConnect;
 
 /**
- * Servlet implementation class MenuServlet
+ * Servlet implementation class RestaurantServlet
  */
-@WebServlet("/MenuServlet")
-public class MenuServlet extends HttpServlet {
+@WebServlet("/RestaurantServlet")
+public class RestaurantServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MenuServlet() {
+    public RestaurantServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,34 +34,13 @@ public class MenuServlet extends HttpServlet {
 		//response.setContentType("application/json");
 		//String jsonResponse = "{ \"type\" : \"success\" }";
 		
-		switch (request.getParameter("type" )) {
-		// Adds the order with the chosen id.
-		case "addOrder":
-			int table = Integer.parseInt(request.getParameter("table"));
-			String email = request.getParameter("email");
-			String dish = request.getParameter("dish");
-			try {
-				DBConnect.addOrder(table, email, dish);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			response.sendRedirect("menu.jsp");
-			break;
-		// Removes the order with the chosen id.
-		case "removeOrder" :
-			try {
-				DBConnect.removeOrder(Integer.parseInt(request.getParameter("id")));		
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			response.sendRedirect("menu.jsp");
-			break;
-		default :
-			break;				
+		// Increments the tables, then reloads the page.
+		if ( request.getParameter("addTable").equals("1") ) {
+			RestaurantTables t = (RestaurantTables) getServletContext().getAttribute("restaurantTables");
+			t.setTables(t.getTables() + 1);
+			response.sendRedirect("restaurantView.jsp");
+			//out.close();
 		}
-		
-		
-		//out.close();
 	}
 
 	/**

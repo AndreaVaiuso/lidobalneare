@@ -101,7 +101,6 @@
                         
                         ArrayList<User> users = DBConnect.getUserList(firstElement,lastElement);
                         
-                        //int userNumber = DBConnect.getUserNumber();
                         int pages = (int) Math.ceil( users.size() / itemsPerPage ) + 1;
                         
                         try {

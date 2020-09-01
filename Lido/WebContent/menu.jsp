@@ -2,19 +2,21 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="it.lidobalneare.db.DBConnect"%>
 <%@ page import="it.lidobalneare.bean.Dish" %>
+<%@ page import="it.lidobalneare.bean.Order" %>
 <jsp:useBean id="connecteduser" class="it.lidobalneare.bean.User" scope="session" />
+<jsp:useBean id="orderTable" class="it.lidobalneare.bean.Order" scope="session" /> 
 
 <% 
-	try{
-		if(!connecteduser.getRole().equals("customer")){
-			response.sendRedirect("./errorpage.html");
-			return;
-		}
-	} catch (NullPointerException e){
-		System.out.println("Session deleted");
-		response.sendRedirect("login.html");
+try{
+	if(!connecteduser.getRole().equals("customer") || orderTable.getTableNumber() < 1){
+		response.sendRedirect("./errorpage.html");
 		return;
 	}
+} catch (NullPointerException e){
+	System.out.println("Session deleted");
+	response.sendRedirect("login.html");
+	return;
+}
 %>
 
 <!DOCTYPE html>
@@ -131,7 +133,9 @@ ArrayList<Dish> dishes = new ArrayList<Dish>();
                     <h4 class="card-title"><%= dishes.get(i).getName() %></h4>
                     <h6 class="text-muted card-subtitle mb-2"><%= dishes.get(i).getPrice() %>&euro;</h6>
                     <p class="card-text"><%= dishes.get(i).getIngredients() %><br /></p>
-                    <button class="btn btn-primary" type="button">Add to your order</button>
+                    <button class="btn btn-primary" type="button" onclick='$.get("MenuServlet?type=addOrder&table="+<%= orderTable.getTableNumber() 
+                      %>+"&email="+<%= connecteduser.getEmail()
+                      %>+"&dish="+<%= dishes.get(i).getName() %>)'>Add to your order</button>
                 </div>
             </div>
 		<%
@@ -143,21 +147,24 @@ ArrayList<Dish> dishes = new ArrayList<Dish>();
     <!-- Orders -->
     
     <div class="orderDiv">
-        <div class="card menuMenuItem">
-            <div class="card-body">
-                <h4 class="card-title menutitleorder">Mezze maniche alla carbonara</h4>
-                <h6 class="text-muted card-subtitle mb-2 menupriceorder">999.99&euro;</h6>
-                <button class="btn btn-danger menuRemoveOrder" type="button">Remove</button>
-            </div>
-        </div>
-        
-        <div class="card menuMenuItem">
-            <div class="card-body">
-                <h4 class="card-title menutitleorder">Mezze maniche alla carbonara</h4>
-                <h6 class="text-muted card-subtitle mb-2 menupriceorder">999.99&euro;</h6>
-                <button class="btn btn-danger menuRemoveOrder" type="button">Remove</button>
-            </div>
-        </div>
+    	<%
+    	ArrayList<Order> orders = new ArrayList<Order>();
+    	try {
+    		orders = DBConnect.getOrdersByCustomer(connecteduser, orderTable.getTableNumber());
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    	for (int i = 0; i < orders.size(); i++) {
+    	%>
+	        <div class="card menuMenuItem">
+	            <div class="card-body">
+	                <h4 class="card-title menutitleorder"><%= orders.get(i).getDish() %></h4>
+	                <h6 class="text-muted card-subtitle mb-2 menupriceorder"><%= orders.get(i).getPrice() %> &euro;</h6>
+	                <button class="btn btn-danger menuRemoveOrder" type="button" onclick='$.get("MenuServlet?type=removeOrder&id="+id);'>Remove</button>
+	            </div>
+	        </div>
+        <% } %>
         
         <hr>
         

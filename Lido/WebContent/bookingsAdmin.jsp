@@ -1,19 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1" session="true"%>
-
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" session="true"%>
 <jsp:useBean id="connecteduser" class="it.lidobalneare.bean.User" scope="session" />
 
 <% 
-	try{
-		if(!connecteduser.isAdmin()){
-			response.sendRedirect("./errorpage.html");
-			return;
-		}
-	} catch (NullPointerException e){
-		System.out.println("Session deleted");
-		response.sendRedirect("login.html");
+try{
+	if(!connecteduser.isAdmin()){
+		response.sendRedirect("./errorpage.html");
 		return;
 	}
+} catch (NullPointerException e){
+	System.out.println("Session deleted");
+	response.sendRedirect("login.html");
+	return;
+}
 %>
 
 <!DOCTYPE html>
@@ -21,25 +19,21 @@
 <html>
 
 <head>
-<meta charset="utf-8" name="viewport"
-	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>LidoBalneare</title>
-
-<script src="assets/js/jquery.min.js"></script>
-
-<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css?family=Acme">
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css?family=Akronim">
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css?family=Anonymous+Pro">
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700">
-<link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
-<link rel="stylesheet" href="assets/css/menu-collapse-ultimate.css">
-<link rel="stylesheet" href="assets/css/styles.css">
+	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+	
+	<title>LidoBalneare</title>
+	
+	<script src="assets/js/jquery.min.js"></script>
+	
+	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Acme" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Akronim" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anonymous+Pro" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" />
+	<link rel="stylesheet" href="assets/fonts/font-awesome.min.css" />
+	<link rel="stylesheet" href="assets/css/menu-collapse-ultimate.css" />
+	<link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 
 <body>
@@ -51,18 +45,14 @@
 			<span class="lidoalerttitle">Edit pass</span>
 			<hr class="lidohr" />
 
-			<input id="pass_email" type="text" class="lidoblockstyle"
-				placeholder='Email address' required /> <input id="pass_begin"
-				type="text" class="lidoblockstyle" placeholder='Start date' required />
-			<input id="pass_end" type="text" class="lidoblockstyle"
-				placeholder='End date' required /> <input id="pass_seat"
-				type="text" class="lidoblockstyle" placeholder='Seat name' required />
+			<input id="pass_email" type="text" class="lidoblockstyle" placeholder='Email address' required />
+			<input id="pass_begin" type="text" class="lidoblockstyle" placeholder='Start date' required />
+			<input id="pass_end" type="text" class="lidoblockstyle" placeholder='End date' required />
+			<input id="pass_seat" type="text" class="lidoblockstyle" placeholder='Seat name' required />
 
 			<div class="btn-group lidobtngroup" role="group">
-				<button class="btn btn-primary lidobtnofbtngroup" type="submit"
-					onclick="applyPass()">Apply</button>
-				<button class="btn btn-primary lidobtnofbtngroup" type="button"
-					onclick='$("#pass_edit_form").toggle();'>Cancel</button>
+				<button class="btn btn-primary lidobtnofbtngroup" type="submit"	onclick="applyPass()">Apply</button>
+				<button class="btn btn-primary lidobtnofbtngroup" type="button"	onclick='$("#pass_edit_form").toggle();'>Cancel</button>
 			</div>
 		</div>
 	</form>
@@ -73,18 +63,14 @@
 			<span class="lidoalerttitle">Edit booking</span>
 			<hr class="lidohr" />
 
-			<input id="book_email" type="text" class="lidoblockstyle"
-				placeholder='Email address' required /> <input id="book_day"
-				type="text" class="lidoblockstyle" placeholder='Start date' required />
-			<input id="book_slot" type="text" class="lidoblockstyle"
-				placeholder='End date' required /> <input id="book_seat"
-				type="text" class="lidoblockstyle" placeholder='Seat name' required />
+			<input id="book_email" type="text" class="lidoblockstyle" placeholder='Email address' required />
+			<input id="book_day" type="text" class="lidoblockstyle" placeholder='Start date' required />
+			<input id="book_slot" type="text" class="lidoblockstyle" placeholder='End date' required />
+			<input id="book_seat" type="text" class="lidoblockstyle" placeholder='Seat name' required />
 
 			<div class="btn-group lidobtngroup" role="group">
-				<button class="btn btn-primary lidobtnofbtngroup" type="submit"
-					onclick="applyBooking()">Apply</button>
-				<button class="btn btn-primary lidobtnofbtngroup" type="button"
-					onclick='$("#booking_edit_form").toggle();'>Cancel</button>
+				<button class="btn btn-primary lidobtnofbtngroup" type="submit"	onclick="applyBooking()">Apply</button>
+				<button class="btn btn-primary lidobtnofbtngroup" type="button"	onclick='$("#booking_edit_form").toggle();'>Cancel</button>
 			</div>
 		</div>
 	</form>
@@ -96,21 +82,17 @@
         </script>
 
 		<div class="contentscreen">
-			<span class="toptitle">Reservations</span> <span
-				class="logindescription"
-				style="background-color: rgb(220, 220, 220);">Customer: <%= session.getAttribute("customer") %></span>
+			<span class="toptitle">Reservations</span>
+			<span class="logindescription" style="background-color: rgb(220, 220, 220);">Customer: <%= session.getAttribute("customer") %></span>
 
 			<div class="contentdivscreen">
-				
 				<%@include file="booking.jsp" %>
-			
 			</div>
 
 			<hr>
 
 			<div class="buttoncontainer">
-				<button class="btn btn-primary" type="button"
-					onclick="editReservation()">Edit reservation</button>
+				<button class="btn btn-primary" type="button" onclick="editReservation()">Edit reservation</button>
 				<button class="btn btn-primary" type="button" onclick="back()">Back</button>
 			</div>
 		</div>

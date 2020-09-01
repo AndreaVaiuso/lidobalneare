@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.mail.MessagingException;
 
@@ -15,6 +16,7 @@ import it.lidobalneare.bean.Booking;
 import it.lidobalneare.bean.Pass;
 import it.lidobalneare.bean.Chair;
 import it.lidobalneare.bean.Dish;
+import it.lidobalneare.bean.Order;
 import it.lidobalneare.bean.User;
 
 public class DBConnect {
@@ -426,4 +428,53 @@ public class DBConnect {
 		return list;
 	}
 	
+	// Method for getting the orders of a specific customer sit at a specific table. Used in menu.jsp.
+	public static ArrayList<Order> getOrdersByCustomer (User customer, int table) throws SQLException {
+		PreparedStatement s = getStatement("SELECT * FROM order WHERE customerEmail = ? AND tableNumber = ?");
+		s.setString(1, customer.getEmail());
+		s.setInt(2, table);
+		ResultSet r = s.executeQuery();
+		ArrayList<Order> list = new ArrayList<Order>();
+		
+		while (r.next()) {
+			Order o = new Order();
+			o.setId(r.getInt("id"));
+			o.setCustomerEmail(r.getString("customerEmail"));
+			o.setTableNumber(r.getInt("tableNumber"));
+			o.setDate(r.getDate("date"));
+			o.setDish(r.getString("dish"));
+			o.setPrice(r.getDouble("price"));
+			list.add(o);
+		}
+		
+		return list;
+	}
+	
+	// Removes an order. Used in MenuServlet.
+	public static void removeOrder (int id) throws SQLException {
+		PreparedStatement s = getStatement("DELETE FROM order WHERE id = ?");
+		s.setInt(1, id);
+		s.executeUpdate();
+	}
+	
+	// Adds an order. Used in MenuServlet.
+	public static void addOrder (int table, String email, String dish) throws SQLException {
+		java.util.Date javatoday = Calendar.getInstance().getTime();
+		java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+		Date today = Date.valueOf(dateFormat.format(javatoday));
+		
+		PreparedStatement s1 =getStatement("SELECT price FROM dish WHERE name = ?");
+		s1.setString(1, dish);
+		ResultSet r1 = s1.executeQuery();
+		r1.next();
+		
+		PreparedStatement s = getStatement("INSERT INTO order VALUES (?,?,?,?,?)");
+		s.setInt(1,table);
+		s.setString(2, email);
+		s.setDate(3, today);
+		s.setString(4, dish);
+		s.setDouble(5, r1.getDouble("price"));
+		
+		s.executeUpdate();
+	}
 }

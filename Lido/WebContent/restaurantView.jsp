@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.ArrayList"%>
 <jsp:useBean id="connecteduser" class="it.lidobalneare.bean.User" scope="session" />
+<jsp:useBean id="restaurantTables" class="it.lidobalneare.bean.RestaurantTables" scope="application" />
 
 <% 
 	try{
@@ -46,24 +47,12 @@
         </script>
         
         <div class="contentscreen">
-        	<span class="toptitle menu">Resturant table editor</span>
+        	<span class="toptitle menu">Restaurant table editor</span>
         	<span class="logindescription" style="background-color: rgb(220,220,220);">Here you can manage the active tables in the restaurant.
         		For each of them, you can generate the QR-code to access the restaurant menu and send an order linked to the table.</span>
-            
+
             <div class="contentdivscreen">
-	            <%
-				/*
-	            ArrayList<TableRestaurant> tables = new ArrayList<TableRestaurant>();
-	            
-	            try {
-	            	tables = DBConnect.getTables();
-	            } catch (Exception e) {
-	            	e.printStackTrace();
-	            }
-	            */
-	            %>
-            
-                <div class="table-responsive table-borderless" style="text-align: center;">
+	            <div class="table-responsive table-borderless" style="text-align: center;">
                     <table class="table table-bordered table-hover res_editor">
                         <thead style="border-bottom: 1px solid lightgray;">
                             <tr>
@@ -75,30 +64,27 @@
                         
                         <tbody>
                         	<%
-                        	/*
-                        	for (int i = 0; i < tables.size(); i++) {	// You can remove a table only if it has the highest number.
-                        	*/	%>
-                        		<tr>
-                        			<td><%= /*i + 1*/ %></td>
-                        			<td><button class="btn btn-primary" type="button">Generate QR-code</button></td>
-                        			<td><button class="btn btn-danger" type="button" <% /*if ( (i + 1) < tables.size() ) {*/ %>style="display: none;"<% /*}*/ %>>Remove table</button></td>
-                        		</tr>
-                        		<%
-                        	/*
-                        	}
-                        	*/
+                        	for (int i = 0; i < restaurantTables.getTables(); i++) {	// You can remove a table only if it has the highest number.
                         	%>
+                        		<tr>
+                        			<td><%= i + 1 %></td>
+                        			<td><button class="btn btn-primary" type="button">Generate QR-code</button></td>
+                        			<td><button class="btn btn-danger" type="button" <% if ( (i + 1) < restaurantTables.getTables() ) { %> disabled <% } %>>Remove table</button></td>
+                        		</tr>
+                        	<% } %>
                         </tbody>
                     </table>
                 </div>
         	</div>
         	
         	<hr>
-        	<button class="btn btn-primary lidobtn1" type="button">Add new table</button>
+        	
+        	<button class="btn btn-primary lidobtn1" type="button" onclick='$.get("RestaurantServlet?addTable=1")'>Add new table</button>
         </div>
     </div>
     
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/restaurant.js"></script>
 </body>
 
 </html>

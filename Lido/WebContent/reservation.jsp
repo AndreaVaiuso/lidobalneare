@@ -37,25 +37,7 @@ try {
 
 <body>
 	<%@ include file="alertbox.html" %>
-	<!--
-	<div id="ajaxloaderscreen" class="alertscreen" style="display: none">
-		<div class="ajaxloader"></div>
-	</div>
-	<div id="alertscreen" class="alertscreen" style="display : none">
-		<div class="alertwindow">
-			<span id="alerttitle" class="lidoalerttitle">Alert screen title!</span>
-			<hr class="lidohr">
-			<span id="alertcontent" class="logindescription">This is an accurate description
-				of the error, or whatever you should know. Yeah, maybe something
-				went wrong, so check your last steps and do each step with more
-				attention</span>
-			<div class="btn-group lidobtngroup" role="group">
-				<button id="alertyesbtn" class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button>
-				<button id="alertnobtn" class="btn btn-primary lidobtnofbtngroup" type="button">No</button>
-			</div>
-		</div>
-	</div>
-	-->
+
 	<div class="divcontainer">
 		<%@ include file="navCustomer.html" %>
 		

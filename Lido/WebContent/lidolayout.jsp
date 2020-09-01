@@ -5,10 +5,10 @@
 <%@ page import="it.lidobalneare.bean.Chair"%>
 <%@ page import="it.lidobalneare.bean.User"%>
 <%@ page import="it.lidobalneare.db.DBConnect"%>
+
 <div class="contentdivscreen-layout">
 	<div style="overflow-x: auto">
-		<div id="beachlayoutdiv" class="beachlayoutdiv"
-			ondragover="onDragOver(event);" ondrop="onDrop(event);">
+		<div id="beachlayoutdiv" class="beachlayoutdiv"	ondragover="onDragOver(event);" ondrop="onDrop(event);">
 			<%
 			User cntusr = (User) session.getAttribute("connecteduser");
 			if(cntusr == null){
@@ -20,18 +20,15 @@
 				
 				if(cntusr.isAdmin()){
 					%>
-			<div class="chair" id="chair_<%=i%>" draggable="true"
-				ondragstart="onDragStart(event,'chair_<%=i%>','<%= chairSchema.get(i).getChairname() %>')"
-				onmouseover="showChairPopup('chair_<%=i%>')"
-				onmouseout="hideChairPopup()"
-				style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
+			<div class="chair" id="chair_<%=i%>" draggable="true" 
+			  ondragstart="onDragStart(event,'chair_<%=i%>','<%= chairSchema.get(i).getChairname() %>')"
+			  onmouseover="showChairPopup('chair_<%=i%>')"
+			  onmouseout="hideChairPopup()" style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
 				<div class="chairpopup" style="display: none">
 					<span class="popupchairname" id="chair_<%=i%>_name"><%= chairSchema.get(i).getChairname() %></span>
 					<hr>
-					<button class="btn btn-primary btn-sm popupbutton" type="button"
-						onclick="updateChairToLayout('<%= chairSchema.get(i).getChairname() %>')">Update</button>
-					<button class="btn btn-primary btn-sm popupbutton" type="button"
-						onclick="removeChairFromLayout('<%= chairSchema.get(i).getChairname() %>')">Delete</button>
+					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="updateChairToLayout('<%= chairSchema.get(i).getChairname() %>')">Update</button>
+					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="removeChairFromLayout('<%= chairSchema.get(i).getChairname() %>')">Delete</button>
 				</div>
 			</div>
 			<%
@@ -55,22 +52,22 @@
 					if(!occupied){
 						%>
 			<div class="chair" id="chair_<%=i%>"
-				onmouseover="showChairPopup('chair_<%=i%>')"
-				onmouseout="hideChairPopup()"
-				style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
+			  onmouseover="showChairPopup('chair_<%=i%>')"
+			  onmouseout="hideChairPopup()"
+			  style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
 				<div class="chairpopup" style="display: none">
 					<span class="popupchairname" id="chair_<%=i%>_name"><%= chairSchema.get(i).getChairname() %></span>
 					<%
-								if(!isPass){
-									%>
+						if(!isPass){
+							%>
 					<span class="popupchairname" id="chair_<%=i%>_price">Price:
 						<% 
-								if(timeslot == 0){
-									%> <%= chairSchema.get(i).getDailyPrice() %> <% 
-								} else {
-									%> <%= chairSchema.get(i).getPrice() %> <% 
-								}
-								%> &euro;
+							if(timeslot == 0){
+								%> <%= chairSchema.get(i).getDailyPrice() %> <% 
+							} else {
+								%> <%= chairSchema.get(i).getPrice() %> <% 
+							}
+							%> &euro;
 					</span>
 					<button class="btn btn-primary btn-sm popupbutton" type="button"
 						onclick="bookchair('<%= chairSchema.get(i).getChairname() %>')">Book</button>
