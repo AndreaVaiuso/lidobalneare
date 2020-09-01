@@ -28,11 +28,6 @@ $("#admin_checkreservationbutton").click(
 		if (selectedUser == null) {
 			// Show an error message.
 			showerror("No customer selected.", "Please select a user first.");
-			/*
-			$("#alerttitle").text("No customer selected.");
-			$("#alertcontent").text("Please select a user first.");
-			$("#alertscreen").toggle();
-			*/
 			return;
 		} else {
 			$("#ajaxloaderscreen").toggle();

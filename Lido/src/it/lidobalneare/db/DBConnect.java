@@ -129,6 +129,40 @@ public class DBConnect {
 		s.setString(2, email);
 		s.executeUpdate();
 	}
+	
+	public static Pass getCustomerPass(String email, String pass_id) throws SQLException {
+		PreparedStatement s = getStatement("SELECT * FROM pass WHERE pass_email = ? AND pass_id = ?");
+		s.setString(1, email);
+		s.setString(2, pass_id);
+		ResultSet r = s.executeQuery();
+		Pass p = new Pass();
+		if (r.next()) {
+			p.setPass_email(r.getString("pass_email"));
+			p.setPass_begin(r.getDate("pass_begin"));
+			p.setPass_end(r.getDate("pass_end"));
+			p.setSeat(r.getString("seat"));
+			p.setPass_id(r.getString("pass_id"));
+			return p;
+		}
+		return null;
+	}
+	
+	public static Booking getCustomerBooking(String email, String booking_id) throws SQLException, NullPointerException {
+		PreparedStatement s = getStatement("SELECT * FROM booking WHERE email = ? AND booking_id = ?");
+		s.setString(1, email);
+		s.setString(2, booking_id);
+		ResultSet r = s.executeQuery();
+		Booking b = new Booking();
+		if (r.next()) {
+			b.setEmail(r.getString("email"));
+			b.setDay(r.getDate("day"));
+			b.setTime_slot(r.getInt("time_slot"));
+			b.setSeat(r.getString("seat"));
+			b.setBooking_id(r.getString("booking_id"));
+			return b;
+		}
+		return null;
+	}
 
 	
 	public static ArrayList<Pass> getCustomerPasses(String email) throws SQLException, NullPointerException {
@@ -143,7 +177,7 @@ public class DBConnect {
 			p.setPass_begin(r.getDate("pass_begin"));
 			p.setPass_end(r.getDate("pass_end"));
 			p.setSeat(r.getString("seat"));
-			
+			p.setPass_id(r.getString("pass_id"));
 			list.add(p);
 		}
 		
@@ -162,7 +196,7 @@ public class DBConnect {
 			b.setDay(r.getDate("day"));
 			b.setTime_slot(r.getInt("time_slot"));
 			b.setSeat(r.getString("seat"));
-			
+			b.setBooking_id(r.getString("booking_id"));
 			list.add(b);
 		}
 		
@@ -352,22 +386,24 @@ public class DBConnect {
 
 
 	public static void makeReservation(String email, String chair, String date, int timeslot) throws SQLException {
-		PreparedStatement s = getStatement("INSERT INTO booking VALUES (?,?,?,?)");
+		PreparedStatement s = getStatement("INSERT INTO booking VALUES (?,?,?,?,?)");
 		s.setString(1, email);
 		s.setDate(2, Date.valueOf(date));
 		s.setInt(3, timeslot);
 		s.setString(4, chair);
+		s.setString(5, randomAlphaNumeric(64));
 		s.executeUpdate();
 	}
 	
 	public static void makePass(String email, String begin, int timeinterval, String chair) throws SQLException {
 		Date beg = Date.valueOf(begin);
 		Date end = new Date(beg.getTime() +  (31l*24l*60l*60l*1000l)*timeinterval);
-		PreparedStatement s = getStatement("INSERT INTO pass VALUES (?,?,?,?)");
+		PreparedStatement s = getStatement("INSERT INTO pass VALUES (?,?,?,?,?)");
 		s.setString(1, email);
 		s.setDate(2, beg);
 		s.setDate(3, end);
 		s.setString(4, chair);
+		s.setString(5, randomAlphaNumeric(64));
 		s.executeUpdate();
 	}
 	

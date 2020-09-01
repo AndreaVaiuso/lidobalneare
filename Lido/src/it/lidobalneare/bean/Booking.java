@@ -7,6 +7,7 @@ public class Booking {
 	private Date day;
 	private int time_slot;
 	private String seat;
+	private String booking_id;
 	
 	// Setters and Getters
 	public String getEmail() {
@@ -32,5 +33,11 @@ public class Booking {
 	}
 	public void setSeat(String seat) {
 		this.seat = seat;
+	}
+	public String getBooking_id() {
+		return booking_id;
+	}
+	public void setBooking_id(String booking_id) {
+		this.booking_id = booking_id;
 	}
 }

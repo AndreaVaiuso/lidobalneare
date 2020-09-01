@@ -476,6 +476,19 @@ span.orders {
   border-radius: 30px;
 }
 
+.qrcodecontainer {
+	width: 100%;
+	margin-left: auto;
+  	margin-right: auto; 
+  	padding: 5%; 
+  	margin-top: 100px;
+  	text-align: center;
+}
+
+.qrcodecontainer img {
+	margin: auto;
+}
+
 #registerbutton {
   margin-top: 10px;
 }

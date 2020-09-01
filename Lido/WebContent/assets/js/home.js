@@ -27,3 +27,21 @@ $("#configurepaypalbtn").click(function(){
 $("#reservationbtn").click(function(){
 	location.href = "reservation.jsp?pass=no";
 });
+
+var qrcode = new QRCode(document.getElementById("qrcode"), "");
+
+function bookingQr(code,email){
+	let url = "http://localhost:8080/CheckPrenotation?type=booking&code="+code+"&email="+email;
+	qrcode.clear();
+	qrcode.makeCode(url);
+	console.log("QR");
+	$("#qrcodescreen").fadeIn(500);
+}
+
+function passQr(code,email){
+	let url = "http://localhost:8080/CheckPrenotation?type=pass&code="+code+"&email="+email;
+	qrcode.clear();
+	qrcode.makeCode(url);
+	console.log("QR");
+	$("#qrcodescreen").fadeIn(500);
+}

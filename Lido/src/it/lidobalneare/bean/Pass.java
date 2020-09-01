@@ -8,6 +8,7 @@ public class Pass {
 	private Date pass_end;
 	private int pass_people_num;
 	private String seat;
+	private String pass_id;
 	
 	// Setters and Getters
 	public String getPass_email() {
@@ -39,6 +40,12 @@ public class Pass {
 	}
 	public void setSeat(String seat) {
 		this.seat = seat;
+	}
+	public String getPass_id() {
+		return pass_id;
+	}
+	public void setPass_id(String pass_id) {
+		this.pass_id = pass_id;
 	}
 	
 	

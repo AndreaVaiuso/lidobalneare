@@ -18,15 +18,6 @@
 		response.sendRedirect("login.html");
 		return;
 	}
-	/*	Messo sotto.
-	if(connecteduser.getPaypal() == null){
-		connecteduser.setPaypal("Not configured yet");
-	}
-	*/
-	String customer = (String) session.getAttribute("customer");
-	java.util.Date javatoday = Calendar.getInstance().getTime();
-	java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
-	Date today = Date.valueOf(dateFormat.format(javatoday));
 %>
 
 <!DOCTYPE html>
@@ -52,6 +43,11 @@
 
 <body>
 	<%@include file="alertbox.html"%>
+	<div id="qrcodescreen" class="alertscreen" style="display : none">
+		<div class="qrcodecontainer" onclick="javascript:$('#qrcodescreen').fadeOut(500)">
+			<div id="qrcode"></div>
+		</div>
+	</div>
 	
 	<div class="divcontainer">
 		<%@ include file="navCustomer.html" %>
@@ -70,6 +66,7 @@
 					<% } else {	%>
 						<jsp:getProperty name="connecteduser" property="paypal"/></span>
 					<% } %>
+				<hr>
 				<button id="configurepaypalbtn" class="btn btn-primary" type="button">Configure payment account&nbsp;<i class="fa fa-paypal"></i></button>
 			</div>
 			
@@ -77,78 +74,7 @@
 			
 			<div class="contentdivscreen">
 			
-			<%
-			// Passes
-            ArrayList<Pass> passes = new ArrayList<Pass>();
-			
-			try {
-				passes = DBConnect.getCustomerPasses(customer);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			for (int i = 0; i < passes.size(); i++) {
-				if ( passes.get(i).getPass_end().after(today) ) { %>
-					<div class="prenpass">
-						<button class="btn btn-primary showqrcodebutton" type="button"><i class="fa fa-qrcode"></i></button>
-						<span class="prenparag">Valid from <%= passes.get(i).getPass_begin() %> to <%= passes.get(i).getPass_end() %></span>
-						<span class="prenparag" style="color: limegreen; font-weight: bold;">VALID</span>
-					</div>
-				<% } else {	%>
-					<div class="prenpass">
-						<button class="btn btn-outline-secondary showqrcodebutton" type="button" disabled><i class="fa fa-qrcode"></i></button>
-						<span class="prenparag">Valid from <%= passes.get(i).getPass_begin() %> to <%= passes.get(i).getPass_end() %></span>
-						<span class="prenparag" style="color: red; font-weight: bold;">EXPIRIED</span>
-					</div>
-				<% }
-			} %>
-			
-			<hr>
-			
-			<%
-			// Bookings
-			ArrayList<Booking> bookings = new ArrayList<Booking>();
-			
-			try {
-            	bookings = DBConnect.getCustomerBookings(customer);
-            } catch (Exception e1) {
-            	e1.printStackTrace();
-            }
-            
-            for (int i = 0; i < bookings.size(); i++) { %>
-            	<div class="prenpass">
-            		<button class="btn btn-primary showqrcodebutton" type="button" 
-                	  <% if (today.after(bookings.get(i).getDay())) { %> disabled <% } %>>
-                		<i class="fa fa-qrcode"></i>
-                	</button>
-                	<span class="prentitle">Valid for: <%= bookings.get(i).getDay() %></span>
-                	<%
-               		switch ( bookings.get(i).getTime_slot() ) {
-               			case 0 :
-               				%>
-               				<span class="prenparag">Time slot: all day</span>
-               				<%
-               				break;
-               			case 1 :
-               				%>
-               				<span class="prenparag">Time slot: 9:00 - 12:00</span>
-               				<%
-               				break;
-               			case 2 :
-               				%>
-               				<span class="prenparag">Time slot: 12:00 - 15:00</span>
-               				<%
-               				break;
-               			case 3 :
-               				%>
-               				<span class="prenparag">Time slot: 15:00 - 18:00</span>
-               				<%
-               				break;
-               			default :
-               				break;
-               		}		%>
-            	</div>
-            <% } %>
+				<%@include file="booking.jsp" %>
 
 			</div>
 			<hr>

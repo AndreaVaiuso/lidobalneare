@@ -3,7 +3,7 @@
 
 <%
 try {
-	if (!connecteduser.isCustomer()) {
+	if (!connecteduser.isTicket()) {
 		response.sendRedirect("./errorpage.html");
 		return;
 	}
@@ -60,7 +60,7 @@ try {
 		<%@ include file="navCustomer.html" %>
 		
 		<div class="contentscreen" style="text-align: center;">
-			<span class="toptitle">Make your reservation</span>
+			<span class="toptitle">Ticket station</span>
 			<span class="logindescription" style="background-color: rgb(220, 220, 220);">Choose the	date, the time slot and the chair.</span>
 			<label class="labelReservation">Date</label>
 			<input id="datefield" onchange="updateLayout()"	class="border rounded border-primary" type="date" style="margin: 20px; margin-left: 10px;" required />
@@ -74,7 +74,7 @@ try {
 			
 			<hr>
 
-			<label class="labelReservation">Choose your seat</label>
+			<label class="labelReservation">Choose seat:</label>
 			<div class="contentdivscreen-layout">
 				<%@include file="lidolayout.jsp"%>
 			</div>
@@ -82,7 +82,6 @@ try {
 			<hr>
 			
 			<div class="buttoncontainer">
-				<button id="backbtn" class="btn btn-primary" type="button" onclick="javascript:location.href='home.jsp'">Back to home</button>
 				<button id="passbtn" class="btn btn-primary" type="button" onclick="javascript:location.href='pass.jsp?pass=yes'">Buy a monthly pass</button>
 			</div>
 		</div>
@@ -92,4 +91,5 @@ try {
 	<script src="assets/js/reservation.js"></script>
 	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
+
 </html>
