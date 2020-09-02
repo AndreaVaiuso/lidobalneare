@@ -36,36 +36,11 @@ try {
 
 <body>
 	<%@ include file="alertbox.html" %>
-	<!--
-	<div id="ajaxloaderscreen" class="alertscreen" style="display: none">
-		<div class="ajaxloader"></div>
-	</div>
-	<div id="alertscreen" class="alertscreen" style="display : none">
-		<div class="alertwindow">
-
-			<span id="alerttitle" class="lidoalerttitle">Alert screen title!</span>
-			<hr class="lidohr">
-			<span id="alertcontent" class="logindescription">This is an accurate description
-				of the error, or whatever you should know. Yeah, maybe something
-				went wrong, so check your last steps and do each step with more
-				attention</span>
-			<div class="btn-group lidobtngroup" role="group">
-				<button id="alertyesbtn" class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button>
-				<button id="alertnobtn" class="btn btn-primary lidobtnofbtngroup" type="button">No</button>
-			</div>
-		</div>
-	</div>
-	-->
 
 	<div class="divcontainer">
+	
 		<%@ include file="navCustomer.html" %>
-		<!--
-		<nav class="navbar navbar-light navbar-expand-md lidonavbar">
-			<div class="container-fluid">
-				<a class="navbar-brand" href="#">Lido Logo</a>
-			</div>
-		</nav>
-		-->
+		
 		<div class="contentscreen" style="text-align: center;">
 			<span class="toptitle">Make your reservation</span>
 			<span class="logindescription" style="background-color: rgb(220, 220, 220);">Chose the beginning date for your pass and chose the duration.</span>
@@ -82,7 +57,9 @@ try {
 			
 			<label class="labelReservation">Choose your seat</label>
 			<div class="contentdivscreen-layout">
-				<%@include file="lidolayout.jsp"%>
+				<jsp:include page="lidolayout.jsp">
+       				 <jsp:param name="prenpass" value="YES"/>
+    			</jsp:include>
 			</div>
 			
 			<hr>
@@ -94,7 +71,8 @@ try {
 		</div>
 	</div>
 	
-	<script src="assets/js/alert.js"></script>
+	<script src="assets/js/chairPopup.js"></script>
+	<script src="assets/js/datelimit.js"></script>
 	<script src="assets/js/pass.js"></script>
 	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>

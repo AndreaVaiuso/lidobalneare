@@ -29,7 +29,7 @@ public class AdminServlet extends HttpServlet {
 			out.close();
 			return;
 		}
-		if(!user.getRole().equals("admin")) {
+		if(!user.isAdmin()) {
 			response.sendRedirect("login.html");
 			out.close();
 			return;

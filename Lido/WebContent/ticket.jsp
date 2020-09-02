@@ -37,25 +37,28 @@ try {
 
 <body>
 	<%@ include file="alertbox.html" %>
-	<!--
-	<div id="ajaxloaderscreen" class="alertscreen" style="display: none">
-		<div class="ajaxloader"></div>
+	<div id="qrcodescreen" class="alertscreen" style="display : none">
+		<div class="qrcodecontainer" onclick="javascript:location.href='ticket.jsp'">
+			<div id="qrcode"></div>
+		</div>
 	</div>
-	<div id="alertscreen" class="alertscreen" style="display : none">
+	<div id="paymentScreen" class="alertscreen" style="display: none;">
 		<div class="alertwindow">
-			<span id="alerttitle" class="lidoalerttitle">Alert screen title!</span>
+			<span id="paymenttitle" class="lidoalerttitle">Create a new prenotation</span>
 			<hr class="lidohr">
-			<span id="alertcontent" class="logindescription">This is an accurate description
-				of the error, or whatever you should know. Yeah, maybe something
-				went wrong, so check your last steps and do each step with more
-				attention</span>
+			
+			<input class="lidoblockstyle" type="text" id="name_field" placeholder="Name">
+			<input class="lidoblockstyle" type="text" id="surname_field" placeholder="Surname">
+			<span class="logindescription">Price: </span>
+			<span id="price_label" class="logindescription" style="font-weight:bold; color:green; font-size:50px"> </span>
 			<div class="btn-group lidobtngroup" role="group">
-				<button id="alertyesbtn" class="btn btn-primary lidobtnofbtngroup" type="button">Yes</button>
-				<button id="alertnobtn" class="btn btn-primary lidobtnofbtngroup" type="button">No</button>
+				<button id="paymentyesbtn" class="btn btn-primary lidobtnofbtngroup"
+					type="button">Confirm prenotation</button>
+				<button id="paymentnobtn" class="btn btn-primary lidobtnofbtngroup"
+					type="button">Cancel</button>
 			</div>
 		</div>
 	</div>
-	-->
 	<div class="divcontainer">
 		<%@ include file="navCustomer.html" %>
 		
@@ -76,19 +79,22 @@ try {
 
 			<label class="labelReservation">Choose seat:</label>
 			<div class="contentdivscreen-layout">
-				<%@include file="lidolayout.jsp"%>
+				<jsp:include page="lidolayout.jsp">
+       				 <jsp:param name="prenpass" value="NO"/>
+    			</jsp:include>
 			</div>
 			
 			<hr>
 			
 			<div class="buttoncontainer">
-				<button id="passbtn" class="btn btn-primary" type="button" onclick="javascript:location.href='pass.jsp?pass=yes'">Buy a monthly pass</button>
+				<button id="verifyticketbtn" class="btn btn-primary" type="button">Verify Ticket</button>
 			</div>
 		</div>
 	</div>
-
-	<script src="assets/js/alert.js"></script>
-	<script src="assets/js/reservation.js"></script>
+	<script src="assets/js/qrcode.min.js"></script>
+	<script src="assets/js/chairPopup.js"></script>
+	<script src="assets/js/datelimit.js"></script>
+	<script src="assets/js/ticket_booking.js"></script>
 	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 

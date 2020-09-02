@@ -58,19 +58,21 @@ try {
 
 			<label class="labelReservation">Choose your seat</label>
 			<div class="contentdivscreen-layout">
-				<%@include file="lidolayout.jsp"%>
+				<jsp:include page="lidolayout.jsp">
+       				 <jsp:param name="prenpass" value="NO"/>
+    			</jsp:include>
 			</div>
 			
 			<hr>
 			
 			<div class="buttoncontainer">
 				<button id="backbtn" class="btn btn-primary" type="button" onclick="javascript:location.href='home.jsp'">Back to home</button>
-				<button id="passbtn" class="btn btn-primary" type="button" onclick="javascript:location.href='pass.jsp?pass=yes'">Buy a monthly pass</button>
+				<button id="passbtn" class="btn btn-primary" type="button" onclick="javascript:location.href='pass.jsp'">Buy a monthly pass</button>
 			</div>
 		</div>
 	</div>
-
-	<script src="assets/js/alert.js"></script>
+	<script src="assets/js/chairPopup.js"></script>
+	<script src="assets/js/datelimit.js"></script>
 	<script src="assets/js/reservation.js"></script>
 	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>

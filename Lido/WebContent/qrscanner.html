@@ -1,12 +1,8 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
-<meta charset="utf-8" name="viewport"
-	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-
-<title>LidoBalneare</title>
+<meta charset="UTF-8">
+<title>QR CODE SCANNER</title>
 
 <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet"
@@ -20,10 +16,8 @@
 <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
 <link rel="stylesheet" href="assets/css/menu-collapse-ultimate.css">
 <link rel="stylesheet" href="assets/css/styles.css">
-
 <script src="assets/js/jquery.min.js"></script>
 </head>
-
 <body>
 	<!-- Loading animation -->
 	<div id="ajaxloaderscreen" class="alertscreen" style="display: none">
@@ -46,29 +40,42 @@
 			</div>
 		</div>
 	</div>
-
-	<div class="divcontainer">
-		<div class="loginscreen">
-			<span class="logintitle">Login</span>
-			<form>
-				<input type="text" id="emailinput" class="lidoblockstyle"
-					pattern=".+@[a-z]+\.[a-z]+" placeholder="email address" /> <input
-					type="password" id="passwordinput" class="lidoblockstyle"
-					placeholder="password" />
-				<button class="btn btn-primary lidoblockstyle" id="loginbutton"
-					type="button" style="margin-top: 20px;">Login</button>
-			</form>
-			<hr>
-			<span class="logindescription">Aren't you registered yet? Do
-				it now by clicking the button below. It's not too easy, right?</span>
-			<button class="btn btn-primary lidoblockstyle" id="registerbutton"
-				type="submit">Register</button>
-		</div>
-	</div>
-
-	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-	<script src="assets/js/alert.js"></script>
-	<script src="assets/js/login.js"></script>
+	<div id="qr-reader" style="width: 500px"></div>
 </body>
 
+
+<script src="assets/js/qrcodescan.min.js"></script>
+<script src="assets/js/alert.js"></script>
+<script>
+
+function docReady(fn) {
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        setTimeout(fn, 1);
+    } else {
+        document.addEventListener("DOMContentLoaded", fn);
+    }
+} 
+
+docReady(function() {
+    var resultContainer = document.getElementById('qr-reader-results');
+    var lastResult, countResults = 0;
+    var html5QrcodeScanner = new Html5QrcodeScanner(
+        "qr-reader", { fps: 30, qrbox: 250 });
+    
+    function onScanSuccess(qrCodeMessage) {
+    	if (qrCodeMessage !== lastResult) {
+            ++countResults;
+            lastResult = qrCodeMessage;
+            // Optional: To close the QR code scannign after the result is found
+            html5QrcodeScanner.clear();
+            location.href = lastResult;
+        }
+    }
+
+    function onScanError(qrCodeError) { }
+    
+    html5QrcodeScanner.render(onScanSuccess, onScanError);
+});
+
+</script>
 </html>

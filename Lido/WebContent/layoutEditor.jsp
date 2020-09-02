@@ -23,6 +23,8 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
 	
+	<script src="assets/js/jquery.min.js"></script>
+	
 	<title>Lido Layout Editor</title>
 	
 	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
@@ -111,8 +113,7 @@
 			</div>
 		</div>
 	</div>
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/alert.js"></script>
+	<script src="assets/js/chairPopup.js"></script>
 	<script src="assets/js/layout.js"></script>
 	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>

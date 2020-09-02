@@ -10,9 +10,10 @@ $("#configurepaypalbtn").click(function(){
 		$("#alertscreen").fadeOut(500);
 	})
 	$("#alertyesbtn").click(function(){
-		$.get("Admin?paypal="+$("#paypal_input").val(),function(data){
+		$.get("Customer?request=paypalchange&paypal="+$("#paypal_input").val(),function(data){
 			if(data.type="success"){
 				$("#alertscreen").fadeOut(500);
+				showalert("Done","Now you can make payment quickly with your PayPal account");
 			} else {
 				$("#alertscreen").fadeOut(500);
 				showDefaultError();
@@ -31,7 +32,7 @@ $("#reservationbtn").click(function(){
 var qrcode = new QRCode(document.getElementById("qrcode"), "");
 
 function bookingQr(code,email){
-	let url = "http://localhost:8080/CheckPrenotation?type=booking&code="+code+"&email="+email;
+	let url = "http://localhost:8080/LidoBalneare/CheckPrenotation?type=booking&code="+code+"&email="+email;
 	qrcode.clear();
 	qrcode.makeCode(url);
 	console.log("QR");
@@ -39,7 +40,7 @@ function bookingQr(code,email){
 }
 
 function passQr(code,email){
-	let url = "http://localhost:8080/CheckPrenotation?type=pass&code="+code+"&email="+email;
+	let url = "http://localhost:8080/LidoBalneare/CheckPrenotation?type=pass&code="+code+"&email="+email;
 	qrcode.clear();
 	qrcode.makeCode(url);
 	console.log("QR");

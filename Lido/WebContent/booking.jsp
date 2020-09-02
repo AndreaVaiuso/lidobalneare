@@ -38,9 +38,7 @@ java.util.Collections.reverse(passes);
 
 try {
 	passes = DBConnect.getCustomerPasses(customer);
-} catch (Exception e) {
-	e.printStackTrace();
-}
+} catch (Exception e) {}
 
 for (int i = 0; i < passes.size(); i++) { %>
 	<div class="prenpass" 
@@ -49,8 +47,8 @@ for (int i = 0; i < passes.size(); i++) { %>
 					   %>', '<%= passes.get(i).getPass_begin() // Date
 					   %>', '<%= passes.get(i).getPass_end() // Date
 					   %>', '<%= passes.get(i).getSeat() // String
-					   %>') ">
-   <% } %>
+					   %>') "
+   <% } %> >
    
 	<% if ( passes.get(i).getPass_end().after(today) ) { %>
 		<button class="btn btn-primary showqrcodebutton" type="button" onclick="passQr('<%= passes.get(i).getPass_id()
@@ -66,7 +64,7 @@ for (int i = 0; i < passes.size(); i++) { %>
 		</button>
 		<span class="prenparag">PASS: Valid from <%= passes.get(i).getPass_begin() %>
 											  to <%= passes.get(i).getPass_end() %></span>
-		<span class="prenparag" style="color: red; font-weight: bold">EXPIRIED</span>
+		<span class="prenparag" style="color: red; font-weight: bold">EXPIRED</span>
 	<% } %>
 	</div>
 <% } %>
@@ -80,9 +78,7 @@ java.util.Collections.reverse(bookings);
 
 try {
 	bookings = DBConnect.getCustomerBookings(customer);
-} catch (Exception e1) {
-	e1.printStackTrace();
-}
+} catch (Exception e1) {}
 
 for (int i = 0; i < bookings.size(); i++) { %>
 	<div class="prenpass"
@@ -91,8 +87,8 @@ for (int i = 0; i < bookings.size(); i++) { %>
 						  %>', '<%= bookings.get(i).getDay() // String
 						  %>',  <%= bookings.get(i).getTime_slot() // Int
 						  %>,  '<%= bookings.get(i).getSeat() // String
-						  %>')">
-    <% } %>
+						  %>')"
+    <% } %> >
     
 	<button class="btn btn-primary showqrcodebutton" type="button" onclick="bookingQr('<%= bookings.get(i).getBooking_id()
 	  %>','<%= bookings.get(i).getEmail() %>')" <% if (today.after(bookings.get(i).getDay())) { %> disabled <% } %> >

@@ -8,6 +8,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import it.lidobalneare.bean.Booking;
+import it.lidobalneare.bean.Pass;
+import it.lidobalneare.db.DBConnect;
 
 /**
  * Servlet implementation class CheckPrenotation
@@ -29,6 +34,7 @@ public class CheckPrenotation extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String type = request.getParameter("type");
+		HttpSession session = request.getSession();
 		String email = request.getParameter("email");
 		String code = request.getParameter("code");
 		if(type == null || email == null || code == null) {
@@ -38,14 +44,30 @@ public class CheckPrenotation extends HttpServlet {
 		try {
 			switch(type) {
 			case "pass":
+				Pass p = DBConnect.getCustomerPass(email, code);
+				if(p==null) {
+					session.setAttribute("pass", null);
+				} else {
+					session.setAttribute("pass", p);
+				}
 				break;
 			case "booking":
+				Booking b = DBConnect.getCustomerBooking(email, code);
+				if(b==null) {
+					session.setAttribute("booking", null);
+				} else {
+					session.setAttribute("booking", b);
+				}
 				break;
 			default:
 				break;
 			}
 		} catch (SQLException e) {
-			
+			e.printStackTrace();
+			session.setAttribute("booking", null);
+			session.setAttribute("pass", null);
+		} finally {
+			response.sendRedirect("checkpage.jsp");
 		}
 	}
 

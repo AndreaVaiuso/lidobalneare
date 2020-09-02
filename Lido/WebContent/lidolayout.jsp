@@ -44,12 +44,19 @@
 					boolean isPass = false;
 					try{
 						timeslot = Integer.valueOf(request.getParameter("timeslot"));
-						isPass = request.getParameter("pass").equals("yes");
+						System.out.println("layout.jsp: " + request.getParameter("pass"));
+						isPass = request.getParameter("prenpass").equals("YES");
 					} catch (Exception e){}
 					boolean occupied = true;
 					if(!isPass) {occupied = DBConnect.getChairOccupied(chairSchema.get(i).getChairname(),date,timeslot);}
 					else occupied = DBConnect.getChairPassOccupied(chairSchema.get(i).getChairname(),date,timeslot+1);
 					if(!occupied){
+						double price;
+						if(timeslot == 0){
+							price = chairSchema.get(i).getDailyPrice();
+						} else {
+							price = chairSchema.get(i).getPrice(); 
+						}
 						%>
 			<div class="chair" id="chair_<%=i%>"
 			  onmouseover="showChairPopup('chair_<%=i%>')"
@@ -60,27 +67,19 @@
 					<%
 						if(!isPass){
 							%>
-					<span class="popupchairname" id="chair_<%=i%>_price">Price:
-						<% 
-							if(timeslot == 0){
-								%> <%= chairSchema.get(i).getDailyPrice() %> <% 
-							} else {
-								%> <%= chairSchema.get(i).getPrice() %> <% 
-							}
-							%> &euro;
-					</span>
+					<span class="popupchairname" id="chair_<%=i%>_price">Price: <%=price%> &euro; </span>
 					<button class="btn btn-primary btn-sm popupbutton" type="button"
-						onclick="bookchair('<%= chairSchema.get(i).getChairname() %>')">Book</button>
+						onclick="bookchair('<%= chairSchema.get(i).getChairname() %>',<%=price%>)">Book</button>
 					<%
 								} else {
 									%>
 					<span class="popupchairname" id="chair_<%=i%>_price">Price: <%= chairSchema.get(i).getPassPrice() * (timeslot+1) %>&euro;
 					</span>
 					<button class="btn btn-primary btn-sm popupbutton" type="button"
-						onclick="bookchair('<%= chairSchema.get(i).getChairname() %>')">Book</button>
+						onclick="bookchair('<%= chairSchema.get(i).getChairname() %>',<%= chairSchema.get(i).getPassPrice() * (timeslot+1) %>)">Book</button>
 					<%
-								}
-								%>
+					}
+					%>
 				</div>
 			</div>
 			<%

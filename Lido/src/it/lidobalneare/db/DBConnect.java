@@ -393,8 +393,20 @@ public class DBConnect {
 		s.setDate(2, Date.valueOf(date));
 		s.setInt(3, timeslot);
 		s.setString(4, chair);
-		s.setString(5, randomAlphaNumeric(64));
+		s.setString(5, randomAlphaNumeric(10));
 		s.executeUpdate();
+	}
+	
+	public static String makeReservation(String name, String surname, String chair, String date, int timeslot) throws SQLException {
+		PreparedStatement s = getStatement("INSERT INTO booking VALUES (?,?,?,?,?)");
+		s.setString(1, name + " " + surname);
+		s.setDate(2, Date.valueOf(date));
+		s.setInt(3, timeslot);
+		s.setString(4, chair);
+		String code = randomAlphaNumeric(10);
+		s.setString(5, code);
+		s.executeUpdate();
+		return code;
 	}
 	
 	public static void makePass(String email, String begin, int timeinterval, String chair) throws SQLException {
@@ -405,7 +417,7 @@ public class DBConnect {
 		s.setDate(2, beg);
 		s.setDate(3, end);
 		s.setString(4, chair);
-		s.setString(5, randomAlphaNumeric(64));
+		s.setString(5, randomAlphaNumeric(10));
 		s.executeUpdate();
 	}
 	
