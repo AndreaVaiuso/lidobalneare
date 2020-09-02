@@ -17,6 +17,7 @@ import it.lidobalneare.bean.Pass;
 import it.lidobalneare.bean.Chair;
 import it.lidobalneare.bean.Dish;
 import it.lidobalneare.bean.Order;
+import it.lidobalneare.bean.OrderQuantity;
 import it.lidobalneare.bean.User;
 
 public class DBConnect {
@@ -461,6 +462,23 @@ public class DBConnect {
 		return list;
 	}
 	
+	// Gets orders and quantities.
+	public static ArrayList<OrderQuantity> getOrderQuantitiesByTable (int table) throws SQLException {
+		PreparedStatement s = getStatement("SELECT count(*) FROM order WHERE tableNumber = ? GROUP BY dish");
+		s.setInt(1, table);
+		ResultSet r = s.executeQuery();
+		ArrayList<OrderQuantity> list = new ArrayList<OrderQuantity>();
+		
+		while (r.next()) {
+			OrderQuantity o = new OrderQuantity();
+			o.setDish(r.getString("dish"));
+			o.setQuantity(r.getInt("count(*)"));
+			list.add(o);
+		}
+		
+		return list;
+	}
+	
 	// Removes an order. Used in MenuServlet.
 	public static void removeOrder (int id) throws SQLException {
 		PreparedStatement s = getStatement("DELETE FROM order WHERE id = ?");
@@ -494,5 +512,18 @@ public class DBConnect {
 		PreparedStatement s = getStatement("UPDATE order SET paid = 1 WHERE table = ?");
 		s.setInt(1, table);
 		s.executeUpdate();
+	}
+	
+	// Returns a list of all the tables with any pending order.
+	public static ArrayList<Integer> getTables () throws SQLException {
+		ArrayList<Integer> tables = new ArrayList<Integer>();
+		PreparedStatement s = getStatement("SELECT DISTINCT tableNumber FROM order WHERE paid = 1");
+		ResultSet r = s.executeQuery();
+		
+		while ( r.next() ) {
+			tables.add(r.getInt("tableNumber"));
+		}
+		
+		return tables;
 	}
 }

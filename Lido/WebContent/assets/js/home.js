@@ -31,6 +31,7 @@ $("#reservationbtn").click(function(){
 
 var qrcode = new QRCode(document.getElementById("qrcode"), "");
 
+// Used in booking.jsp
 function bookingQr(code,email){
 	let url = "http://localhost:8080/LidoBalneare/CheckPrenotation?type=booking&code="+code+"&email="+email;
 	qrcode.clear();
@@ -39,6 +40,7 @@ function bookingQr(code,email){
 	$("#qrcodescreen").fadeIn(500);
 }
 
+// Used in pass.jsp
 function passQr(code,email){
 	let url = "http://localhost:8080/LidoBalneare/CheckPrenotation?type=pass&code="+code+"&email="+email;
 	qrcode.clear();

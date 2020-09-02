@@ -57,11 +57,6 @@ double total = 0;
 <% ArrayList<Dish> dishes = new ArrayList<Dish>(); %>
 
 <body>
-    <div class="topDivBkg">
-    	<button id="show_order_btn" class="btn btn-primary btn-lg" type="button">Show my order</button>
-    	<img class="titleimage" src="assets/img/menu.png">
-    </div>
-    
     <div class="menuContainerDiv">
         <div class="menuCategoriesPanel">
             <div id="appetizers_card" class="card lidocard" onclick='cardOpen("#appetizers_card");<% 

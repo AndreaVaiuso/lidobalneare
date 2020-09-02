@@ -5,16 +5,16 @@
 <jsp:useBean id="connecteduser" class="it.lidobalneare.bean.User" scope="session" />
 
 <% 
-	try{
-		if(!connecteduser.getRole().equals("cook")){
-			response.sendRedirect("./errorpage.html");
-			return;
-		}
-	} catch (NullPointerException e){
-		System.out.println("Session deleted");
-		response.sendRedirect("login.html");
+try{
+	if(!connecteduser.getRole().equals("cook")){
+		response.sendRedirect("./errorpage.html");
 		return;
 	}
+} catch (NullPointerException e){
+	System.out.println("Session deleted");
+	response.sendRedirect("login.html");
+	return;
+}
 %>
 
 <!DOCTYPE html>
@@ -61,7 +61,7 @@
             		e.printStackTrace();
             	}
               %>'>
-            	<img class="card-img w-100 d-block" src="assets/img/appetizers.jpg" />
+   		      	<img class="card-img w-100 d-block" src="assets/img/appetizers.jpg" />
                 <div class="card-img-overlay">
                     <h4>Appetizers</h4>
                     <p class="lidoparagraph">A selection of fresh appetizers</p>
@@ -75,7 +75,7 @@
             		e.printStackTrace();
             	}
               %>'>
-            	<img class="card-img w-100 d-block" src="assets/img/first.jpg" />
+   		     	<img class="card-img w-100 d-block" src="assets/img/first.jpg" />
             	
                 <div class="card-img-overlay">
                     <h4>First dishes</h4>

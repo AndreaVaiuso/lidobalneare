@@ -9,7 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import it.lidobalneare.bean.Order;
 import it.lidobalneare.db.DBConnect;
 
 /**
@@ -31,11 +33,7 @@ public class MenuServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//PrintWriter out = response.getWriter();
-		//response.setContentType("application/json");
-		//String jsonResponse = "{ \"type\" : \"success\" }";
-		
-		switch (request.getParameter("type" )) {
+		switch ( request.getParameter("type") ) {
 		// Adds the order with the chosen id.
 		case "addOrder":
 			int table = Integer.parseInt(request.getParameter("table"));
@@ -68,12 +66,18 @@ public class MenuServlet extends HttpServlet {
 			response.sendRedirect("menu.jsp");
 			break;
 			
+		// Table's QR-code scanned.
+		case "tableqr" :
+			Order o = new Order();
+			o.setTableNumber(Integer.parseInt(request.getParameter("num")));
+			request.getSession().setAttribute("orderTable", o);
+			response.sendRedirect("menu.jsp");
+			break;
+			
 		default :
+			response.sendRedirect("errorpage.html");
 			break;				
 		}
-		
-		
-		//out.close();
 	}
 
 	/**
