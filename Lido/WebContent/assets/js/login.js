@@ -26,7 +26,7 @@ $("#loginbutton").click( function () {
 					location.href = "home.jsp";
 					break;
 				case "cook":
-					location.href = "restaurantView.jsp";
+					location.href = "orders.jsp";
 					break;
 				case "ticket":
 					location.href = "ticket.jsp";

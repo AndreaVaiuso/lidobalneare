@@ -3,12 +3,12 @@
 <%@ page import="it.lidobalneare.db.DBConnect"%>
 <%@ page import="it.lidobalneare.bean.Dish" %>
 <%@ page import="it.lidobalneare.bean.Order" %>
-<jsp:useBean id="connecteduser" class="it.lidobalneare.bean.User" scope="session" />
 <jsp:useBean id="orderTable" class="it.lidobalneare.bean.Order" scope="session" /> 
 
 <% 
+// No need to login. Customer must pay in this page to order.
 try{
-	if(!connecteduser.getRole().equals("customer") || orderTable.getTableNumber() < 1){
+	if( orderTable.getTableNumber() < 1 ){
 		response.sendRedirect("./errorpage.html");
 		return;
 	}
@@ -17,6 +17,8 @@ try{
 	response.sendRedirect("login.html");
 	return;
 }
+
+double total = 0;
 %>
 
 <!DOCTYPE html>
@@ -31,6 +33,17 @@ try{
     
     <script src="assets/js/jquery.min.js"></script>
     
+    <script type="text/javascript">
+	    function sendOrder (table) {
+	    	<% orderTable.setPrice(total);  %>
+	    	
+	    	// Pagamento PayPal.
+	    	
+	    	<% orderTable.setPrice(0); %>
+	    	$.get("MenuServlet?type=pay&table=" + table);
+	    }
+    </script>
+    
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Acme">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Akronim">
@@ -41,9 +54,7 @@ try{
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
-<%
-ArrayList<Dish> dishes = new ArrayList<Dish>();
-%>
+<% ArrayList<Dish> dishes = new ArrayList<Dish>(); %>
 
 <body>
     <div class="topDivBkg">
@@ -124,7 +135,7 @@ ArrayList<Dish> dishes = new ArrayList<Dish>();
             </div>    
         </div>
         
-        <div class="menuMenuPanel">
+        <div id="dishesdiv" class="menuMenuPanel">
         <%
         for (int i = 0; i < dishes.size(); i++) {
         %>
@@ -134,7 +145,6 @@ ArrayList<Dish> dishes = new ArrayList<Dish>();
                     <h6 class="text-muted card-subtitle mb-2"><%= dishes.get(i).getPrice() %>&euro;</h6>
                     <p class="card-text"><%= dishes.get(i).getIngredients() %><br /></p>
                     <button class="btn btn-primary" type="button" onclick='$.get("MenuServlet?type=addOrder&table="+<%= orderTable.getTableNumber() 
-                      %>+"&email="+<%= connecteduser.getEmail()
                       %>+"&dish="+<%= dishes.get(i).getName() %>)'>Add to your order</button>
                 </div>
             </div>
@@ -147,34 +157,38 @@ ArrayList<Dish> dishes = new ArrayList<Dish>();
     <!-- Orders -->
     
     <div class="orderDiv">
-    	<%
-    	ArrayList<Order> orders = new ArrayList<Order>();
+    <%	ArrayList<Order> orders = new ArrayList<Order>();
     	try {
-    		orders = DBConnect.getOrdersByCustomer(connecteduser, orderTable.getTableNumber());
+    		orders = DBConnect.getOrdersByTable(orderTable.getTableNumber());
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
     	
     	for (int i = 0; i < orders.size(); i++) {
-    	%>
-	        <div class="card menuMenuItem">
-	            <div class="card-body">
-	                <h4 class="card-title menutitleorder"><%= orders.get(i).getDish() %></h4>
-	                <h6 class="text-muted card-subtitle mb-2 menupriceorder"><%= orders.get(i).getPrice() %> &euro;</h6>
-	                <button class="btn btn-danger menuRemoveOrder" type="button" onclick='$.get("MenuServlet?type=removeOrder&id="+id);'>Remove</button>
-	            </div>
-	        </div>
-        <% } %>
+    		if ( !orders.get(i).isPaid() ) {
+    			total += orders.get(i).getPrice();
+    			%>
+		        <div class="card menuMenuItem">
+		            <div class="card-body">
+		                <h4 class="card-title menutitleorder"><%= orders.get(i).getDish() %></h4>
+		                <h6 class="text-muted card-subtitle mb-2 menupriceorder"><%= orders.get(i).getPrice() %> &euro;</h6>
+		                <button class="btn btn-danger menuRemoveOrder" type="button" onclick='$.get("MenuServlet?type=removeOrder&id="+<%= orders.get(i).getId() %>);'>Remove</button>
+		            </div>
+		        </div>
+		<%	} %>
+    <%	} %>
         
         <hr>
         
-        <div class="card menuMenuItemtotal">
-            <div class="card-body">
-                <h4 class="card-title menutitleorder">Total:</h4>
-                <h6 class="text-muted card-subtitle mb-2 menupriceordertotal" id="total">999.99&euro;</h6>
-                <button class="btn btn-primary menuRemoveOrder" type="button">Send order to kitchen</button>
-            </div>
-        </div>
+    <%	if (total > 0) { %>
+	        <div class="card menuMenuItemtotal">
+	            <div class="card-body">
+	                <h4 class="card-title menutitleorder">Total:</h4>
+	                <h6 class="text-muted card-subtitle mb-2 menupriceordertotal" id="total"><%= total %>&euro;</h6>
+	                <button class="btn btn-primary menuRemoveOrder" type="button" onclick='sendOrder(<%= orderTable.getTableNumber() %>)'>Send order to kitchen</button>
+	            </div>
+	        </div>
+    <%	} %>
 
         <hr style="margin-top: 100px;">
     </div>

@@ -5,10 +5,10 @@ import java.sql.Date;
 public class Order {
 	private int id;
 	private int tableNumber;
-	private String customerEmail;
 	private Date date;
 	private String dish;
 	private double price;
+	private boolean paid;
 	
 	public int getId() {
 		return id;
@@ -22,12 +22,7 @@ public class Order {
 	public void setTableNumber(int tableNumber) {
 		this.tableNumber = tableNumber;
 	}
-	public String getCustomerEmail() {
-		return customerEmail;
-	}
-	public void setCustomerEmail(String customerEmail) {
-		this.customerEmail = customerEmail;
-	}
+	
 	public Date getDate() {
 		return date;
 	}
@@ -45,5 +40,11 @@ public class Order {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public boolean isPaid() {
+		return paid;
+	}
+	public void setPaid(boolean paid) {
+		this.paid = paid;
 	}
 }

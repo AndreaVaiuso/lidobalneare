@@ -38,7 +38,7 @@ public class RestaurantServlet extends HttpServlet {
 		if ( request.getParameter("addTable").equals("1") ) {
 			RestaurantTables t = (RestaurantTables) getServletContext().getAttribute("restaurantTables");
 			t.setTables(t.getTables() + 1);
-			response.sendRedirect("restaurantView.jsp");
+			response.sendRedirect("orders.jsp");
 			//out.close();
 		}
 	}

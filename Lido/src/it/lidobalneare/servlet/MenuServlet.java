@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import it.lidobalneare.bean.RestaurantTables;
 import it.lidobalneare.db.DBConnect;
 
 /**
@@ -40,15 +39,15 @@ public class MenuServlet extends HttpServlet {
 		// Adds the order with the chosen id.
 		case "addOrder":
 			int table = Integer.parseInt(request.getParameter("table"));
-			String email = request.getParameter("email");
 			String dish = request.getParameter("dish");
 			try {
-				DBConnect.addOrder(table, email, dish);
+				DBConnect.addOrder(table, dish);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			response.sendRedirect("menu.jsp");
 			break;
+			
 		// Removes the order with the chosen id.
 		case "removeOrder" :
 			try {
@@ -58,6 +57,17 @@ public class MenuServlet extends HttpServlet {
 			}
 			response.sendRedirect("menu.jsp");
 			break;
+			
+		// Sets the orders paid.
+		case "pay" :
+			try {
+				DBConnect.payOrders(Integer.parseInt(request.getParameter("table")));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			response.sendRedirect("menu.jsp");
+			break;
+			
 		default :
 			break;				
 		}

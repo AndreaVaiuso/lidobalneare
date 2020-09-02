@@ -441,21 +441,20 @@ public class DBConnect {
 	}
 	
 	// Method for getting the orders of a specific customer sit at a specific table. Used in menu.jsp.
-	public static ArrayList<Order> getOrdersByCustomer (User customer, int table) throws SQLException {
-		PreparedStatement s = getStatement("SELECT * FROM order WHERE customerEmail = ? AND tableNumber = ?");
-		s.setString(1, customer.getEmail());
-		s.setInt(2, table);
+	public static ArrayList<Order> getOrdersByTable (int table) throws SQLException {
+		PreparedStatement s = getStatement("SELECT * FROM order WHERE tableNumber = ?");
+		s.setInt(1, table);
 		ResultSet r = s.executeQuery();
 		ArrayList<Order> list = new ArrayList<Order>();
 		
 		while (r.next()) {
 			Order o = new Order();
 			o.setId(r.getInt("id"));
-			o.setCustomerEmail(r.getString("customerEmail"));
 			o.setTableNumber(r.getInt("tableNumber"));
 			o.setDate(r.getDate("date"));
 			o.setDish(r.getString("dish"));
 			o.setPrice(r.getDouble("price"));
+			o.setPaid(r.getBoolean("paid"));
 			list.add(o);
 		}
 		
@@ -470,23 +469,30 @@ public class DBConnect {
 	}
 	
 	// Adds an order. Used in MenuServlet.
-	public static void addOrder (int table, String email, String dish) throws SQLException {
+	public static void addOrder (int table, String dish) throws SQLException {
 		java.util.Date javatoday = Calendar.getInstance().getTime();
 		java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
 		Date today = Date.valueOf(dateFormat.format(javatoday));
 		
-		PreparedStatement s1 =getStatement("SELECT price FROM dish WHERE name = ?");
+		PreparedStatement s1 = getStatement("SELECT price FROM dish WHERE name = ?");
 		s1.setString(1, dish);
 		ResultSet r1 = s1.executeQuery();
 		r1.next();
 		
 		PreparedStatement s = getStatement("INSERT INTO order VALUES (?,?,?,?,?)");
 		s.setInt(1,table);
-		s.setString(2, email);
-		s.setDate(3, today);
-		s.setString(4, dish);
-		s.setDouble(5, r1.getDouble("price"));
+		s.setDate(2, today);
+		s.setString(3, dish);
+		s.setDouble(4, r1.getDouble("price"));
+		s.setBoolean(5, false);
 		
+		s.executeUpdate();
+	}
+	
+	// Sets the orders as paid.
+	public static void payOrders (int table) throws SQLException {
+		PreparedStatement s = getStatement("UPDATE order SET paid = 1 WHERE table = ?");
+		s.setInt(1, table);
 		s.executeUpdate();
 	}
 }

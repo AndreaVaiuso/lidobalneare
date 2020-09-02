@@ -1,6 +1,9 @@
 var currentCard;	// Stores which card is currently open. None is at the beginning.
 
 function cardOpen(card) {
+	// Empty dishes div.
+	$("#dishesdiv").html();
+	
 	// Close previously open cards.
 	$(currentCard).animate({
 		height : '100px'
