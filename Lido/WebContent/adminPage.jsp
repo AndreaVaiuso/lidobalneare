@@ -53,7 +53,7 @@
 			
 			<div class="btn-group lidobtngroup" role="group">
 				<button id="send_btn" class="btn btn-primary lidobtnofbtngroup" type="button">Send</button>
-				<button class="btn btn-primary lidobtnofbtngroup" type="button" onclick='$("#communication_form").toggle();'>Cancel</button>
+				<button class="btn btn-primary lidobtnofbtngroup" type="button" onclick='$("#communication_form").fadeOut(500);'>Cancel</button>
 			</div>
 		</div>
 	</form>
@@ -171,7 +171,7 @@
 			<div class="buttoncontainer">
 				<button id="admin_checkreservationbutton" class="btn btn-primary" type="button">Check reservations</button>
 				<button id="admin_checkunregreservationbutton" class="btn btn-primary" type="button">Check unregistered reservations</button>
-				<button class="btn btn-primary" type="button" onclick='$("#communication_form").toggle();'>Send communication</button>
+				<button class="btn btn-primary" type="button" onclick='$("#communication_form").fadeIn(500);'>Send communication</button>
 			</div>
 		</div>
 	</div>

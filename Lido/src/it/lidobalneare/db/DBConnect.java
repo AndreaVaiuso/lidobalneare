@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.StringTokenizer;
@@ -470,25 +471,7 @@ public class DBConnect {
 		s.executeUpdate();
 	}
 	
-	// Returns the list of all dishes. Used in menu.jsp.
-	public static ArrayList<Dish> getDishes () throws SQLException {
-		PreparedStatement s = getStatement("SELECT * FROM menu");
-		ResultSet r = s.executeQuery();
-		ArrayList<Dish> list = new ArrayList<Dish>();
-		
-		while (r.next()) {
-			Dish d = new Dish();
-			d.setName(r.getString("dishname"));
-			d.setCategory(r.getInt("category"));
-			d.setIngredients(r.getString("ingredients"));
-			d.setPrice(r.getDouble("price"));
-			list.add(d);
-		}
-		
-		return list;
-	}
-	
-	// Return the list of dishes grouped in the chosen category. Used in menuEditor.jsp.
+	// Return the list of dishes grouped in the chosen category. Used in menu.jsp and menuEditor.jsp.
 	public static ArrayList<Dish> getDishesByCategory(int category) throws SQLException {
 		PreparedStatement s = getStatement("SELECT * FROM menu WHERE category = ?");
 		s.setInt(1, category);
@@ -588,5 +571,23 @@ public class DBConnect {
 		}
 		
 		return tables;
+	}
+
+	public static void sendMessage(String message) throws SQLException {
+		PreparedStatement s = getStatement("INSERT INTO message VALUES (GETDATE(),?)");
+		s.setString(1, message);
+		s.executeUpdate();
+	}
+	
+	public static String getMessage() {
+		try {
+			PreparedStatement s = getStatement("SELECT message FROM message ORDER BY date DESC");
+			ResultSet r = s.executeQuery();
+			if(r.next()) {
+				return r.getString("message");
+			} else return "No message";
+		} catch (SQLException e) {
+			return "No message";
+		}
 	}
 }

@@ -52,6 +52,13 @@ $("#admin_checkunregreservationbutton").click(function(){
 $("#send_btn").click(
 	function (){
 		var msg = $("#msg").val();
-		//TODO Send the message to info monitors.
+		$.get("Admin?request=message&message="+msg,function(response){
+			if(response.type=="success"){
+				$("#communication_form").fadeOut(500);
+			} else {
+				$("#communication_form").fadeOut(500);
+				showDefaultError();
+			}
+		})
 	}
 );

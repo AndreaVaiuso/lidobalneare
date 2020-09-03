@@ -54,7 +54,6 @@ public class AdminServlet extends HttpServlet {
 				out.append(jsonResponse);
 				break;
 			case "deletechair":
-				System.out.println("DELETE");
 				boolean exists = DBConnect.existsPrenotation(request.getParameter("chair"));
 				
 				if(exists) {
@@ -71,12 +70,19 @@ public class AdminServlet extends HttpServlet {
 					out.append("{ \"type\" : \"notexists\"}");
 				}
 				break;
+			case "message":
+				DBConnect.sendMessage(request.getParameter("message"));
+				out.append(jsonResponse);
+				break;
 			}
 		} catch (NumberFormatException e) {
+			e.printStackTrace();
 			out.append("{ \"type\" : \"fielderror\"}");	
 		} catch (SQLIntegrityConstraintViolationException e) {
+			e.printStackTrace();
 			out.append("{ \"type\" : \"duplicate\"}");		
 		} catch (SQLException e) {
+			e.printStackTrace();
 			out.append("{ \"type\" : \"error\"}");
 		} 
 		out.close();
