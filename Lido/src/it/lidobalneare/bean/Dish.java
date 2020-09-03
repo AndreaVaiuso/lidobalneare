@@ -2,7 +2,7 @@ package it.lidobalneare.bean;
 
 public class Dish {
 	private String name;
-	private String category;
+	private int category;
 	private String ingredients;
 	private Double price;
 	
@@ -12,10 +12,10 @@ public class Dish {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getCategory() {
+	public int getCategory() {
 		return category;
 	}
-	public void setCategory(String category) {
+	public void setCategory(int category) {
 		this.category = category;
 	}
 	public String getIngredients() {

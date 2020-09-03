@@ -3,12 +3,11 @@
 <%@ page import="it.lidobalneare.db.DBConnect"%>
 <%@ page import="it.lidobalneare.bean.Dish" %>
 <%@ page import="it.lidobalneare.bean.Order" %>
-<jsp:useBean id="orderTable" class="it.lidobalneare.bean.Order" scope="session" /> 
 
 <% 
 // No need to login. Customer must pay in this page to order.
-try{
-	if( orderTable.getTableNumber() < 1 ){
+try {
+	if ( Integer.valueOf(request.getParameter("table_number")) < 1 ) {
 		response.sendRedirect("./errorpage.html");
 		return;
 	}
@@ -33,17 +32,6 @@ double total = 0;
     
     <script src="assets/js/jquery.min.js"></script>
     
-    <script type="text/javascript">
-	    function sendOrder (table) {
-	    	<% orderTable.setPrice(total);  %>
-	    	
-	    	// Pagamento PayPal.
-	    	
-	    	<% orderTable.setPrice(0); %>
-	    	$.get("MenuServlet?type=pay&table=" + table);
-	    }
-    </script>
-    
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Acme">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Akronim">
@@ -61,7 +49,7 @@ double total = 0;
         <div class="menuCategoriesPanel">
             <div id="appetizers_card" class="card lidocard" onclick='cardOpen("#appetizers_card");<% 
             	try {
-            		dishes = DBConnect.getDishesByCategory("Appetizers");
+            		dishes = DBConnect.getDishesByCategory(1);
             	} catch (Exception e) {
             		e.printStackTrace();
             	}
@@ -75,7 +63,7 @@ double total = 0;
             
             <div id="fist_dishes_card" class="card lidocard" onclick='cardOpen("#fist_dishes_card");<% 
             	try {
-            		dishes = DBConnect.getDishesByCategory("First dishes");
+            		dishes = DBConnect.getDishesByCategory(2);
             	} catch (Exception e) {
             		e.printStackTrace();
             	}
@@ -89,7 +77,7 @@ double total = 0;
             
             <div id="second_dishes_card" class="card lidocard" onclick='cardOpen("#second_dishes_card");<% 
             	try {
-            		dishes = DBConnect.getDishesByCategory("Second dishes");
+            		dishes = DBConnect.getDishesByCategory(3);
             	} catch (Exception e) {
             		e.printStackTrace();
             	}
@@ -103,7 +91,7 @@ double total = 0;
             
             <div id="desserts_card" class="card lidocard" onclick='cardOpen("#desserts_card");<% 
             	try {
-            		dishes = DBConnect.getDishesByCategory("Desserts");
+            		dishes = DBConnect.getDishesByCategory(4);
             	} catch (Exception e) {
             		e.printStackTrace();
             	}
@@ -117,7 +105,7 @@ double total = 0;
             
             <div id="bar_card" class="card lidocard" onclick='cardOpen("#bar_card");<% 
             	try {
-            		dishes = DBConnect.getDishesByCategory("Bar");
+            		dishes = DBConnect.getDishesByCategory(5);
             	} catch (Exception e) {
             		e.printStackTrace();
             	}
@@ -139,8 +127,6 @@ double total = 0;
                     <h4 class="card-title"><%= dishes.get(i).getName() %></h4>
                     <h6 class="text-muted card-subtitle mb-2"><%= dishes.get(i).getPrice() %>&euro;</h6>
                     <p class="card-text"><%= dishes.get(i).getIngredients() %><br /></p>
-                    <!-- ><button class="btn btn-primary" type="button" onclick='$.get("MenuServlet?type=addOrder&table="+<%= orderTable.getTableNumber() 
-                      %>+"&dish="+<%= dishes.get(i).getName() %>)'>Add to your order</button> -->
                     <button class="btn btn-primary" type="button" onclick='addToOrder(<%= dishes.get(i).getName() %>, <%= dishes.get(i).getPrice() %>)'>Add to your order</button>
                 </div>
             </div>
