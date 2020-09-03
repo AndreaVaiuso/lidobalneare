@@ -45,19 +45,11 @@ public class CheckPrenotation extends HttpServlet {
 			switch(type) {
 			case "pass":
 				Pass p = DBConnect.getCustomerPass(email, code);
-				if(p==null) {
-					session.setAttribute("pass", null);
-				} else {
-					session.setAttribute("pass", p);
-				}
+				session.setAttribute("pass", p);
 				break;
 			case "booking":
 				Booking b = DBConnect.getCustomerBooking(email, code);
-				if(b==null) {
-					session.setAttribute("booking", null);
-				} else {
-					session.setAttribute("booking", b);
-				}
+				session.setAttribute("booking", b);
 				break;
 			default:
 				break;

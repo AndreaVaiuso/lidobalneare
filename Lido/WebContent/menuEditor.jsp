@@ -38,9 +38,9 @@ try{
 </head>
 
 <body>
+	<%@include file="navRestaurant.html"%>
     <div class="topDivBkg">
     	<img class="titleimage" src="assets/img/menuEditorLogo.png" />
-	    <%@include file="navRestaurant.html"%>
 	    <script>
 	    	document.getElementById("res_menu").classList.add("active");
 	    </script>

@@ -46,9 +46,9 @@ try {
 		<div class="alertwindow">
 			<span id="paymenttitle" class="lidoalerttitle">Create a new prenotation</span>
 			<hr class="lidohr">
-			
 			<input class="lidoblockstyle" type="text" id="name_field" placeholder="Name">
 			<input class="lidoblockstyle" type="text" id="surname_field" placeholder="Surname">
+			<hr class="lidohr">
 			<span class="logindescription">Price: </span>
 			<span id="price_label" class="logindescription" style="font-weight:bold; color:green; font-size:50px"> </span>
 			<div class="btn-group lidobtngroup" role="group">

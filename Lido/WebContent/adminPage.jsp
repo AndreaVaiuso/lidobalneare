@@ -170,6 +170,7 @@
 			
 			<div class="buttoncontainer">
 				<button id="admin_checkreservationbutton" class="btn btn-primary" type="button">Check reservations</button>
+				<button id="admin_checkunregreservationbutton" class="btn btn-primary" type="button">Check unregistered reservations</button>
 				<button class="btn btn-primary" type="button" onclick='$("#communication_form").toggle();'>Send communication</button>
 			</div>
 		</div>

@@ -1,7 +1,10 @@
 function bookchair(chairname, price){
 	let bookdate = $("#datefield").val();
 	let booktimeslot = document.getElementById("timeslotSelect").selectedIndex;
-	showquery("Confirm your booking","You are going to book chair " + chairname + " for " + bookdate + ". A payment module will be opened before",function(){
+	$("#price_label").html(price+"&euro;");
+	$("#description_label").html("You are going to book chair " + chairname + " for " + bookdate + ". A payment module will be opened before");
+	$("#paymentScreen").fadeIn(500);
+	$("#paymentyesbtn").click(function(){
 		$.get("Customer?request=book&chair="+chairname+"&date="+bookdate+"&timeslot="+booktimeslot,function(response){
 			if(response.type=="success"){
 				showalert("Done","Your reservation has been created. We have sent an email with all details",function(){
@@ -11,7 +14,10 @@ function bookchair(chairname, price){
 				showDefaultError();
 			}
 		});
-	}, "Proceed with payment");
+	});
+	$("#paymentnobtn").click(function(){
+		$("#paymentScreen").fadeOut(500);
+	});
 }
 
 function updateLayout(){

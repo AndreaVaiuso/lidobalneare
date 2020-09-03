@@ -10,6 +10,10 @@
 <%@ page import="java.util.Calendar"%>
 
 <% 
+java.util.Date javatoday = Calendar.getInstance().getTime();
+java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+Date today = Date.valueOf(dateFormat.format(javatoday));
+
 User cntusr = (User) session.getAttribute("connecteduser");
 
 if (cntusr == null) {
@@ -18,27 +22,30 @@ if (cntusr == null) {
 }
 
 String customer = (String) session.getAttribute("customer");
+ArrayList<Pass> passes = new ArrayList<Pass>();
+ArrayList<Booking> bookings = new ArrayList<Booking>();
 
 if (customer == null) {
 	customer = cntusr.getEmail();
 }
-
 if ( !customer.equals(cntusr.getEmail()) && !cntusr.isAdmin() ) {
 	response.sendRedirect("errorpage.html");
 	return;
 }
 
-java.util.Date javatoday = Calendar.getInstance().getTime();
-java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
-Date today = Date.valueOf(dateFormat.format(javatoday));
-
-// Passes
-ArrayList<Pass> passes = new ArrayList<Pass>();
+if(request.getParameter("unregistered").equals("YES")){
+	try {
+		bookings = DBConnect.getNotRegisteredBookings();
+	} catch (Exception e1) {}
+} else {
+	java.util.Collections.reverse(passes);
+	try {
+		passes = DBConnect.getCustomerPasses(customer);
+		bookings = DBConnect.getCustomerBookings(customer);
+	} catch (Exception e) {} finally {}
+}
 java.util.Collections.reverse(passes);
-
-try {
-	passes = DBConnect.getCustomerPasses(customer);
-} catch (Exception e) {}
+java.util.Collections.reverse(bookings);
 
 for (int i = 0; i < passes.size(); i++) { %>
 	<div class="prenpass" 
@@ -72,13 +79,6 @@ for (int i = 0; i < passes.size(); i++) { %>
 <hr>
 
 <%
-// Bookings
-ArrayList<Booking> bookings = new ArrayList<Booking>();
-java.util.Collections.reverse(bookings);
-
-try {
-	bookings = DBConnect.getCustomerBookings(customer);
-} catch (Exception e1) {}
 
 for (int i = 0; i < bookings.size(); i++) { %>
 	<div class="prenpass"
@@ -94,7 +94,7 @@ for (int i = 0; i < bookings.size(); i++) { %>
 	  %>','<%= bookings.get(i).getEmail() %>')" <% if (today.after(bookings.get(i).getDay())) { %> disabled <% } %> >
 		<i class="fa fa-qrcode"></i>
 	</button>
-	<span class="prentitle">Valid for: <%= bookings.get(i).getDay() %></span>
+	<span class="prentitle"><% if(request.getParameter("unregistered").equals("YES")){%><%=bookings.get(i).getEmail()%>: <%}%>Valid for: <%= bookings.get(i).getDay() %></span>
 	<%
 	switch ( bookings.get(i).getTime_slot() ) {
 		case 0 : %>

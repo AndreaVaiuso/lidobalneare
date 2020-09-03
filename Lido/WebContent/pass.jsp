@@ -36,6 +36,23 @@ try {
 
 <body>
 	<%@ include file="alertbox.html" %>
+	
+	<div id="paymentScreen" class="alertscreen" style="display: none;">
+		<div class="alertwindow">
+			<span id="paymenttitle" class="lidoalerttitle">Buy a pass</span>
+			<hr class="lidohr">
+			<span class="logindescription" id="description_label"> Description </span>
+			<hr class="lidohr">
+			<span class="logindescription">Price: </span>
+			<span id="price_label" class="logindescription" style="font-weight:bold; color:green; font-size:50px"> </span>
+			<div class="btn-group lidobtngroup" role="group">
+				<button id="paymentyesbtn" class="btn btn-primary lidobtnofbtngroup"
+					type="button">Confirm prenotation</button>
+				<button id="paymentnobtn" class="btn btn-primary lidobtnofbtngroup"
+					type="button">Cancel</button>
+			</div>
+		</div>
+	</div>
 
 	<div class="divcontainer">
 	

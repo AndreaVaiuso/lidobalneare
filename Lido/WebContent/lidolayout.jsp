@@ -41,11 +41,9 @@
 					}
 					
 					int timeslot = 0;
-					boolean isPass = false;
+					boolean isPass = request.getParameter("prenpass").equals("YES");
 					try{
 						timeslot = Integer.valueOf(request.getParameter("timeslot"));
-						System.out.println("layout.jsp: " + request.getParameter("pass"));
-						isPass = request.getParameter("prenpass").equals("YES");
 					} catch (Exception e){}
 					boolean occupied = true;
 					if(!isPass) {occupied = DBConnect.getChairOccupied(chairSchema.get(i).getChairname(),date,timeslot);}

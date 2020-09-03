@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.StringTokenizer;
 
 import javax.mail.MessagingException;
 
@@ -63,6 +64,36 @@ public class DBConnect {
 			return u;
 		} else {
 			throw new NullPointerException();
+		}
+	}
+	
+	public static User getUserName(String email) throws SQLException, NullPointerException {
+		PreparedStatement st = getStatement("SELECT * FROM user WHERE email = ?");
+		st.setString(1, email);
+		ResultSet r = st.executeQuery();
+		if(r.next()) {
+			User u = new User();
+			u.setEmail(r.getString("email"));
+			u.setName(r.getString("name"));
+			u.setSurname(r.getString("surname"));
+			u.setGender(r.getString("sex"));
+			u.setActive(r.getString("active"));
+			u.setPaypal(r.getString("paypal"));
+			u.setBirthdate(r.getDate("birthdate").toString());
+			u.setRole(r.getString("role"));
+			return u;
+		} else {
+			User u = new User();
+			u.setEmail("Not registered user");
+			StringTokenizer stok = new StringTokenizer(email);
+			if(stok.hasMoreTokens()) {
+				u.setName(stok.nextToken());
+				while(stok.hasMoreTokens()) {
+					u.setSurname(u.getSurname()+stok.nextToken());
+				}
+				return u;
+			} else throw new NullPointerException();
+			
 		}
 	}
 
@@ -165,6 +196,23 @@ public class DBConnect {
 			return b;
 		}
 		return null;
+	}
+	
+	
+	public static ArrayList<Booking> getNotRegisteredBookings() throws SQLException{
+		PreparedStatement s = getStatement("SELECT * FROM booking b WHERE NOT EXISTS(SELECT * FROM user u WHERE u.email = b.email)");
+		ResultSet r = s.executeQuery();
+		ArrayList<Booking> list = new ArrayList<Booking>();
+		while (r.next()) {
+			Booking b = new Booking();
+			b.setEmail(r.getString("email"));
+			b.setDay(r.getDate("day"));
+			b.setTime_slot(r.getInt("time_slot"));
+			b.setSeat(r.getString("seat"));
+			b.setBooking_id(r.getString("booking_id"));
+			list.add(b);
+		}
+		return list;
 	}
 
 	

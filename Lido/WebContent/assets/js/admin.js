@@ -38,11 +38,15 @@ $("#admin_checkreservationbutton").click(
 			// Do POST.
 			$.post("Admin", customer, function(data) {
 				$("ajaxloaderscreen").toggle();
-				location.href = "bookingsAdmin.jsp";
+				location.href = "bookingsAdmin.jsp?unregistered=NO";
 			});
 		}
 	}
 );
+
+$("#admin_checkunregreservationbutton").click(function(){
+	location.href = "bookingsAdmin.jsp?unregistered=YES";
+});
 
 
 $("#send_btn").click(

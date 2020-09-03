@@ -7,7 +7,7 @@
 
 <% 
 try{
-	if(!connecteduser.getRole().equals("cook")){
+	if(!connecteduser.isCook()){
 		response.sendRedirect("./errorpage.html");
 		return;
 	}
