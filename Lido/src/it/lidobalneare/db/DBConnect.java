@@ -424,7 +424,7 @@ public class DBConnect {
 	
 	// Return the list of dishes grouped in the chosen category. Used in menu.jsp and menuEditor.jsp.
 	public static ArrayList<Dish> getDishesByCategory(String category) throws SQLException {
-		PreparedStatement s = getStatement("SELECT * FROM dish WHERE category = ?");
+		PreparedStatement s = getStatement("SELECT * FROM menu WHERE category = ?");
 		s.setString(1, category);
 		ResultSet r = s.executeQuery();
 		ArrayList<Dish> list = new ArrayList<Dish>();
@@ -464,8 +464,13 @@ public class DBConnect {
 	
 	// Gets orders and quantities.
 	public static ArrayList<OrderQuantity> getOrderQuantitiesByTable (int table) throws SQLException {
-		PreparedStatement s = getStatement("SELECT count(*) FROM order WHERE tableNumber = ? GROUP BY dish");
+		java.util.Date javatoday = Calendar.getInstance().getTime();
+		java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+		Date today = Date.valueOf(dateFormat.format(javatoday));
+		
+		PreparedStatement s = getStatement("SELECT count(*) FROM order WHERE tableNumber = ? AND date = ? GROUP BY dish");
 		s.setInt(1, table);
+		s.setDate(2, today);
 		ResultSet r = s.executeQuery();
 		ArrayList<OrderQuantity> list = new ArrayList<OrderQuantity>();
 		
@@ -492,12 +497,12 @@ public class DBConnect {
 		java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
 		Date today = Date.valueOf(dateFormat.format(javatoday));
 		
-		PreparedStatement s1 = getStatement("SELECT price FROM dish WHERE name = ?");
+		PreparedStatement s1 = getStatement("SELECT price FROM menu WHERE dishname = ?");
 		s1.setString(1, dish);
 		ResultSet r1 = s1.executeQuery();
 		r1.next();
 		
-		PreparedStatement s = getStatement("INSERT INTO order VALUES (?,?,?,?,?)");
+		PreparedStatement s = getStatement("INSERT INTO order VALUES (?,?,?,?)");
 		s.setInt(1,table);
 		s.setDate(2, today);
 		s.setString(3, dish);
