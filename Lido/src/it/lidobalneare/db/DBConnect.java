@@ -571,13 +571,6 @@ public class DBConnect {
 		s.executeUpdate();
 	}
 	
-/*	// Sets the orders as paid.
-	public static void payOrders (int table) throws SQLException {
-		PreparedStatement s = getStatement("UPDATE order SET paid = 1 WHERE table = ?");
-		s.setInt(1, table);
-		s.executeUpdate();
-	}
-*/	
 	// Returns a list of all the tables with any pending order.
 	public static ArrayList<Integer> getTables () throws SQLException {
 		ArrayList<Integer> tables = new ArrayList<Integer>();

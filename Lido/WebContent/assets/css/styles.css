@@ -208,7 +208,7 @@ body, html {
 }
 
 .card.lidocard {
-  max-height: 100px;
+  height: 100px;
   position: relative;
   overflow: hidden;
   transition: all .5s linear;
