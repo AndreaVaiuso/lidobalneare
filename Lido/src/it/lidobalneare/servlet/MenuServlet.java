@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import it.lidobalneare.bean.Order;
 import it.lidobalneare.db.DBConnect;
 
@@ -35,7 +39,7 @@ public class MenuServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		switch ( request.getParameter("type") ) {
 		// Adds the order with the chosen id.
-		case "addOrder":
+	/*	case "addOrder":
 			int table = Integer.parseInt(request.getParameter("table"));
 			String dish = request.getParameter("dish");
 			try {
@@ -45,9 +49,9 @@ public class MenuServlet extends HttpServlet {
 			}
 			response.sendRedirect("menu.jsp");
 			break;
-			
+	*/		
 		// Removes the order with the chosen id.
-		case "removeOrder" :
+	/*	case "removeOrder" :
 			try {
 				DBConnect.removeOrder(Integer.parseInt(request.getParameter("id")));		
 			} catch (SQLException e) {
@@ -55,9 +59,9 @@ public class MenuServlet extends HttpServlet {
 			}
 			response.sendRedirect("menu.jsp");
 			break;
-			
+	*/		
 		// Sets the orders paid.
-		case "pay" :
+	/*	case "pay" :
 			try {
 				DBConnect.payOrders(Integer.parseInt(request.getParameter("table")));
 			} catch (SQLException e) {
@@ -65,7 +69,7 @@ public class MenuServlet extends HttpServlet {
 			}
 			response.sendRedirect("menu.jsp");
 			break;
-			
+	*/		
 		// Table's QR-code scanned.
 		case "tableqr" :
 			Order o = new Order();
@@ -82,10 +86,41 @@ public class MenuServlet extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Used by menu.js to confirm the order.
+	 * Inserts into DB every single order.
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		JSONArray pendingOrder;
+		Order o = (Order) request.getSession().getAttribute("orderTable");
+		int tableNum = o.getTableNumber();
+		
+		PrintWriter out = response.getWriter();
+		response.setContentType("application/json");
+		
+		try {
+			pendingOrder = new JSONArray(request.getParameter("pendingOrder"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+			out.append("{ \"type\" : \"error\" }");
+			out.close();
+			return; 
+		}
+		
+		// PAGAMENTO PAYPAL.
+		
+		for (int i = 0; i < pendingOrder.length(); i++) {
+			try {
+				DBConnect.addOrder(tableNum, pendingOrder.getJSONObject(i).getString("dish"));
+			} catch (Exception e) {
+				e.printStackTrace();
+				out.append("{ \"type\" : \"error\" }");
+				out.close();
+				return; 
+			}
+		}
+		
+		out.append("{ \"type\" : \"success\" }");
+		out.close();
 	}
 
 }

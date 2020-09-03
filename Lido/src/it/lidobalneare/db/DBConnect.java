@@ -443,19 +443,18 @@ public class DBConnect {
 	
 	// Method for getting the orders of a specific customer sit at a specific table. Used in menu.jsp.
 	public static ArrayList<Order> getOrdersByTable (int table) throws SQLException {
-		PreparedStatement s = getStatement("SELECT * FROM order WHERE tableNumber = ?");
+		PreparedStatement s = getStatement("SELECT * FROM menuorder o, menu m, WHERE o.tableNumber = ? AND o.dish = m.dishname");
 		s.setInt(1, table);
 		ResultSet r = s.executeQuery();
 		ArrayList<Order> list = new ArrayList<Order>();
 		
 		while (r.next()) {
 			Order o = new Order();
-			o.setId(r.getInt("id"));
-			o.setTableNumber(r.getInt("tableNumber"));
-			o.setDate(r.getDate("date"));
-			o.setDish(r.getString("dish"));
-			o.setPrice(r.getDouble("price"));
-			o.setPaid(r.getBoolean("paid"));
+			o.setId(r.getInt("o.id"));
+			o.setTableNumber(table);
+			o.setDate(r.getDate("o.date"));
+			o.setDish(r.getString("o.dish"));
+			o.setPrice(r.getDouble("m.price"));
 			list.add(o);
 		}
 		
@@ -468,7 +467,7 @@ public class DBConnect {
 		java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
 		Date today = Date.valueOf(dateFormat.format(javatoday));
 		
-		PreparedStatement s = getStatement("SELECT count(*) FROM order WHERE tableNumber = ? AND date = ? GROUP BY dish");
+		PreparedStatement s = getStatement("SELECT count(*) FROM menuorder WHERE tableNumber = ? AND date = ? GROUP BY dish");
 		s.setInt(1, table);
 		s.setDate(2, today);
 		ResultSet r = s.executeQuery();
@@ -486,7 +485,7 @@ public class DBConnect {
 	
 	// Removes an order. Used in MenuServlet.
 	public static void removeOrder (int id) throws SQLException {
-		PreparedStatement s = getStatement("DELETE FROM order WHERE id = ?");
+		PreparedStatement s = getStatement("DELETE FROM menuorder WHERE id = ?");
 		s.setInt(1, id);
 		s.executeUpdate();
 	}
@@ -496,33 +495,26 @@ public class DBConnect {
 		java.util.Date javatoday = Calendar.getInstance().getTime();
 		java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
 		Date today = Date.valueOf(dateFormat.format(javatoday));
-		
-		PreparedStatement s1 = getStatement("SELECT price FROM menu WHERE dishname = ?");
-		s1.setString(1, dish);
-		ResultSet r1 = s1.executeQuery();
-		r1.next();
-		
-		PreparedStatement s = getStatement("INSERT INTO order VALUES (?,?,?,?)");
+
+		PreparedStatement s = getStatement("INSERT INTO menuorder VALUES (?,?,?)");
 		s.setInt(1,table);
 		s.setDate(2, today);
 		s.setString(3, dish);
-		s.setDouble(4, r1.getDouble("price"));
-		s.setBoolean(5, false);
 		
 		s.executeUpdate();
 	}
 	
-	// Sets the orders as paid.
+/*	// Sets the orders as paid.
 	public static void payOrders (int table) throws SQLException {
 		PreparedStatement s = getStatement("UPDATE order SET paid = 1 WHERE table = ?");
 		s.setInt(1, table);
 		s.executeUpdate();
 	}
-	
+*/	
 	// Returns a list of all the tables with any pending order.
 	public static ArrayList<Integer> getTables () throws SQLException {
 		ArrayList<Integer> tables = new ArrayList<Integer>();
-		PreparedStatement s = getStatement("SELECT DISTINCT tableNumber FROM order WHERE paid = 1");
+		PreparedStatement s = getStatement("SELECT DISTINCT tableNumber FROM menuorder WHERE paid = 1");
 		ResultSet r = s.executeQuery();
 		
 		while ( r.next() ) {

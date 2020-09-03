@@ -150,7 +150,48 @@ double total = 0;
         </div>
     </div>
     
-    <div id="orderDiv"><!-- To be filled by JavaScript. --></div>
+    <!-- Orders -->
+    
+    <div id="orderDiv">
+    <%/*	ArrayList<Order> orders = new ArrayList<Order>();
+    	try {
+    		orders = DBConnect.getOrdersByTable(orderTable.getTableNumber());
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    	for (int i = 0; i < orders.size(); i++) {
+    		if ( !orders.get(i).isPaid() ) {
+    			total += orders.get(i).getPrice();
+    	*/
+    	
+    	
+    			%>
+    			<!--
+		        <div class="card menuMenuItem">
+		            <div class="card-body">
+		                <h4 class="card-title menutitleorder"><%= orders.get(i).getDish() %></h4>
+		                <h6 class="text-muted card-subtitle mb-2 menupriceorder"><%= orders.get(i).getPrice() %> &euro;</h6>
+		                <button class="btn btn-danger menuRemoveOrder" type="button" onclick='$.get("MenuServlet?type=removeOrder&id="+<%= orders.get(i).getId() %>);'>Remove</button>
+		            </div>
+		        </div>
+		        -->
+		<%	//} %>
+    <%	//} %>
+        
+        <hr>
+
+    <%	//if (total > 0) { %>
+	        <div class="card menuMenuItemtotal">
+	            <div class="card-body">
+	                <h4 class="card-title menutitleorder">Total:</h4>
+	                <h6 class="text-muted card-subtitle mb-2 menupriceordertotal" id="total"><%= total %>&euro;</h6>
+	                <button class="btn btn-primary menuRemoveOrder" type="button" onclick='sendOrder(<%= orderTable.getTableNumber() %>)'>Send order to kitchen</button>
+	            </div>
+	        </div>
+    <%	//} %>
+
+    </div>
     
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/menu.js"></script>

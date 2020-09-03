@@ -7,8 +7,7 @@ public class Order {
 	private int tableNumber;
 	private Date date;
 	private String dish;
-	private double price;
-	private boolean paid;
+	private double price;	// Not present in DB. Must retrieve from table menu.
 	
 	public int getId() {
 		return id;
@@ -40,11 +39,5 @@ public class Order {
 	}
 	public void setPrice(double price) {
 		this.price = price;
-	}
-	public boolean isPaid() {
-		return paid;
-	}
-	public void setPaid(boolean paid) {
-		this.paid = paid;
 	}
 }

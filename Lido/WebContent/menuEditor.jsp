@@ -6,12 +6,11 @@
 
 <% 
 try{
-	if(!connecteduser.getRole().equals("cook")){
+	if(!connecteduser.isCook()){
 		response.sendRedirect("./errorpage.html");
 		return;
 	}
 } catch (NullPointerException e){
-	System.out.println("Session deleted");
 	response.sendRedirect("login.html");
 	return;
 }
@@ -24,7 +23,7 @@ try{
 <head>
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
     
-    <title>LidoBalneare</title>
+    <title>Lido Menu Editor</title>
     
     <script src="assets/js/jquery.min.js"></script>
     
@@ -41,16 +40,13 @@ try{
 <body>
     <div class="topDivBkg">
     	<img class="titleimage" src="assets/img/menuEditorLogo.png" />
+	    <%@include file="navRestaurant.html"%>
+	    <script>
+	    	document.getElementById("res_menu").classList.add("active");
+	    </script>
     </div>
     
-    <%@include file="navRestaurant.html"%>
-    <script>
-    	document.getElementById("res_menu").classList.add("active");
-    </script>
-    
-    <%
-    ArrayList<Dish> dishes = new ArrayList<Dish>();
-    %>
+    <% ArrayList<Dish> dishes = new ArrayList<Dish>(); %>
     
     <div class="menuContainerDiv" style="display: table;">
         <div class="menuCategoriesPanel">
@@ -150,13 +146,11 @@ try{
                 	<input type="text" class="dishInsert h4" placeholder="Dish name" required />
                 	<input type="text" class="dishInsert h6" style="display: block;" placeholder="Price" required />
                 	<input type="text" class="dishInsert ingredients" style="display: block;" placeholder="Ingredients" required />
-                    <button class="btn btn-primary" type="submit">Add</button>
+                    <button class="btn btn-primary" type="button">Add</button>
                 </form>
             </div>
-        </div>
-        
-        <button class="btn btn-primary" type="button" style="display: block;margin: 20px;position: relative;margin-left: 420px;">Add dish</button>
-    </div>
+        </div>    
+	</div>
     
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/menu.js"></script>

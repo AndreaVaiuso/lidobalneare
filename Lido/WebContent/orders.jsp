@@ -108,6 +108,7 @@ try{
             </div>
         </div>
 	<%	} %>
+	</div>
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/orders.js"></script>
