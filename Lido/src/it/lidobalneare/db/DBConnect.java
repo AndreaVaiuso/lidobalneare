@@ -592,7 +592,7 @@ public class DBConnect {
 	}
 
 	public static void sendMessage(String message) throws SQLException {
-		PreparedStatement s = getStatement("INSERT INTO message VALUES (GETDATE(),?)");
+		PreparedStatement s = getStatement("INSERT INTO message VALUES (now(),?)");
 		s.setString(1, message);
 		s.executeUpdate();
 	}

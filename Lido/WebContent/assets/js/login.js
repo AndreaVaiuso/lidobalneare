@@ -31,9 +31,9 @@ $("#loginbutton").click( function () {
 				case "ticket":
 					location.href = "ticket.jsp";
 					break;
-				/*case "lifeguard":	// Stessa cosa di info
-					break;*/
+				case "lifeguard":
 				case "info":
+					location.href = "infoMonitor.jsp";
 					break;
 				default:
 					location.href = "errorpage.html";
