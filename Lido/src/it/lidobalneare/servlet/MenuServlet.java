@@ -37,51 +37,6 @@ public class MenuServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		switch ( request.getParameter("type") ) {
-		// Adds the order with the chosen id.
-	/*	case "addOrder":
-			int table = Integer.parseInt(request.getParameter("table"));
-			String dish = request.getParameter("dish");
-			try {
-				DBConnect.addOrder(table, dish);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			response.sendRedirect("menu.jsp");
-			break;
-	*/		
-		// Removes the order with the chosen id.
-	/*	case "removeOrder" :
-			try {
-				DBConnect.removeOrder(Integer.parseInt(request.getParameter("id")));		
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			response.sendRedirect("menu.jsp");
-			break;
-	*/		
-		// Sets the orders paid.
-	/*	case "pay" :
-			try {
-				DBConnect.payOrders(Integer.parseInt(request.getParameter("table")));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			response.sendRedirect("menu.jsp");
-			break;
-	*/		
-		// Table's QR-code scanned.
-		case "tableqr" :
-			Order o = new Order();
-			o.setTableNumber(Integer.parseInt(request.getParameter("num")));
-			request.getSession().setAttribute("orderTable", o);
-			response.sendRedirect("menu.jsp");
-			break;
-			
-		default :
-			response.sendRedirect("errorpage.html");
-			break;				
-		}
 	}
 
 	/**

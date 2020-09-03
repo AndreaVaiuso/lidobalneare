@@ -47,7 +47,7 @@ try{
     
     <div id="qrcodescreen" class="alertscreen" style="display : none">
     	<span class="logindescription"> Table number: </span>
-		<input class="lidoblockstyle" type="number" id="tablein" placeholder="Table number">
+		<input id="tablein" class="lidoblockstyle" type="number" placeholder="Table number" />
 		<button type="button" onclick='tableQr()'></button>
 		<div class="qrcodecontainer" onclick="javascript:$('#qrcodescreen').fadeOut(500)">
 			<div id="qrcode"></div>

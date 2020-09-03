@@ -471,9 +471,9 @@ public class DBConnect {
 	}
 	
 	// Return the list of dishes grouped in the chosen category. Used in menu.jsp and menuEditor.jsp.
-	public static ArrayList<Dish> getDishesByCategory(String category) throws SQLException {
+	public static ArrayList<Dish> getDishesByCategory(int category) throws SQLException {
 		PreparedStatement s = getStatement("SELECT * FROM menu WHERE category = ?");
-		s.setString(1, category);
+		s.setInt(1, category);
 		ResultSet r = s.executeQuery();
 		ArrayList<Dish> list = new ArrayList<Dish>();
 		
