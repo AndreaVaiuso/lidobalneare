@@ -470,7 +470,25 @@ public class DBConnect {
 		s.executeUpdate();
 	}
 	
-	// Return the list of dishes grouped in the chosen category. Used in menu.jsp and menuEditor.jsp.
+	// Returns the list of all dishes. Used in menu.jsp.
+	public static ArrayList<Dish> getDishes () throws SQLException {
+		PreparedStatement s = getStatement("SELECT * FROM menu");
+		ResultSet r = s.executeQuery();
+		ArrayList<Dish> list = new ArrayList<Dish>();
+		
+		while (r.next()) {
+			Dish d = new Dish();
+			d.setName(r.getString("dishname"));
+			d.setCategory(r.getInt("category"));
+			d.setIngredients(r.getString("ingredients"));
+			d.setPrice(r.getDouble("price"));
+			list.add(d);
+		}
+		
+		return list;
+	}
+	
+	// Return the list of dishes grouped in the chosen category. Used in menuEditor.jsp.
 	public static ArrayList<Dish> getDishesByCategory(int category) throws SQLException {
 		PreparedStatement s = getStatement("SELECT * FROM menu WHERE category = ?");
 		s.setInt(1, category);

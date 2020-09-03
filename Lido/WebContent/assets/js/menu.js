@@ -1,21 +1,27 @@
-var currentCard;	// Stores which card is currently open. None is at the beginning.
+var currentCard = 0;	// Stores which card is currently open.
+						// None is at the beginning.
+						// The value is an int corresponding to the category.
 
 // JSON that stores the pending orders for the table.
 var pendingOrder = { "orders" : [] }
 
 function cardOpen(card) {
 	// Empty dishes div.
-	$("#dishesdiv").html();
+	$("#dishesdiv").html("");
 	
 	// Close previously open cards.
-	$(currentCard).animate({
-		height : '100px'
-	}, "fast");
+	if (currentCard >= 1 && currentCard <= 5) {
+		$("#card_"+currentCard).animate({
+			height : '100px'
+		}, "fast");
+	}
 	 
 	// Open selected card.
-	$(card).animate({
+	$("#card_"+card).animate({
 		height : '200px'
 	}, "fast");
+	
+	$(".card_"+card).toggle();
 	
 	currentCard = card;
 }

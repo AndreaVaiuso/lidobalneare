@@ -16,8 +16,6 @@ try {
 	response.sendRedirect("login.html");
 	return;
 }
-
-double total = 0;
 %>
 
 <!DOCTYPE html>
@@ -42,18 +40,22 @@ double total = 0;
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
-<% ArrayList<Dish> dishes = new ArrayList<Dish>(); %>
+<%
+ArrayList<Dish> dishes = new ArrayList<Dish>();
+
+try {
+	dishes = DBConnect.getDishes();
+} catch (Exception e) {	e.printStackTrace(); return; }
+%>
 
 <body>
+	<div class="topDivBkg">
+    	<img class="titleimage" src="assets/img/menuEditorLogo.png" />
+	</div>
+	
     <div class="menuContainerDiv">
-        <div class="menuCategoriesPanel">
-            <div id="appetizers_card" class="card lidocard" onclick='cardOpen("#appetizers_card");<% 
-            	try {
-            		dishes = DBConnect.getDishesByCategory(1);
-            	} catch (Exception e) {
-            		e.printStackTrace();
-            	}
-              %>'>
+    	<div class="menuCategoriesPanel">
+            <div id="card_1" class="card lidocard" onclick='cardOpen(1)'>
             	<img class="card-img w-100 d-block" src="assets/img/appetizers.jpg" />
                 <div class="card-img-overlay">
                     <h4>Appetizers</h4>
@@ -61,13 +63,7 @@ double total = 0;
                 </div>
             </div>
             
-            <div id="fist_dishes_card" class="card lidocard" onclick='cardOpen("#fist_dishes_card");<% 
-            	try {
-            		dishes = DBConnect.getDishesByCategory(2);
-            	} catch (Exception e) {
-            		e.printStackTrace();
-            	}
-              %>'>
+            <div id="card_2" class="card lidocard" onclick='cardOpen(2);'>
             	<img class="card-img w-100 d-block" src="assets/img/first.jpg" />
                 <div class="card-img-overlay">
                     <h4>First dishes</h4>
@@ -75,13 +71,7 @@ double total = 0;
                 </div>
             </div>
             
-            <div id="second_dishes_card" class="card lidocard" onclick='cardOpen("#second_dishes_card");<% 
-            	try {
-            		dishes = DBConnect.getDishesByCategory(3);
-            	} catch (Exception e) {
-            		e.printStackTrace();
-            	}
-              %>'>
+            <div id="card_3" class="card lidocard" onclick='cardOpen(3);'>
             	<img class="card-img w-100 d-block" src="assets/img/second.jpg" />
                 <div class="card-img-overlay">
                     <h4>Second dishes</h4>
@@ -89,13 +79,7 @@ double total = 0;
                 </div>
             </div>
             
-            <div id="desserts_card" class="card lidocard" onclick='cardOpen("#desserts_card");<% 
-            	try {
-            		dishes = DBConnect.getDishesByCategory(4);
-            	} catch (Exception e) {
-            		e.printStackTrace();
-            	}
-              %>'>
+            <div id="card_4" class="card lidocard" onclick='cardOpen(4);'>
             	<img class="card-img w-100 d-block" src="assets/img/dessert.jpg" />
                 <div class="card-img-overlay">
                     <h4>Desserts</h4>
@@ -103,13 +87,7 @@ double total = 0;
                 </div>
             </div>
             
-            <div id="bar_card" class="card lidocard" onclick='cardOpen("#bar_card");<% 
-            	try {
-            		dishes = DBConnect.getDishesByCategory(5);
-            	} catch (Exception e) {
-            		e.printStackTrace();
-            	}
-              %>'>
+            <div id="card_5" class="card lidocard" onclick='cardOpen(5);'>
             	<img class="card-img w-100 d-block" src="assets/img/bar.jpg" />
                 <div class="card-img-overlay">
                     <h4>Bar</h4>
@@ -122,7 +100,7 @@ double total = 0;
         <%
         for (int i = 0; i < dishes.size(); i++) {
         %>
-            <div class="card menuMenuItem">
+            <div class="card card_<%=dishes.get(i).getCategory() %> menuMenuItem" style="display: none">
                 <div class="card-body">
                     <h4 class="card-title"><%= dishes.get(i).getName() %></h4>
                     <h6 class="text-muted card-subtitle mb-2"><%= dishes.get(i).getPrice() %>&euro;</h6>
