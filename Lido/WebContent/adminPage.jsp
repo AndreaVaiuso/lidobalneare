@@ -49,7 +49,13 @@
 			<span class="lidoalerttitle">Send communication</span>
 			<hr class="lidohr" />
 			
+			<input id="title" type="text" class="lidoblockstyle" placeholder='Title of your message' />
 			<input id="msg" type="text" class="lidoblockstyle" placeholder='Type here the message, then press "Send".' />
+			<select id="messagetype" class="lidoblockstyle">
+				<option value="0" selected>Standard</option>
+				<option value="1">Warning</option>
+				<option value="2">Info</option>
+			</select>
 			
 			<div class="btn-group lidobtngroup" role="group">
 				<button id="send_btn" class="btn btn-primary lidobtnofbtngroup" type="button">Send</button>

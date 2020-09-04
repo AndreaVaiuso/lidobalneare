@@ -51,8 +51,10 @@ $("#admin_checkunregreservationbutton").click(function(){
 
 $("#send_btn").click(
 	function (){
-		var msg = $("#msg").val();
-		$.get("Admin?request=message&message="+msg,function(response){
+		let title = $("#title").val();
+		let msg = $("#msg").val();
+		let msgtype = $("#messagetype option:selected").text().toUpperCase();
+		$.get("Admin?request=message&message="+msg+"&title="+title+"&messagetype="+msgtype,function(response){
 			if(response.type=="success"){
 				$("#communication_form").fadeOut(500);
 			} else {

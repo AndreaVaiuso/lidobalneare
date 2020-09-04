@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import it.lidobalneare.bean.Chair;
+import it.lidobalneare.bean.Message;
 import it.lidobalneare.bean.User;
 import it.lidobalneare.db.DBConnect;
 
@@ -71,7 +72,7 @@ public class AdminServlet extends HttpServlet {
 				}
 				break;
 			case "message":
-				DBConnect.sendMessage(request.getParameter("message"));
+				DBConnect.sendMessage(request.getParameter("title"),request.getParameter("message"),request.getParameter("messagetype"));
 				out.append(jsonResponse);
 				break;
 			}

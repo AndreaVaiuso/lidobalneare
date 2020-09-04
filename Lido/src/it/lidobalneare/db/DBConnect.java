@@ -18,6 +18,7 @@ import it.lidobalneare.bean.Booking;
 import it.lidobalneare.bean.Pass;
 import it.lidobalneare.bean.Chair;
 import it.lidobalneare.bean.Dish;
+import it.lidobalneare.bean.Message;
 import it.lidobalneare.bean.Order;
 import it.lidobalneare.bean.OrderQuantity;
 import it.lidobalneare.bean.User;
@@ -377,38 +378,48 @@ public class DBConnect {
 		s.executeUpdate();
 	}
 	
-	public static boolean getChairOccupied(String chair, String date, int timeslot) {
+	public static String getChairOccupied(String chair, String date, int timeslot) {
 		try {
 			PreparedStatement s = null;
+			String q1;
 			if(timeslot == 0) {
-				s = getStatement(""
-						+ "SELECT * FROM booking b "
-						+ "WHERE b.seat = ? AND b.day = ? ");
+				q1 = ("("
+						+ "SELECT email FROM booking b "
+						+ "WHERE b.seat = ? AND b.day = ? OR ? = -1) )");
 			} else {
-				s = getStatement(""
-						+ "SELECT * FROM booking b "
-						+ "WHERE b.seat = ? AND b.day = ? AND (b.time_slot = ? OR b.time_slot = 0) ");
-				s.setInt(3, timeslot);
+				q1 = ("("
+						+ "SELECT email FROM booking b "
+						+ "WHERE b.seat = ? AND b.day = ? AND (b.time_slot = ? OR b.time_slot = 0) )");
 			}
+			String q2 = ("("
+					+ "SELECT pass_email email FROM pass p "
+					+ "WHERE p.seat = ? AND p.pass_begin <= ? AND ? <= p.pass_end )");
+			s = getStatement(q1 + " UNION " + q2);
+			
 			s.setString(1, chair);
 			s.setDate(2, Date.valueOf(date));
-			PreparedStatement s2 = getStatement(""
-					+ "SELECT * FROM pass p "
-					+ "WHERE p.seat = ? AND p.pass_begin <= ? AND ? <= p.pass_end ");
-			s2.setString(1, chair);
-			s2.setDate(2, Date.valueOf(date));
-			s2.setDate(3, Date.valueOf(date));
-			ResultSet r1 = s.executeQuery();
-			ResultSet r2 = s2.executeQuery();
-			if(r1.next() || r2.next()) return true; else return false;
+			s.setInt(3, timeslot);
+			s.setString(4, chair);
+			s.setDate(5, Date.valueOf(date));
+			s.setDate(6, Date.valueOf(date));
+			ResultSet r = s.executeQuery();
+			if(r.next()) {
+				String email = r.getString("email");
+				PreparedStatement s1 = getStatement("SELECT name, surname FROM user WHERE email = ?");
+				s1.setString(1, email);
+				ResultSet r1 = s1.executeQuery();
+				// If user is registered, return name and surname, else return name surname saved in email column
+				if(r1.next()) {
+					return r1.getString("name") + " " + r1.getString("surname");
+				} else return email;
+			} else return "";
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return true;
+			return "ERROR - CHECK DATABASE";
 		}
 	}
 	
-	
-	public static boolean getChairPassOccupied(String chair, String begin, int timeinterval) {
+	public static String getChairPassOccupied(String chair, String begin, int timeinterval) {
 		try {
 			Date beg = Date.valueOf(begin);
 			Date end = new Date(beg.getTime() +  (31l*24l*60l*60l*1000l)*timeinterval);
@@ -429,10 +440,10 @@ public class DBConnect {
 			
 			ResultSet r1 = s.executeQuery();
 			ResultSet r2 = s2.executeQuery();
-			if(r1.next() || r2.next()) return true; else return false;
+			if(r1.next() || r2.next()) return "OCCUPIED"; else return "";
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return true;
+			return "ERROR - CHECK DATABASE";
 		}
 	}
 
@@ -584,21 +595,28 @@ public class DBConnect {
 		return tables;
 	}
 
-	public static void sendMessage(String message) throws SQLException {
-		PreparedStatement s = getStatement("INSERT INTO message VALUES (now(),?)");
-		s.setString(1, message);
+	public static void sendMessage(String title,String message,String type) throws SQLException {
+		PreparedStatement s = getStatement("INSERT INTO message VALUES (now(),?,?,?)");
+		s.setString(1, title);
+		s.setString(2, message);
+		s.setString(3, type);
 		s.executeUpdate();
 	}
 	
-	public static String getMessage() {
+	public static Message getMessage() {
+		Message m = new Message();
 		try {
-			PreparedStatement s = getStatement("SELECT message FROM message ORDER BY date DESC");
+			PreparedStatement s = getStatement("SELECT * FROM message ORDER BY date DESC");
 			ResultSet r = s.executeQuery();
 			if(r.next()) {
-				return r.getString("message");
-			} else return "No message";
+				m.setMessage(r.getString("message"));
+				m.setTitle(r.getString("title"));
+				m.setMessagetype(r.getString("messagetype"));
+				m.setDate(r.getDate("date"));
+			}
+			return m;
 		} catch (SQLException e) {
-			return "No message";
+			return m;
 		}
 	}
 }

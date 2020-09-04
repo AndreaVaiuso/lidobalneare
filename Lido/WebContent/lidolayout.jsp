@@ -5,6 +5,7 @@
 <%@ page import="it.lidobalneare.bean.Chair"%>
 <%@ page import="it.lidobalneare.bean.User"%>
 <%@ page import="it.lidobalneare.db.DBConnect"%>
+<%@ page import="it.lidobalneare.UtilityFunc"%>
 
 <div class="contentdivscreen-layout">
 	<div style="overflow-x: auto">
@@ -32,51 +33,60 @@
 				</div>
 			</div>
 			<%
-				} else if(cntusr.isCustomer() || cntusr.isTicket()){
+				} else if(cntusr.isCustomer() || cntusr.isTicket() || cntusr.isLifeGuard() || cntusr.isInfoMonitor()){
 					String date = request.getParameter("date");
 					if(date==null){
 						DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 						Date d = new Date();
 						date = dateFormat.format(d);
 					}
+					int timeslot = UtilityFunc.getCurrentTimeSlot();
 					
-					int timeslot = 0;
-					boolean isPass = request.getParameter("prenpass").equals("YES");
+					boolean isPass = false;
+					String customerOccupied = DBConnect.getChairOccupied(chairSchema.get(i).getChairname(),date,timeslot);
+					
 					try{
+						if(!cntusr.isLifeGuard() && !cntusr.isInfoMonitor()){
+							isPass = request.getParameter("prenpass").equals("YES");
+							if(isPass) {customerOccupied = DBConnect.getChairPassOccupied(chairSchema.get(i).getChairname(),date,timeslot+1);}
+						}
 						timeslot = Integer.valueOf(request.getParameter("timeslot"));
 					} catch (Exception e){}
-					boolean occupied = true;
-					if(!isPass) {occupied = DBConnect.getChairOccupied(chairSchema.get(i).getChairname(),date,timeslot);}
-					else occupied = DBConnect.getChairPassOccupied(chairSchema.get(i).getChairname(),date,timeslot+1);
-					if(!occupied){
-						double price;
-						if(timeslot == 0){
-							price = chairSchema.get(i).getDailyPrice();
-						} else {
-							price = chairSchema.get(i).getPrice(); 
-						}
+					
+					double price;
+					if(timeslot == 0){
+						price = chairSchema.get(i).getDailyPrice();
+					} else {
+						price = chairSchema.get(i).getPrice(); 
+					}
+
+					if(customerOccupied.isEmpty()){
 						%>
-			<div class="chair" id="chair_<%=i%>"
-			  onmouseover="showChairPopup('chair_<%=i%>')"
-			  onmouseout="hideChairPopup()"
+			<div class="chair" id="chair_<%=i%>" onmouseover="showChairPopup('chair_<%=i%>')" onmouseout="hideChairPopup()"
 			  style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
 				<div class="chairpopup" style="display: none">
 					<span class="popupchairname" id="chair_<%=i%>_name"><%= chairSchema.get(i).getChairname() %></span>
 					<%
 						if(!isPass){
-							%>
-					<span class="popupchairname" id="chair_<%=i%>_price">Price: <%=price%> &euro; </span>
-					<button class="btn btn-primary btn-sm popupbutton" type="button"
-						onclick="bookchair('<%= chairSchema.get(i).getChairname() %>',<%=price%>)">Book</button>
-					<%
-								} else {
-									%>
+							if(cntusr.isInfoMonitor() || cntusr.isLifeGuard()){
+								%>
+								<span class="popupchairname" id="chair_<%=i%>_name"> FREE </span>
+								<%
+							} else {
+								%>
+								<span class="popupchairname" id="chair_<%=i%>_price">Price: <%=price%> &euro; </span>
+								<button class="btn btn-primary btn-sm popupbutton" type="button"
+									onclick="bookchair('<%= chairSchema.get(i).getChairname() %>',<%=price%>)">Book</button>
+								<%
+							}
+						} else {
+					%>
 					<span class="popupchairname" id="chair_<%=i%>_price">Price: <%= chairSchema.get(i).getPassPrice() * (timeslot+1) %>&euro;
 					</span>
 					<button class="btn btn-primary btn-sm popupbutton" type="button"
 						onclick="bookchair('<%= chairSchema.get(i).getChairname() %>',<%= chairSchema.get(i).getPassPrice() * (timeslot+1) %>)">Book</button>
 					<%
-					}
+						}
 					%>
 				</div>
 			</div>
@@ -87,18 +97,28 @@
 				onmouseover="showChairPopup('chair_<%=i%>')"
 				onmouseout="hideChairPopup()"
 				style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
-				<div class="chairpopup" style="display: none">
-					<span class="popupchairname" id="chair_<%=i%>_name">Chair
-						unavailable</span>
+				<div class="chairpopup" style="display: none; width: auto">
+					<span class="popupchairname" id="chair_<%=i%>_name"><%= chairSchema.get(i).getChairname() %></span>
+					<%
+					if(cntusr.isLifeGuard()){
+						%>
+						<span class="popupchairname" id="chair_<%=i%>_name"> <%= customerOccupied %> </span>
+						<%
+					} else if(cntusr.isInfoMonitor()){
+						%>
+						<span class="popupchairname" id="chair_<%=i%>_name"> Occupied </span>
+						<%
+					} else {
+						%>
+						<span class="popupchairname" id="chair_<%=i%>_name"> Chair unavailable </span>
+						<%
+					}
+					%>
 				</div>
 			</div>
 			<%
 					}
-					
-				} else if(cntusr.isLifeGuard() || cntusr.isInfoMonitor()){
-					//TODO Watch prenotations
-				}
-
+				} 
 			}
 			%>
 		</div>

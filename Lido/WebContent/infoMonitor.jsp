@@ -2,9 +2,10 @@
 	pageEncoding="UTF-8"%>
 <jsp:useBean id="connecteduser" class="it.lidobalneare.bean.User"
 	scope="session" />
-<%@ page import="it.lidobalneare.db.DBConnect" %>
+<%@ page import="it.lidobalneare.db.DBConnect"%>
+<%@ page import="it.lidobalneare.bean.Message"%>
 <%
-try {
+	try {
 	if (!connecteduser.isLifeGuard() && !connecteduser.isInfoMonitor()) {
 		response.sendRedirect("./errorpage.html");
 		return;
@@ -13,6 +14,7 @@ try {
 	response.sendRedirect("login.html");
 	return;
 }
+Message m = DBConnect.getMessage();
 %>
 
 <!DOCTYPE html>
@@ -40,24 +42,54 @@ try {
 <link rel="stylesheet" href="assets/fonts/font-awesome.min.css" />
 <link rel="stylesheet" href="assets/css/menu-collapse-ultimate.css" />
 <link rel="stylesheet" href="assets/css/styles.css" />
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
 	<%@ include file="alertbox.html"%>
 
 	<div class="divcontainer">
-		<div class="contentscreen" style="text-align: center; margin-top:10px">
+		<div class="contentscreen" style="text-align: center; margin-top: 5px;">
 			<div class="contentdivscreen-layout">
 				<hr>
-				<div class="infobox">
-					<span class="infobox_text"> <%=DBConnect.getMessage() %> </span>
-					<hr>
+				<a target="_blank" style="display: inline-block; margin-right:30px; vertical-align:top;" href="https://www.booked.net/weather/palermo-18798"><img src="https://w.bookcdn.com/weather/picture/3_18798_1_1_137AE9_250_ffffff_333333_08488D_1_ffffff_333333_0_6.png?scode=124&domid=w209&anc_id=78065"  alt="booked.net"/></a><!-- weather widget end -->
+				<div class="infobox" style="display: inline-block; vertical-align:top;">
+					<figure class="figure" style="width: 100%;display: inline-block">
+						<img class="img-fluid figure-img" style=" width: 50px; display:inline-block;" 
+						<% 
+						switch(m.getMessagetype()){
+						case "STANDARD":
+							%>src="assets/img/standard_message.png"<%
+							break;
+						case "WARNING":
+							%>src="assets/img/warning_message.png"<%
+							break;
+						case "INFO":
+							%>src="assets/img/info_message.png"<%
+							break;
+						default:
+							%>src="assets/img/standard_message.png"<%
+							break;
+						}
+						%>
+						>
+						<div style="width:100%; display: block">
+							<span class="font-weight-bold" style="display: inline-block; font-size: 25px; font-weight: bold;"><%= m.getTitle() %></span>
+							<hr>
+							<marquee style="display:inline-block" loop="infinite" scrollamount="5" class="marquemessage"><%=m.getDate()%> : <%= m.getMessage() %></marquee>
+						</div>
+					</figure>
+					
 				</div>
+				<hr class="lidohr">
 				<jsp:include page="lidolayout.jsp">
 					<jsp:param name="prenpass" value="NO" />
 				</jsp:include>
+				<hr>
 			</div>
-			<hr>
 		</div>
 	</div>
 	<script src="assets/js/chairPopup.js"></script>

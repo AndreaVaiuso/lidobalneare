@@ -7,10 +7,12 @@ function bookchair(chairname, price){
 	$("#paymentyesbtn").click(function(){
 		$.get("Customer?request=book&chair="+chairname+"&date="+bookdate+"&timeslot="+booktimeslot,function(response){
 			if(response.type=="success"){
+				$("#paymentScreen").hide();
 				showalert("Done","Your reservation has been created. We have sent an email with all details",function(){
 					location.href = "home.jsp";
 				});
 			} else {
+				$("#paymentScreen").hide();
 				showDefaultError();
 			}
 		});

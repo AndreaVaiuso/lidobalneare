@@ -33,17 +33,22 @@ if ( !customer.equals(cntusr.getEmail()) && !cntusr.isAdmin() ) {
 	return;
 }
 
-if(request.getParameter("unregistered").equals("YES")){
-	try {
+boolean unregistered = false;
+try { unregistered = request.getParameter("unregistered").equals("YES"); } catch (NullPointerException e) {}
+
+try{
+	if(unregistered){
 		bookings = DBConnect.getNotRegisteredBookings();
-	} catch (Exception e1) {}
-} else {
-	java.util.Collections.reverse(passes);
-	try {
+	} else {
+		java.util.Collections.reverse(passes);
 		passes = DBConnect.getCustomerPasses(customer);
 		bookings = DBConnect.getCustomerBookings(customer);
-	} catch (Exception e) {} finally {}
+	}
+} catch (Exception e){
+	e.printStackTrace();
 }
+
+
 java.util.Collections.reverse(passes);
 java.util.Collections.reverse(bookings);
 
@@ -94,7 +99,7 @@ for (int i = 0; i < bookings.size(); i++) { %>
 	  %>','<%= bookings.get(i).getEmail() %>')" <% if (today.after(bookings.get(i).getDay())) { %> disabled <% } %> >
 		<i class="fa fa-qrcode"></i>
 	</button>
-	<span class="prentitle"><% if(request.getParameter("unregistered").equals("YES")){%><%=bookings.get(i).getEmail()%>: <%}%>Valid for: <%= bookings.get(i).getDay() %></span>
+	<span class="prentitle"><% if(unregistered){%><%=bookings.get(i).getEmail()%>: <%}%>Valid for: <%= bookings.get(i).getDay() %></span>
 	<%
 	switch ( bookings.get(i).getTime_slot() ) {
 		case 0 : %>
