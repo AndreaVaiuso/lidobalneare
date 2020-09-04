@@ -1,11 +1,18 @@
 package it.lidobalneare.bean;
 
 public class Dish {
+	private int id;
 	private String name;
 	private int category;
 	private String ingredients;
-	private Double price;
+	private double price;
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
@@ -24,10 +31,10 @@ public class Dish {
 	public void setIngredients(String ingredients) {
 		this.ingredients = ingredients;
 	}
-	public Double getPrice() {
+	public double getPrice() {
 		return price;
 	}
-	public void setPrice(Double price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}	
 }

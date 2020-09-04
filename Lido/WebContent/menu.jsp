@@ -16,6 +16,11 @@ try {
 	response.sendRedirect("login.html");
 	return;
 }
+
+ArrayList<Dish> dishes = new ArrayList<Dish>();
+try {
+	dishes = DBConnect.getDishes();
+} catch (Exception e) {	e.printStackTrace(); return; }
 %>
 
 <!DOCTYPE html>
@@ -40,17 +45,9 @@ try {
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
-<%
-ArrayList<Dish> dishes = new ArrayList<Dish>();
-
-try {
-	dishes = DBConnect.getDishes();
-} catch (Exception e) {	e.printStackTrace(); return; }
-%>
-
 <body>
 	<div class="topDivBkg">
-    	<img class="titleimage" src="assets/img/menuEditorLogo.png" />
+    	<img class="titleimage" src="assets/img/menu.png" />
 	</div>
 	
     <div class="menuContainerDiv">
@@ -96,11 +93,11 @@ try {
             </div>    
         </div>
         
-        <div id="dishesdiv" class="menuMenuPanel">
+        <div class="menuMenuPanel">
         <%
         for (int i = 0; i < dishes.size(); i++) {
         %>
-            <div class="card card_<%=dishes.get(i).getCategory() %> menuMenuItem" style="display: none">
+            <div class="card category_<%=dishes.get(i).getCategory() %> menuMenuItem" style="display: none">
                 <div class="card-body">
                     <h4 class="card-title"><%= dishes.get(i).getName() %></h4>
                     <h6 class="text-muted card-subtitle mb-2"><%= dishes.get(i).getPrice() %>&euro;</h6>
@@ -114,7 +111,19 @@ try {
         </div>
     </div>
     
-    <div id="orderDiv"><!-- To be filled by JavaScript. --></div>
+    <div id="orderDiv">
+    	<!-- JavaScript will insert the orders here. -->
+    	
+    	<hr>
+		
+		<div id="divtotal" class="card menuMenuItemtotal" style="display: none">
+			<div class="card-body">
+				<h4 class="card-title menutitleorder">Table <%= request.getParameter("table_number") %> - Total:</h4>
+				<h6 class="text-muted card-subtitle mb-2 menupriceordertotal" id="total"></h6>
+				<button class="btn btn-primary menuRemoveOrder" type="button" onclick="confirmOrder()">Confirm order</button>
+			</div>
+		</div>
+    </div>
     
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/menu.js"></script>

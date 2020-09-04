@@ -185,8 +185,16 @@ body, html {
 	color: white;
 }
 
+/* Elements of the restaurant pages. */
+
+.menuContainerDiv {
+	padding-top: 30px;
+	display: table;
+	margin: auto;
+}
+
 .menuCategoriesPanel {
-	display: inline-table;
+	display: table-column;
 	width: 400px;
 	float: left;
 	color: rgb(255, 255, 255);
@@ -196,15 +204,15 @@ body, html {
 	margin-right: 20px;
 }
 
+.menuCategoriesPanel img {
+	filter: brightness(50%);
+}
+
 .menuMenuPanel {
-	display: inline-block;
+	display: table-column;
 	padding-right: 20px;
 	padding-left: 20px;
 	width: 50%;
-}
-
-.menuCategoriesPanel img {
-	filter: brightness(50%);
 }
 
 .card.lidocard {
@@ -221,11 +229,7 @@ body, html {
 	opacity: 100%;
 }
 
-.menuContainerDiv {
-	padding-top: 30px;
-	display: table;
-	margin: auto;
-}
+
 
 .card.menuMenuItem {
 	margin-bottom: 10px;

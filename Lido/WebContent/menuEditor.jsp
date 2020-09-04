@@ -5,8 +5,8 @@
 <jsp:useBean id="connecteduser" class="it.lidobalneare.bean.User" scope="session" />
 
 <% 
-try{
-	if(!connecteduser.isCook()){
+try {
+	if ( !connecteduser.isCook() ) {
 		response.sendRedirect("./errorpage.html");
 		return;
 	}
@@ -14,6 +14,11 @@ try{
 	response.sendRedirect("login.html");
 	return;
 }
+
+ArrayList<Dish> dishes = new ArrayList<Dish>();
+try {
+	dishes = DBConnect.getDishes();
+} catch (Exception e) {	e.printStackTrace(); return; }
 %>
 
 <!DOCTYPE html>
@@ -47,11 +52,9 @@ try{
     	<img class="titleimage" src="assets/img/menuEditorLogo.png" />
 	</div>
     
-    <% ArrayList<Dish> dishes = new ArrayList<Dish>(); %>
-    
     <div class="menuContainerDiv" style="display: table;">
         <div class="menuCategoriesPanel">
-            <div id="appetizers_card" class="card lidocard" onclick='cardOpen(1);'>
+            <div id="appetizers_card" class="card lidocard" onclick='cardOpen(1); showEditor();'>
    		      	<img class="card-img w-100 d-block" src="assets/img/appetizers.jpg" />
                 <div class="card-img-overlay">
                     <h4>Appetizers</h4>
@@ -59,7 +62,7 @@ try{
                 </div>
             </div>
             
-            <div id="fist_dishes_card" class="card lidocard" onclick='cardOpen(2);'>
+            <div id="fist_dishes_card" class="card lidocard" onclick='cardOpen(2); showEditor();'>
    		     	<img class="card-img w-100 d-block" src="assets/img/first.jpg" />
             	
                 <div class="card-img-overlay">
@@ -68,7 +71,7 @@ try{
                 </div>
             </div>
             
-            <div id="second_dishes_card" class="card lidocard" onclick='cardOpen(3);'>
+            <div id="second_dishes_card" class="card lidocard" onclick='cardOpen(3); showEditor();'>
             	<img class="card-img w-100 d-block" src="assets/img/second.jpg" />
             	
                 <div class="card-img-overlay">
@@ -77,7 +80,7 @@ try{
                 </div>
             </div>
             
-            <div id="desserts_card" class="card lidocard" onclick='cardOpen(4);'>
+            <div id="desserts_card" class="card lidocard" onclick='cardOpen(4); showEditor();'>
             	<img class="card-img w-100 d-block" src="assets/img/dessert.jpg" />
             	
                 <div class="card-img-overlay">
@@ -86,7 +89,7 @@ try{
                 </div>
             </div>
             
-            <div id="bar_card" class="card lidocard" onclick='cardOpen(5)'>
+            <div id="bar_card" class="card lidocard" onclick='cardOpen(5); showEditor();'>
             	<img class="card-img w-100 d-block" src="assets/img/bar.jpg" />
             	
                 <div class="card-img-overlay">
@@ -100,12 +103,12 @@ try{
         	<%
         	for (int i = 0; i < dishes.size(); i++) {
         	%>
-            <div class="card menuMenuItem">
+             <div id="dish_<%= dishes.get(i).getId() %>" class="card category_<%= dishes.get(i).getCategory() %> menuMenuItem" style="display: none">
                 <div class="card-body">
                     <h4 class="card-title"><%= dishes.get(i).getName() %></h4>
-                    <h6 class="text-muted card-subtitle mb-2"><%= dishes.get(i).getPrice() %>&euro;</h6>
+                    <h6 class="text-muted card-subtitle mb-2"><%= dishes.get(i).getPrice() %> &euro;</h6>
                     <p class="card-text"><%= dishes.get(i).getIngredients() %><br /></p>
-                    <button class="btn btn-primary" type="button">Edit</button>
+                    <button class="btn btn-primary" type="button" onclick="dishEdit(<%= dishes.get(i).getId() %>, '<%= dishes.get(i).getCategory() %>')">Edit</button>
                 </div>
             </div>
             <%
@@ -113,11 +116,13 @@ try{
             %>
             
             <div class="card menuMenuItem">
-                <form class="card-body">
-                	<input type="text" class="dishInsert h4" placeholder="Dish name" required />
-                	<input type="text" class="dishInsert h6" style="display: block;" placeholder="Price" required />
-                	<input type="text" class="dishInsert ingredients" style="display: block;" placeholder="Ingredients" required />
-                    <button class="btn btn-primary" type="button">Add</button>
+                <form id="dishAddForm" action="MenuEditorServlet" method="post" class="card-body" style="display: none">
+                	<input id="nameAdd" type="text" class="dishInsert h4" placeholder="Dish name" required />
+                	<input id="priceAdd" type="text" class="dishInsert h6" style="display: inline-block; width: 98%;" placeholder="Price" required />
+                	<span class="h6" style="display: inline-block;">&euro;</span>
+                	<input id="ingrAdd" type="text" class="dishInsert ingredients" style="display: block;" placeholder="Ingredients" required />
+                    <button class="btn btn-primary" type="submit">Add</button>
+                    <button class="btn btn-primary" type="reset">Reset</button>
                 </form>
             </div>
         </div>    

@@ -5,10 +5,8 @@ var currentCard = 0;	// Stores which card is currently open.
 // JSON that stores the pending orders for the table.
 var pendingOrder = { "orders" : [] }
 
-function cardOpen(card) {
-	// Empty dishes div.
-	$("#dishesdiv").html("");
-	
+// Called when clicking on a menu category card. Parameter "card" is an int ranging from 1 to 5.
+function cardOpen (card) {
 	// Close previously open cards.
 	if (currentCard >= 1 && currentCard <= 5) {
 		$("#card_"+currentCard).animate({
@@ -21,9 +19,14 @@ function cardOpen(card) {
 		height : '200px'
 	}, "fast");
 	
-	$(".card_"+card).toggle();
+	// Shows the dishes in the selected category.
+	$(".category_"+card).toggle();
 	
 	currentCard = card;
+}
+
+function showEditor () {
+	$(".card form").show();
 }
 
 function loadOrders () {
@@ -35,7 +38,7 @@ function loadOrders () {
 	for (var d in pendingOrder["orders"]) {
 		count++;
 		total += d.price;
-		$("#orderDiv").append(
+		$("#orderDiv").prepend(
 			'<div class="card menuMenuItem">' +
 				'<div class="card-body">' +
 					'<h4 class="card-title menutitleorder">' + d.dish + '</h4>' +
@@ -46,17 +49,8 @@ function loadOrders () {
 		);
 	}
 	
-	$("#orderDiv").append('<hr>' +
-		'<div class="card menuMenuItemtotal">' +
-			'<div class="card-body">' +
-				'<h4 class="card-title menutitleorder">Total:</h4>' +
-				'<h6 class="text-muted card-subtitle mb-2 menupriceordertotal" id="total">' + total + ' &euro;</h6>' +
-				'<button class="btn btn-primary menuRemoveOrder" type="button" onclick="confirmOrder()">Confirm order</button>' +
-			'</div>' +
-		'</div>'
-	);
-	
-	
+	$("#total").html(total + "&euro;");
+	$("#divtotal").toggle();
 }
 
 function addToOrder (dish, price) {
@@ -78,3 +72,70 @@ function confirmOrder () {
 		}
 	}, "json");
 }
+
+// Used in menuEditor. Called by clicking the "Edit" button of a dish, turns the card into a form.
+function dishEdit (id) {
+	var name = $("#dish_"+id+" h4").html();
+	var price = $("#dish_"+id+" h6").html();
+	var ingredients = $("#dish_"+id+" p").html();
+	
+	$("#dish_"+id).html(
+		'<form id="dishEditForm_'+id+'" action="MenuEditorServlet" method="post" class="card-body">' +
+        	'<input id="nameEdit_'+id+'" type="text" class="dishInsert h4" placeholder="Dish name" value="' + name + '" required />' +
+        	'<input id="priceEdit_'+id+'" type="text" class="dishInsert h6" style="display: inline-block; width: 98%;" placeholder="Price" value="' + price + '" required />' +
+			'<span class="h6" style="display: inline-block;">&euro;</span>' +
+        	'<input id="ingrEdit_'+id+'" type="text" class="dishInsert ingredients" style="display: block;" placeholder="Ingredients" value="' + ingredients + '" required />' +
+            '<button class="btn btn-primary" type="submit">Confirm</button>' +
+			'<button class="btn btn-danger" type="button" onclick="dishEditCancel('+id+','+name+','+price+','+ingredients+')">Cancel</button>' +
+        '</form>'
+	)
+	
+	$("#dishEditForm_"+id).submit(function (event) {
+		/* stop form from submitting normally */
+  		event.preventDefault();
+
+		/* get the action attribute from the <form action=""> element */
+		var $form = $(this),
+	  		url = $form.attr('action'),
+			data = {
+				"action" : 2,
+				"id" : id,
+				"dishname" : $("#nameEdit_"+id).val(),
+				"ingredients" : $("#ingrEdit_"+id).val(), 
+				"price" : $("#priceEdit_"+id).val()
+			};
+		
+		$.post(url, data);
+	});
+}
+
+// Used in menu.js. Called by clicking the "Cancel" button of a form made by dishEdit().
+function dishEditCancel (id, name, price, ingredients) {
+	$("#dish_"+id).html(
+		'<div class="card-body">' +
+	        '<h4 class="card-title">' + name + '</h4>' +
+	        '<h6 class="text-muted card-subtitle mb-2">' + price + ' &euro;</h6>' +
+	        '<p class="card-text">' + ingredients + '<br /></p>' +
+	        '<button class="btn btn-primary" type="button" onclick="dishEdit('+id+')">Edit</button>' +
+	    '</div>'
+	)
+}
+
+$("#dishAddForm").submit(function (event) {
+	/* stop form from submitting normally */
+  	event.preventDefault();
+
+	/* get the action attribute from the <form action=""> element */
+	var $form = $(this),
+  		url = $form.attr('action'),
+		data = {
+			"action" : 1,
+			"dishname" : $("#nameAdd").val(),
+			"category" : currentCard,
+			"ingredients" : $("#ingrAdd").val(), 
+			"price" : $("#priceAdd").val()
+		};
+	
+	/* Send the data */
+	$.post(url, data);
+});

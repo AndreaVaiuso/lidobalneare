@@ -529,6 +529,26 @@ public class DBConnect {
 		return list;
 	}
 	
+	// Inserts a new dish with the submitted form values. Used in menuEditor.
+	public static void insertDish (String dishname, int category, String ingredients, double price) throws SQLException {
+		PreparedStatement s = getStatement("INSERT INTO menu VALUES (?,?,?,?)");
+		s.setString(1, dishname);
+		s.setInt(2, category);
+		s.setString(3, ingredients);
+		s.setDouble(4, price);
+		s.executeUpdate();
+	}
+	
+	// Updates the chosen dish, except the category. Used in menuEditor.
+	public static void updateDish (int id, String dishname, String ingredients, double price) throws SQLException {
+		PreparedStatement s = getStatement("UPDATE menu SET dishname = ?, ingredients = ?, price = ? WHERE id = ?");
+		s.setString(1, dishname);
+		s.setString(2, ingredients);
+		s.setDouble(3, price);
+		s.setInt(4, id);
+		s.executeUpdate();
+	}
+	
 	// Method for getting the orders of a specific customer sit at a specific table. Used in menu.jsp.
 	public static ArrayList<Order> getOrdersByTable (int table) throws SQLException {
 		PreparedStatement s = getStatement("SELECT * FROM menuorder o, menu m, WHERE o.tableNumber = ? AND o.dish = m.dishname");
