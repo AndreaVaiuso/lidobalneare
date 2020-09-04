@@ -93,7 +93,6 @@ Message m = DBConnect.getMessage();
 		</div>
 	</div>
 	<script src="assets/js/chairPopup.js"></script>
-	<script src="assets/js/datelimit.js"></script>
 	<script src="assets/js/reservation.js"></script>
 	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>

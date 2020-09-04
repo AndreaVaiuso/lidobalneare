@@ -82,10 +82,10 @@ $("#createchairbtn").click(function(){
 			location.href = "layoutEditor.jsp";
 		} else if(response.type=="duplicate") {
 			$("#newchairwindow").fadeOut(500);
-			showError("Duplicate chair", "A chair with that name already exists, please try again");
+			showerror("Duplicate chair", "A chair with that name already exists, please try again");
 		} else if(response.type=="fielderror") {
 			$("#newchairwindow").fadeOut(500);
-			showError("Field error", "Missing informations or type error for fields! Please retype chair informations");
+			showerror("Field error", "Missing informations or type error for fields! Please retype chair informations");
 		}
 		else {
 			$("#newchairwindow").fadeIn(500);
@@ -100,7 +100,7 @@ $("#updatechairbtn").click(function(){
 	let dailyprice = $("#allday_price_field").val();
 	let passprice = $("#pass_price_field").val();
 	let details = $("#note_field").val();
-	$.get("Admin?updatechair="+chairname+"&price="+price+"&dailyprice="+dailyprice+"&passprice="+passprice+"&details="+details,function(response){
+	$.get("Admin?request=updatechair&updatechair="+chairname+"&price="+price+"&dailyprice="+dailyprice+"&passprice="+passprice+"&details="+details,function(response){
 		if(response.type="success"){
 			$("#newchairwindow").fadeOut(500);
 		} else {
