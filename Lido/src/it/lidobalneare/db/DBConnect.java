@@ -258,41 +258,49 @@ public class DBConnect {
 	
 	public static void updatePass(Pass prev, Pass next) throws SQLException, NullPointerException {
 		PreparedStatement s = getStatement("UPDATE pass "
-										 + "SET pass_email = ?, pass_begin = ?, pass_end = ?, seat = ? "
-										 + "WHERE pass_email = ?, pass_begin = ?, pass_end = ?, seat = ?;");
-		
-		// SET clause.
-		s.setString(1, prev.getPass_email());
-		s.setDate(2, prev.getPass_begin());
-		s.setDate(3, prev.getPass_end());
-		s.setString(5, prev.getSeat());
-		
-		// WHERE clause.
-		s.setString(6, next.getPass_email());
-		s.setDate(7, next.getPass_begin());
-		s.setDate(8, next.getPass_end());
-		s.setString(10, next.getSeat());
+										 + "SET pass_begin = ?, pass_end = ?, seat = ? "
+										 + "WHERE pass_email = ? AND pass_begin = ? AND pass_end = ? AND seat = ?");
+		s.setDate(1, next.getPass_begin());
+		s.setDate(2, next.getPass_end());
+		s.setString(3, next.getSeat());
+		s.setString(4, prev.getPass_email());
+		s.setDate(5, prev.getPass_begin());
+		s.setDate(6, prev.getPass_end());
+		s.setString(7, prev.getSeat());
 		
 		s.executeUpdate();
 	}
 	
 	public static void updateBooking(Booking prev, Booking next) throws SQLException, NullPointerException {
 		PreparedStatement s = getStatement("UPDATE booking "
-				 + "SET email = ?, day = ?, time_slot = ?, seat = ? "
-				 + "WHERE email = ?, day = ?, time_slot = ?, seat = ?;");
+				 + "SET day = ?, time_slot = ?, seat = ? "
+				 + "WHERE email = ? AND day = ? AND time_slot = ? AND seat = ?;");
+		s.setDate(1, next.getDay());
+		s.setInt(2, next.getTime_slot());
+		s.setString(3, next.getSeat());
+		s.setString(4, prev.getEmail());
+		s.setDate(5, prev.getDay());
+		s.setInt(6, prev.getTime_slot());
+		s.setString(7, prev.getSeat());
+		s.executeUpdate();
+	}
+	
+	public static void deletePass(String email, String begin, String end, String seat) throws SQLException {
+		PreparedStatement s = getStatement("DELETE FROM pass WHERE pass_email=? AND pass_begin=? AND pass_end=? AND seat=?");
+		s.setString(1, email);
+		s.setDate(2, Date.valueOf(begin));
+		s.setDate(3, Date.valueOf(end));
+		s.setString(4, seat);
+		s.executeUpdate();
+	}
 
-		// SET clause.
-		s.setString(1, prev.getEmail());
-		s.setDate(2, prev.getDay());
-		s.setInt(4, prev.getTime_slot());
-		s.setString(5, prev.getSeat());
-		
-		// WHERE clause.
-		s.setString(6, next.getEmail());
-		s.setDate(7, next.getDay());
-		s.setInt(9, next.getTime_slot());
-		s.setString(10, next.getSeat());
-		
+
+	public static void deleteBooking(String email , String day, int timeSlot, String seat) throws SQLException {
+		PreparedStatement s = getStatement("DELETE FROM booking WHERE email=? AND day=? AND time_slot=? AND seat=?");
+		s.setString(1, email);
+		s.setDate(2, Date.valueOf(day));
+		s.setInt(3, timeSlot);
+		s.setString(4, seat);
 		s.executeUpdate();
 	}
 	
@@ -313,6 +321,8 @@ public class DBConnect {
 		}
 		return list;
 	}
+	
+	
 
 	public static void addChairToLayout(String chairname, double price, double dailyPrice, double passPrice, int x, int y, String note) throws SQLException {
 		PreparedStatement s = getStatement("INSERT INTO chair_schema VALUES (?,?,?,?,?,?,?) ");

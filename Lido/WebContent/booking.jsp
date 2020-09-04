@@ -52,17 +52,25 @@ try{
 java.util.Collections.reverse(passes);
 java.util.Collections.reverse(bookings);
 
+
 for (int i = 0; i < passes.size(); i++) { %>
-	<div class="prenpass" 
-	<% if(cntusr.isAdmin()) { %> 
-		onclick="selectPass('<%= passes.get(i).getPass_email() // String
+	<div class="prenpass">
+   	<% 
+   	if(cntusr.isAdmin()){
+   		%>
+   		<button class="btn btn-primary showqrcodebutton" type="button" onclick="selectPass('<%= passes.get(i).getPass_email() // String
 					   %>', '<%= passes.get(i).getPass_begin() // Date
 					   %>', '<%= passes.get(i).getPass_end() // Date
 					   %>', '<%= passes.get(i).getSeat() // String
-					   %>') "
-   <% } %> >
-   
-	<% if ( passes.get(i).getPass_end().after(today) ) { %>
+					   %>') ">
+			<i class="fa fa-edit"></i>
+		</button>
+		<span class="prenparag">PASS: Valid from <%= passes.get(i).getPass_begin() %>
+											  to <%= passes.get(i).getPass_end() %></span>
+		<span class="prenparag" style="color: limegreen; font-weight: bold">VALID</span>
+   		<%
+   	} else {
+   		if ( passes.get(i).getPass_end().after(today) ) { %>
 		<button class="btn btn-primary showqrcodebutton" type="button" onclick="passQr('<%= passes.get(i).getPass_id()
 																				   %>','<%= passes.get(i).getPass_email() %>')">
 			<i class="fa fa-qrcode"></i>
@@ -79,26 +87,36 @@ for (int i = 0; i < passes.size(); i++) { %>
 		<span class="prenparag" style="color: red; font-weight: bold">EXPIRED</span>
 	<% } %>
 	</div>
-<% } %>
+<% } 
+}%>
 
 <hr>
 
 <%
 
 for (int i = 0; i < bookings.size(); i++) { %>
-	<div class="prenpass"
-	<% if(cntusr.isAdmin()) { %> 
-		onclick="selectBooking('<%= bookings.get(i).getEmail() // String
+	<div class="prenpass">
+    <% 
+   	if(cntusr.isAdmin()){
+   		%>
+   		<button class="btn btn-primary showqrcodebutton" type="button" onclick="selectBooking('<%= bookings.get(i).getEmail() // String
 						  %>', '<%= bookings.get(i).getDay() // String
 						  %>',  <%= bookings.get(i).getTime_slot() // Int
 						  %>,  '<%= bookings.get(i).getSeat() // String
-						  %>')"
-    <% } %> >
-    
-	<button class="btn btn-primary showqrcodebutton" type="button" onclick="bookingQr('<%= bookings.get(i).getBooking_id()
+						  %>')">
+			<i class="fa fa-edit"></i>
+		</button>
+   		<%
+   	} else {
+   		%>
+   		<button class="btn btn-primary showqrcodebutton" type="button" onclick="bookingQr('<%= bookings.get(i).getBooking_id()
 	  %>','<%= bookings.get(i).getEmail() %>')" <% if (today.after(bookings.get(i).getDay())) { %> disabled <% } %> >
-		<i class="fa fa-qrcode"></i>
-	</button>
+			<i class="fa fa-qrcode"></i>
+		</button>
+   		<%
+   	}
+    %>
+	
 	<span class="prentitle"><% if(unregistered){%><%=bookings.get(i).getEmail()%>: <%}%>Valid for: <%= bookings.get(i).getDay() %></span>
 	<%
 	switch ( bookings.get(i).getTime_slot() ) {
@@ -122,4 +140,4 @@ for (int i = 0; i < bookings.size(); i++) { %>
            	break;
      } %>
 </div>
-<% } %>
+<% }  %>

@@ -1,8 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" session="true"%>
 <jsp:useBean id="connecteduser" class="it.lidobalneare.bean.User" scope="session" />
 
-<% 
+<%
+boolean unreg = false;
 try{
+	unreg = session.getAttribute("unregistered").equals("YES");
+} catch (NullPointerException e){}
+try{
+	
 	if(!connecteduser.isAdmin()){
 		response.sendRedirect("./errorpage.html");
 		return;
@@ -45,14 +50,15 @@ try{
 			<span class="lidoalerttitle">Edit pass</span>
 			<hr class="lidohr" />
 
-			<input id="pass_email" type="text" class="lidoblockstyle" placeholder='Email address' required />
-			<input id="pass_begin" type="text" class="lidoblockstyle" placeholder='Start date' required />
-			<input id="pass_end" type="text" class="lidoblockstyle" placeholder='End date' required />
-			<input id="pass_seat" type="text" class="lidoblockstyle" placeholder='Seat name' required />
+			<input id="pass_email" type="text" class="lidoblockstyle" placeholder='Email address' disabled/>
+			<input id="pass_begin" type="text" class="lidoblockstyle" placeholder='Start date' />
+			<input id="pass_end" type="text" class="lidoblockstyle" placeholder='End date' />
+			<input id="pass_seat" type="text" class="lidoblockstyle" placeholder='Seat name' />
 
 			<div class="btn-group lidobtngroup" role="group">
-				<button class="btn btn-primary lidobtnofbtngroup" type="submit"	onclick="applyPass()">Apply</button>
-				<button class="btn btn-primary lidobtnofbtngroup" type="button"	onclick='$("#pass_edit_form").toggle();'>Cancel</button>
+				<button class="btn btn-primary lidobtnofbtngroup" type="button"	onclick="updateReservation()">Update</button>
+				<button class="btn btn-primary lidobtnofbtngroup" type="button"	onclick="deleteReservation()">Delete</button>
+				<button class="btn btn-primary lidobtnofbtngroup" type="button"	onclick='$("#pass_edit_form").fadeOut(500);'>Cancel</button>
 			</div>
 		</div>
 	</form>
@@ -63,14 +69,15 @@ try{
 			<span class="lidoalerttitle">Edit booking</span>
 			<hr class="lidohr" />
 
-			<input id="book_email" type="text" class="lidoblockstyle" placeholder='Email address' required />
-			<input id="book_day" type="text" class="lidoblockstyle" placeholder='Start date' required />
-			<input id="book_slot" type="text" class="lidoblockstyle" placeholder='End date' required />
-			<input id="book_seat" type="text" class="lidoblockstyle" placeholder='Seat name' required />
+			<input id="book_email" type="text" class="lidoblockstyle" placeholder='Email address' disabled/>
+			<input id="book_day" type="text" class="lidoblockstyle" placeholder='Date' />
+			<input id="book_slot" type="text" class="lidoblockstyle" placeholder='Time slot' />
+			<input id="book_seat" type="text" class="lidoblockstyle" placeholder='Seat name' />
 
 			<div class="btn-group lidobtngroup" role="group">
-				<button class="btn btn-primary lidobtnofbtngroup" type="submit"	onclick="applyBooking()">Apply</button>
-				<button class="btn btn-primary lidobtnofbtngroup" type="button"	onclick='$("#booking_edit_form").toggle();'>Cancel</button>
+				<button class="btn btn-primary lidobtnofbtngroup" type="button"	onclick="updateReservation()">Update</button>
+				<button class="btn btn-primary lidobtnofbtngroup" type="button"	onclick="deleteReservation()">Delete</button>
+				<button class="btn btn-primary lidobtnofbtngroup" type="button"	onclick='$("#booking_edit_form").fadeOut(500);'>Cancel</button>
 			</div>
 		</div>
 	</form>
@@ -83,8 +90,17 @@ try{
 
 		<div class="contentscreen">
 			<span class="toptitle">Reservations</span>
-			<span class="logindescription" style="background-color: rgb(220, 220, 220);">Customer: <%= session.getAttribute("customer") %></span>
-
+			<% 
+			if(unreg){
+				%>
+				<span class="logindescription" style="background-color: rgb(220, 220, 220);">Customer: <%= session.getAttribute("customer") %></span>
+				<%
+			} else {
+				%>
+				<span class="logindescription" style="background-color: rgb(220, 220, 220);">Unregistered customers</span>
+				<%
+			}
+			%>
 			<div class="contentdivscreen">
 				<%@include file="booking.jsp" %>
 			</div>
