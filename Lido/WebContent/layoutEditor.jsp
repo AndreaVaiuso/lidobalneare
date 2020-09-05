@@ -105,11 +105,13 @@
 					chair</button>
 				<input type="file" id="fileupload" accept=".jpg, .png, .jpeg"
 					style="display: none">
+				<!--  TODO FILE UPLOAD FOR CHANGING BACKGROUND
 				<form style="display:inline; margin-left:20px" action="UploadServlet" method="post" enctype="multipart/form-data">
 					<span>Update background image: </span>
 					<input type="file" name="file" />
 					<input type="submit" />
 				</form>
+				-->
 			</div>
 		</div>
 	</div>

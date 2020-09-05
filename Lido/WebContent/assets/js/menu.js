@@ -93,7 +93,7 @@ function dishEdit (id) {
 			'<span class="price-span h6">&euro;</span>' +
         	'<input id="ingrEdit_'+id+'" type="text" class="dishInsert ingredients" style="display: block;" placeholder="Ingredients" value="' + ingredients + '" required />' +
             '<button class="btn btn-primary" type="submit">Confirm</button>' +
-			'<button class="btn btn-danger" type="button" style="margin-left: 5px" onclick="dishEditCancel('+id+',"'+name+'",'+price+',"'+ingredients+'")">Cancel</button>' +
+			'<button class="btn btn-danger" type="button" style="margin-left: 5px" onclick="dishEditCancel('+id+',\''+name+'\','+price+',\''+ingredients+'\')">Cancel</button>' +
         '</form>'
 	);
 	
