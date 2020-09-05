@@ -1,6 +1,7 @@
 package it.lidobalneare.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -69,7 +70,10 @@ public class MenuEditorServlet extends HttpServlet {
 			response.sendRedirect("errorpage.html");
 		}
 
-		response.sendRedirect("menuEditor.jsp");
+		PrintWriter out = response.getWriter();
+		response.setContentType("application/json");
+		out.append("{ \"type\" : \"success\"}");
+		out.close();
 	}
 
 }

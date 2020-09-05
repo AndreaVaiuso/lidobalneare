@@ -219,7 +219,7 @@ body, html {
 	height: 100px;
 	position: relative;
 	overflow: hidden;
-	/*transition: all .5s linear;*/
+	transition: all .3s linear;
 }
 
 .endDiv {
@@ -261,7 +261,7 @@ body, html {
 
 .price-field {
 	display: inline-block;
-	width: 97%;
+	width: 95%;
 }
 
 .price-span {
@@ -292,7 +292,6 @@ span.orders {
 .titleimage {
 	width: 50%;
 	max-width: 500px;
-	margin-top: 50px;
 	filter: brightness(0%) contrast(200%) hue-rotate(0deg) invert(100%);
 }
 

@@ -95,9 +95,9 @@ function dishEdit (id) {
             '<button class="btn btn-primary" type="submit">Confirm</button>' +
 			'<button class="btn btn-danger" type="button" onclick="dishEditCancel('+id+','+name+','+price+','+ingredients+')">Cancel</button>' +
         '</form>'
-	)
+	);
 	
-	$("#dishEditForm_"+id).submit(function (event) {
+	$("#dishEditForm_"+id).submit(function(event){
 		/* stop form from submitting normally */
   		event.preventDefault();
 
@@ -112,7 +112,9 @@ function dishEdit (id) {
 				"price" : $("#priceEdit_"+id).val()
 			};
 		
-		$.post(url, data);
+		$.post(url, data, function(response){
+			if (response.type == "success") location.href = "menuEditor.jsp";
+		}, "json");
 	});
 }
 
@@ -146,5 +148,7 @@ $("#dishAddForm").submit(function (event) {
 		};
 	
 	/* Send the data */
-	$.post(url, data);
+	$.post(url, data, function(response){
+		if (response.type == "success") location.href = "menuEditor.jsp";
+	}, "json");
 });

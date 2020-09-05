@@ -49,7 +49,7 @@ try {
     </script>
 	    
 	<div class="topDivBkg">
-    	<img class="titleimage" src="assets/img/menuEditorLogo.png" />
+    	<img class="titleimage" src="assets/img/menuEditorLogo.png" style="margin-top: 50px;" />
 	</div>
     
     <div class="menuContainerDiv" style="display: table;">
@@ -100,21 +100,17 @@ try {
         </div>
         
         <div class="menuMenuPanel">
-        	<%
-        	for (int i = 0; i < dishes.size(); i++) {
-        	%>
+        <%	for (int i = 0; i < dishes.size(); i++) { %>
              <div id="dish_<%= dishes.get(i).getId() %>" class="card category_<%= dishes.get(i).getCategory() %> menuMenuItem" style="display: none">
                 <div class="card-body">
                     <h4 class="card-title"><%= dishes.get(i).getName() %></h4>
                     <h6 class="price-span text-muted card-subtitle mb-2"><%= dishes.get(i).getPrice() %></h6>
                     <span class="price-span h6" style="display: inline-block;"> &euro;</span>
                     <p class="card-text"><%= dishes.get(i).getIngredients() %><br /></p>
-                    <button class="btn btn-primary" type="button" onclick="dishEdit(<%= dishes.get(i).getId() %>, '<%= dishes.get(i).getCategory() %>')">Edit</button>
+                    <button class="btn btn-primary" type="button" onclick="dishEdit(<%= dishes.get(i).getId() %>)">Edit</button>
                 </div>
             </div>
-            <%
-        	}
-            %>
+        <%	} %>
             
             <div class="card menuMenuItem">
                 <form id="dishAddForm" action="MenuEditorServlet" method="post" class="card-body" style="display: none">
