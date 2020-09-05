@@ -65,7 +65,7 @@ public class MenuServlet extends HttpServlet {
 		
 		for (int i = 0; i < pendingOrder.length(); i++) {
 			try {
-				DBConnect.addOrder(tableNum, pendingOrder.getJSONObject(i).getString("dish"));
+				DBConnect.addOrder(tableNum, pendingOrder.getJSONObject(i).getInt("dish"));
 			} catch (Exception e) {
 				e.printStackTrace();
 				out.append("{ \"type\" : \"error\" }");

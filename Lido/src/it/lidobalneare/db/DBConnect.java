@@ -500,6 +500,7 @@ public class DBConnect {
 			
 			while (r.next()) {
 				Dish d = new Dish();
+				d.setId(r.getInt("id"));
 				d.setName(r.getString("dishname"));
 				d.setCategory(r.getInt("category"));
 				d.setIngredients(r.getString("ingredients"));
@@ -509,7 +510,7 @@ public class DBConnect {
 			
 			return list;
 		}
-		
+	/*
 	// Return the list of dishes grouped in the chosen category. Used in menuEditor.jsp.
 	public static ArrayList<Dish> getDishesByCategory(int category) throws SQLException {
 		PreparedStatement s = getStatement("SELECT * FROM menu WHERE category = ?");
@@ -528,7 +529,7 @@ public class DBConnect {
 		
 		return list;
 	}
-	
+	*/
 	// Inserts a new dish with the submitted form values. Used in menuEditor.
 	public static void insertDish (String dishname, int category, String ingredients, double price) throws SQLException {
 		PreparedStatement s = getStatement("INSERT INTO menu(dishname, category, ingredients, price) VALUES (?,?,?,?)");

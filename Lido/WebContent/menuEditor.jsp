@@ -106,7 +106,8 @@ try {
                     <h4 class="card-title"><%= dishes.get(i).getName() %></h4>
                     <h6 class="price-span text-muted card-subtitle mb-2"><%= dishes.get(i).getPrice() %></h6>
                     <span class="price-span h6" style="display: inline-block;"> &euro;</span>
-                    <p class="card-text"><%= dishes.get(i).getIngredients() %><br /></p>
+                    <p class="card-text"><%= dishes.get(i).getIngredients() %></p>
+                    <br />
                     <button class="btn btn-primary" type="button" onclick="dishEdit(<%= dishes.get(i).getId() %>)">Edit</button>
                 </div>
             </div>
