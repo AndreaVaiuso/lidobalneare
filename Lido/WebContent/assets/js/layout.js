@@ -5,7 +5,7 @@ var drag_top;
 var chaircount = 0;
 
 function onDragOver(event) {
-  event.preventDefault();
+	event.preventDefault();
 }
 
 function onDragStart(event,id,chairname){
@@ -22,7 +22,7 @@ function onDrop(event) {
 	dragy = currentDragging.offsetTop + movy;
 	currentDragging.style.left = dragx + "px" ;
 	currentDragging.style.top = dragy + "px" ;
-	
+
 	$.get("Admin?request=movechair&chair="+currentDraggingChairName+"&x="+dragx+"&y="+dragy);
 }
 
@@ -44,7 +44,7 @@ function updateChairToLayout(chairname){
 			return;
 		}
 	});
-	
+
 }
 
 function removeChairFromLayout(chairname){
@@ -65,9 +65,9 @@ function removeChairFromLayout(chairname){
 			});
 		}
 	});
-	
-	
-	
+
+
+
 }
 
 $("#createchairbtn").click(function(){
@@ -123,14 +123,14 @@ $("#addchairbtn").click(function(){
 });
 
 window.onload = function() { 
-	  var buttonFile = document.getElementById("buttonFile");
-	  var file = document.getElementById("fileupload");
+	var buttonFile = document.getElementById("buttonFile");
+	var file = document.getElementById("fileupload");
 
-	  buttonFile.onclick = function() {
-	    document.getElementById("fileupload").click();
-	  };
-
-	  file.onchange = function() {
-	    alert("Function not working now, please ask to developer: " + file.files[0].name);
-	  };
+	buttonFile.onclick = function() {
+		document.getElementById("fileupload").click();
 	};
+
+	file.onchange = function() {
+		alert("Function not working now, please ask to developer: " + file.files[0].name);
+	};
+};
