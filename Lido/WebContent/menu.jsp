@@ -126,26 +126,23 @@ try {
 	</div>
 
 	<div id="orderDiv">
-		<!-- JavaScript will insert the orders here. -->
+		<!-- JavaScript will insert the orders here. -->	
+	</div>
+	
+	<hr>
 
-		<hr>
-
-		<div id="divtotal" class="card menuMenuItemtotal"
-			style="display: none">
-			<div class="card-body">
-				<h4 class="card-title menutitleorder">
-					Table
-					<%=request.getParameter("table_number")%>
-					- Total:
-				</h4>
-				<h6 class="text-muted card-subtitle mb-2 menupriceordertotal"
-					id="total"></h6>
-				<button class="btn btn-primary menuRemoveOrder" type="button"
-					onclick="confirmOrder()">Confirm order</button>
-			</div>
+	<div id="divtotal" class="card menuMenuItemtotal" style="display: none">
+		<div class="card-body">
+			<h4 class="card-title menutitleorder">
+				Table
+				<%=request.getParameter("table_number")%>
+				- Total:
+			</h4>
+			<h6 class="text-muted card-subtitle mb-2 menupriceordertotal" id="total"></h6>
+			<button class="btn btn-primary menuRemoveOrder" type="button" onclick="confirmOrder()">Confirm order</button>
 		</div>
 	</div>
-
+	
 	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 	<script src="assets/js/menu.js"></script>
 </body>

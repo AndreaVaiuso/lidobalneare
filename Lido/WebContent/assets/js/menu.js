@@ -2,40 +2,57 @@ var currentCard = 0;	// Stores which card is currently open.
 						// None is at the beginning.
 						// The value is an int corresponding to the category.
 
-// JSON that stores the pending orders for the table.
-var pendingOrder = { "orders" : [] }
+// JSON array that stores the pending orders for the table.
+var pendingOrders = [];
 
 // Called when clicking on a menu category card. Parameter "card" is an int ranging from 1 to 5.
 function cardOpen (card) {
+	if (currentCard != card) {	// Does nothing if same card is clicked multiple times in a row.
 	// Close previously open cards.
-	if (currentCard >= 1 && currentCard <= 5) {
+		if (currentCard >= 1 && currentCard <= 5) {
 		$("#card_"+currentCard).animate({
 			height : '100px'
-		}, "fast");
+		}, 300);
 	}
+	$(".category_"+currentCard).hide();
 	 
 	// Open selected card.
 	$("#card_"+card).animate({
 		height : '200px'
-	}, "fast");
+	}, 300);
 	
 	// Shows the dishes in the selected category.
-	$(".category_"+card).toggle();
+	$(".category_"+card).show();
 	
 	currentCard = card;
+	}
 }
 
 function showEditor () {
 	$(".card form").show();
 }
 
+// Called when clicking the "Add to order" button of a dish card. Used in menu.jsp.
+function addToOrder (dish, price) {
+	pendingOrders.push({"dish" : dish, "price" : price});
+	
+	loadOrders();
+}
+
+function removeFromOrder (index) {
+	delete pendingOrders[index];
+	
+	loadOrders();
+}
+
+// Reloads the entire array of orders every time an order is added or removed. Used in menu.jsp.
 function loadOrders () {
 	$("#orderDiv").html("");
 	
 	var count = 0;
 	var total = 0;
 	
-	for (var d in pendingOrder["orders"]) {
+	for (var d in pendingOrders) {
 		count++;
 		total += d.price;
 		$("#orderDiv").prepend(
@@ -50,25 +67,15 @@ function loadOrders () {
 	}
 	
 	$("#total").html(total + "&euro;");
-	$("#divtotal").toggle();
-}
-
-function addToOrder (dish, price) {
-	pendingOrder["orders"].push({"dish" : dish, "price" : price});
-	
-	loadOrders();
-}
-
-function removeFromOrder (index) {
-	delete pendingOrder.orders[index];
+	$("#divtotal").show();
 }
 
 function confirmOrder () {
-	$.post("MenuServlet", pendingOrder, function(response){
+	$.post("MenuServlet", pendingOrders, function(response){
 		if (response.type == "error") {
 			location.href = "errorpage.html";
 		} else if (response.type == "success") {
-			pendingOrder = { "orders" : [] };
+			pendingOrders = [];
 		}
 	}, "json");
 }
