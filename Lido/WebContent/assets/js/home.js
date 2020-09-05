@@ -1,28 +1,28 @@
 $("#configurepaypalbtn").click(function(){
-	$("#alerttitle").html("Change payment account");
-	$("#alertcontent").html("<p style='display:block'>Insert your paypal account email to make payment, book seats and reservations:</p>" +
-			"<hr>" +
-			"<input id='paypal_input' placeholder='Paypal Account' style='width:100%'> </input>");
+	$("#alertinput").show();
+	showalert("Change PayPal account","Configure your paypal account to make payments faster");
 	$("#alertnobtn").show();
 	$("#alertyesbtn").show();
 	$("#alertnobtn").html("Cancel");
+	$("#alertyesbtn").html("Apply");
 	$("#alertnobtn").click(function(){
 		$("#alertscreen").fadeOut(500);
 	})
 	$("#alertyesbtn").click(function(){
-		$.get("Customer?request=paypalchange&paypal="+$("#paypal_input").val(),function(data){
+		let newpaypalemail = $("#alertinput").val();
+		$("#alertscreen").fadeOut(500);
+		$("#alertinput").hide();
+		$.get("Customer?request=paypalchange&paypal="+newpaypalemail,function(data){
 			if(data.type="success"){
-				$("#alertscreen").fadeOut(500);
 				showalert("Done","Now you can make payment quickly with your PayPal account");
+				$("#alertyesbtn").click(function(){location.reload()});
 			} else {
-				$("#alertscreen").fadeOut(500);
 				showDefaultError();
 			}
 		});
 		
 	})
-	$("#alertyesbtn").html("Apply");
-	$("#alertscreen").fadeIn(500);
+	
 });
 
 $("#reservationbtn").click(function(){
