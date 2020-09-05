@@ -9,9 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import it.lidobalneare.db.DBConnect;
 
 /**
@@ -41,40 +38,28 @@ public class MenuEditorServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		JSONObject data;
-		int action;
-		String dishname, ingredients;
-		double price;
-		try {
-			data = new JSONObject(request.getParameter("data"));
-			action = data.getInt("action");
-			dishname = data.getString("dishname");
-			ingredients = data.getString("ingredients");
-			price = data.getDouble("price");
-		} catch (JSONException e) {
-			System.out.println(e);
-			return;
-		}
-
+		int action = Integer.valueOf(request.getParameter("action"));
+		String dishname = request.getParameter("dishname"),
+			   ingredients = request.getParameter("ingredients");
+		double price = Double.valueOf(request.getParameter("price"));
+		
 		switch (action) {
 		
 		case 1:	// Insert a new dish. Id not needed.
-			int category;
+			int category = Integer.valueOf(request.getParameter("category"));
 			try {
-				category = data.getInt("category");
 				DBConnect.insertDish(dishname, category, ingredients, price);
-			} catch (Exception e) {
+			} catch (SQLException e) {
 				System.out.println(e);
 				return;
 			}
 			break;
 			
 		case 2:	// Update an existing dish. Category not needed.
-			int id;
+			int id = Integer.valueOf(request.getParameter("id"));
 			try {
-				id = data.getInt("id");
 				DBConnect.updateDish(id, dishname, ingredients, price);
-			} catch (Exception e) {
+			} catch (SQLException e) {
 				System.out.println(e);
 				return;
 			}
