@@ -268,7 +268,13 @@ body, html {
 	display: inline-block;
 }
 
-#orderDiv {
+#price_label {
+	font-weight:bold;
+	color:green;
+	font-size:50px;
+}
+
+#orderDiv, #totalDiv {
 	padding-left: 50px;
 	padding-right: 50px;
 	padding-top: 20px;

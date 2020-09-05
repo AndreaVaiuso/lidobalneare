@@ -28,13 +28,16 @@ function cardOpen (card) {
 	}
 }
 
+// Used in menuEditor. Needs to be loaded after the document is ready.
 function showEditor () {
 	$(".card form").show();
 }
 
 // Called when clicking the "Add to order" button of a dish card. Used in menu.jsp.
-function addToOrder (dish, price) {
-	pendingOrders.push({"dish" : dish, "price" : price});
+function addToOrder (dishId, dishname, price) {
+	pendingOrders.push({"dishId" : dishId,
+						"dishname" : dishname,
+						"price" : price});
 	
 	loadOrders();
 }
@@ -52,32 +55,47 @@ function loadOrders () {
 	var count = 0;
 	var total = 0;
 	
-	for (var d in pendingOrders) {
+	pendingOrders.forEach(function(d){
 		count++;
 		total += d.price;
-		$("#orderDiv").prepend(
+		
+		$("#orderDiv").append(
 			'<div class="card menuMenuItem">' +
 				'<div class="card-body">' +
-					'<h4 class="card-title menutitleorder">' + d.dish + '</h4>' +
+					'<h4 class="card-title menutitleorder">' + d.dishname + '</h4>' +
 					'<h6 class="text-muted card-subtitle mb-2 menupriceorder">' + d.price + ' &euro;</h6>' +
 					'<button class="btn btn-danger menuRemoveOrder" type="button" onclick="removeFromOrder(' + count + ')">Remove</button>' +
 				'</div>' +
 			'</div>'
 		);
-	}
-	
-	$("#total").html(total + "&euro;");
-	$("#divtotal").show();
+	});
+
+	$("#total").html(total);
+	$("#totalDiv").show();
 }
 
+// Shows a confirmation window before proceeding to payment.
 function confirmOrder () {
-	$.post("MenuServlet", pendingOrders, function(response){
-		if (response.type == "error") {
-			location.href = "errorpage.html";
-		} else if (response.type == "success") {
-			pendingOrders = [];
-		}
-	}, "json");
+	var total = $("#total").html();
+	$("#price_label").html(total);
+	$("#paymentScreen").fadeIn(500);
+	
+	$("#paymentyesbtn").click(function(){
+		var url = "MenuServlet?table_number=" + $("#table_number").html();
+	
+		$.post(url, pendingOrders, function(response){
+			if (response.type == "error") {
+				location.href = "errorpage.html";
+			} else if (response.type == "success") {
+				pendingOrders = [];
+				loadOrders();
+			}
+		}, "json");
+	});
+	
+	$("#paymentnobtn").click(function(){
+		$("#paymentScreen").fadeOut(500);
+	});
 }
 
 // Used in menuEditor. Called by clicking the "Edit" button of a dish, turns the card into a form.

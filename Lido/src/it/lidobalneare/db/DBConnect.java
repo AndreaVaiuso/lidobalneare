@@ -493,35 +493,16 @@ public class DBConnect {
 	}
 	
 	// Returns the list of all dishes. Used in menu.jsp.
-		public static ArrayList<Dish> getDishes () throws SQLException {
-			PreparedStatement s = getStatement("SELECT * FROM menu");
-			ResultSet r = s.executeQuery();
-			ArrayList<Dish> list = new ArrayList<Dish>();
-			
-			while (r.next()) {
-				Dish d = new Dish();
-				d.setId(r.getInt("id"));
-				d.setName(r.getString("dishname"));
-				d.setCategory(r.getInt("category"));
-				d.setIngredients(r.getString("ingredients"));
-				d.setPrice(r.getDouble("price"));
-				list.add(d);
-			}
-			
-			return list;
-		}
-	/*
-	// Return the list of dishes grouped in the chosen category. Used in menuEditor.jsp.
-	public static ArrayList<Dish> getDishesByCategory(int category) throws SQLException {
-		PreparedStatement s = getStatement("SELECT * FROM menu WHERE category = ?");
-		s.setInt(1, category);
+	public static ArrayList<Dish> getDishes () throws SQLException {
+		PreparedStatement s = getStatement("SELECT * FROM menu");
 		ResultSet r = s.executeQuery();
 		ArrayList<Dish> list = new ArrayList<Dish>();
 		
 		while (r.next()) {
 			Dish d = new Dish();
+			d.setId(r.getInt("id"));
 			d.setName(r.getString("dishname"));
-			d.setCategory(category);
+			d.setCategory(r.getInt("category"));
 			d.setIngredients(r.getString("ingredients"));
 			d.setPrice(r.getDouble("price"));
 			list.add(d);
@@ -529,7 +510,7 @@ public class DBConnect {
 		
 		return list;
 	}
-	*/
+
 	// Inserts a new dish with the submitted form values. Used in menuEditor.
 	public static void insertDish (String dishname, int category, String ingredients, double price) throws SQLException {
 		PreparedStatement s = getStatement("INSERT INTO menu(dishname, category, ingredients, price) VALUES (?,?,?,?)");
@@ -591,25 +572,24 @@ public class DBConnect {
 		
 		return list;
 	}
-	
-	// Removes an order. Used in MenuServlet.
-	public static void removeOrder (int id) throws SQLException {
-		PreparedStatement s = getStatement("DELETE FROM menuorder WHERE id = ?");
-		s.setInt(1, id);
-		s.executeUpdate();
-	}
-	
+		
 	// Adds an order. Used in MenuServlet.
-	public static void addOrder (int table, int dishId) throws SQLException {
+	public static void insertOrder (int table, int dishId) throws SQLException {
 		java.util.Date javatoday = Calendar.getInstance().getTime();
 		java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
 		Date today = Date.valueOf(dateFormat.format(javatoday));
 
-		PreparedStatement s = getStatement("INSERT INTO menuorder(tableNumber,date,dishId) VALUES (?,?,?)");
+		PreparedStatement s = getStatement("INSERT INTO menuorder(tableNumber, date, dishId) VALUES (?,?,?)");
 		s.setInt(1,table);
 		s.setDate(2, today);
 		s.setInt(3, dishId);
-		
+		s.executeUpdate();
+	}
+	
+	// Removes all paid orders of a single table. Called by OrderServlet.
+	public static void completeOrders (int tableNumber) throws SQLException {
+		PreparedStatement s = getStatement("DELETE FROM menuorder WHERE tableNumber = ?");
+		s.setInt(1, tableNumber);
 		s.executeUpdate();
 	}
 	

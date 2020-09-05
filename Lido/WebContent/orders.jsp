@@ -15,6 +15,12 @@ try{
 	response.sendRedirect("login.html");
 	return;
 }
+
+ArrayList<Integer> tables = new ArrayList<Integer>();
+
+try {
+	tables = DBConnect.getTables();
+} catch (Exception e) { System.out.println(e); return; }
 %>
 
 <!DOCTYPE html>
@@ -40,14 +46,14 @@ try{
 </head>
 
 <body>
-	<%@include file="navRestaurant.html"%>
+	<%@ include file="navRestaurant.html" %>
     <script>
     	document.getElementById("res_orders").classList.add("active");
     </script>
     
     <div id="qrcodescreen" class="alertscreen" style="display : none">
     	<span class="logindescription"> Table number: </span>
-		<input id="tablein" class="lidoblockstyle" type="number" placeholder="Table number" />
+		<input id="tablein" class="lidoblockstyle" type="number" placeholder="Table number" required />
 		<button type="button" onclick='tableQr()'></button>
 		<div class="qrcodecontainer" onclick="javascript:$('#qrcodescreen').fadeOut(500)">
 			<div id="qrcode"></div>
@@ -60,53 +66,42 @@ try{
     </div>
     
     <div class="menuContainerDivKitchen">
-    <%
-    ArrayList<Integer> tables = new ArrayList<Integer>();
-    
-    try {
-    	tables = DBConnect.getTables();
-    } catch (Exception e) {
-    	e.printStackTrace();
-    }
-    
-    for (int i = 0; i < tables.size(); i++) { %>
-        <div id='table<%= tables.get(i) %>' class="kitchenOrder">
-        	<a class="btn kitchenOrderButton" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-1" href="#collapse-1" role="button">Table <%= tables.get(i) %></a>   
-            <div class="collapse" id="collapse-1">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th class="tableHeader" style="width: 70%;">Dish</th>
-                                        <th>Quantity</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                            <%	ArrayList<OrderQuantity> o = new ArrayList<OrderQuantity>();
-                                
-                                try {
-                                	o = DBConnect.getOrderQuantitiesByTable(tables.get(i));
-                                } catch (Exception e) {
-                                	e.printStackTrace();
-                                }
-                                
-                                for (int j = 0; j < o.size(); j++) { %>
-                                    <tr>
-                                        <td><%= o.get(i).getDish() %></td>
-                                        <td><%= o.get(i).getQuantity() %></td>
-                                    </tr>
-                            <%	} %>
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                    	<button class="btn completeOrderKitchenButton" type="button" onclick='$("table<%= tables.get(i) %>").html("")'>Complete order</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+	<%	for (int i = 0; i < tables.size(); i++) { %>
+	        <div id='table_<%= tables.get(i) %>' class="kitchenOrder">
+	        	<a class="btn kitchenOrderButton" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-1" href="#collapse-1" role="button">Table <%= tables.get(i) %></a>   
+	            <div class="collapse" id="collapse-1">
+	                <div class="card">
+	                    <div class="card-body">
+	                        <div class="table-responsive">
+	                            <table class="table">
+	                                <thead>
+	                                    <tr>
+	                                        <th class="tableHeader" style="width: 70%;">Dish</th>
+	                                        <th>Quantity</th>
+	                                    </tr>
+	                                </thead>
+	                                <tbody>
+	                            <%	ArrayList<OrderQuantity> o = new ArrayList<OrderQuantity>();
+	                                
+	                                try {
+	                                	o = DBConnect.getOrderQuantitiesByTable(tables.get(i));
+	                                } catch (Exception e) { System.out.println(e); return; }
+	                                
+	                                for (int j = 0; j < o.size(); j++) { %>
+	                                    <tr>
+	                                        <td><%= o.get(i).getDish() %></td>
+	                                        <td><%= o.get(i).getQuantity() %></td>
+	                                    </tr>
+	                            <%	} %>
+	                                </tbody>
+	                            </table>
+	                        </div>
+	                        
+	                    	<button class="btn completeOrderKitchenButton" type="button" onclick='completeOrder(<%= tables.get(i) %>)'>Complete order</button>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
 	<%	} %>
 	</div>
 

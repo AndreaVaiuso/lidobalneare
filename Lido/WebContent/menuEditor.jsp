@@ -18,7 +18,7 @@ try {
 ArrayList<Dish> dishes = new ArrayList<Dish>();
 try {
 	dishes = DBConnect.getDishes();
-} catch (Exception e) {	e.printStackTrace(); return; }
+} catch (Exception e) {	System.out.println(e); return; }
 %>
 
 <!DOCTYPE html>
@@ -46,6 +46,14 @@ try {
     <%@include file="navRestaurant.html"%>
     <script>
     	document.getElementById("res_menu").classList.add("active");
+    	
+    	
+    <%	if ( request.getParameter("openCard") != null ) { %>
+	    	$(document).ready(function(){
+	    		cardOpen(<%= Integer.valueOf(request.getParameter("openCard")) %>);
+	    		showEditor();
+    		});
+    <%	} %>
     </script>
 	    
 	<div class="topDivBkg">
@@ -54,7 +62,7 @@ try {
     
     <div class="menuContainerDiv" style="display: table;">
         <div class="menuCategoriesPanel">
-            <div id="appetizers_card" class="card lidocard" onclick='cardOpen(1); showEditor();'>
+            <div id="card_1" class="card lidocard" onclick='cardOpen(1); showEditor();'>
    		      	<img class="card-img w-100 d-block" src="assets/img/appetizers.jpg" />
                 <div class="card-img-overlay">
                     <h4>Appetizers</h4>
@@ -62,7 +70,7 @@ try {
                 </div>
             </div>
             
-            <div id="fist_dishes_card" class="card lidocard" onclick='cardOpen(2); showEditor();'>
+            <div id="card_2" class="card lidocard" onclick='cardOpen(2); showEditor();'>
    		     	<img class="card-img w-100 d-block" src="assets/img/first.jpg" />
             	
                 <div class="card-img-overlay">
@@ -71,7 +79,7 @@ try {
                 </div>
             </div>
             
-            <div id="second_dishes_card" class="card lidocard" onclick='cardOpen(3); showEditor();'>
+            <div id="card_3" class="card lidocard" onclick='cardOpen(3); showEditor();'>
             	<img class="card-img w-100 d-block" src="assets/img/second.jpg" />
             	
                 <div class="card-img-overlay">
@@ -80,7 +88,7 @@ try {
                 </div>
             </div>
             
-            <div id="desserts_card" class="card lidocard" onclick='cardOpen(4); showEditor();'>
+            <div id="card_4" class="card lidocard" onclick='cardOpen(4); showEditor();'>
             	<img class="card-img w-100 d-block" src="assets/img/dessert.jpg" />
             	
                 <div class="card-img-overlay">
@@ -89,7 +97,7 @@ try {
                 </div>
             </div>
             
-            <div id="bar_card" class="card lidocard" onclick='cardOpen(5); showEditor();'>
+            <div id="card_5" class="card lidocard" onclick='cardOpen(5); showEditor();'>
             	<img class="card-img w-100 d-block" src="assets/img/bar.jpg" />
             	
                 <div class="card-img-overlay">

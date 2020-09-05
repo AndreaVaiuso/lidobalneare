@@ -45,31 +45,34 @@ public class MenuServlet extends HttpServlet {
 	 * Inserts into DB every single order.
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		JSONArray pendingOrder;
-		Order o = (Order) request.getSession().getAttribute("orderTable");
-		int tableNum = o.getTableNumber();
+		JSONArray pendingOrders;
+		int tableNumber = Integer.valueOf(request.getParameter("table_number"));
 		
 		PrintWriter out = response.getWriter();
 		response.setContentType("application/json");
 		
 		try {
-			pendingOrder = new JSONArray(request.getParameter("pendingOrder"));
+			pendingOrders = new JSONArray(request.getAttribute("pendingOrders"));
 		} catch (JSONException e) {
+			System.out.println(e);
+			/*
 			e.printStackTrace();
 			out.append("{ \"type\" : \"error\" }");
 			out.close();
+			*/
 			return; 
 		}
-		
-		// PAGAMENTO PAYPAL.
-		
-		for (int i = 0; i < pendingOrder.length(); i++) {
+				
+		for (int i = 0; i < pendingOrders.length(); i++) {
 			try {
-				//DBConnect.addOrder(tableNum, pendingOrder.getJSONObject(i).getString("dish"));
+				DBConnect.insertOrder(tableNumber, pendingOrders.getJSONObject(i).getInt("dishId"));
 			} catch (Exception e) {
+				System.out.println(e);
+				/*
 				e.printStackTrace();
 				out.append("{ \"type\" : \"error\" }");
 				out.close();
+				*/
 				return; 
 			}
 		}
@@ -77,5 +80,4 @@ public class MenuServlet extends HttpServlet {
 		out.append("{ \"type\" : \"success\" }");
 		out.close();
 	}
-
 }
