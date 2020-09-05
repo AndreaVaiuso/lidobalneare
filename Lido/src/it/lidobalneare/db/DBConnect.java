@@ -531,7 +531,7 @@ public class DBConnect {
 	
 	// Inserts a new dish with the submitted form values. Used in menuEditor.
 	public static void insertDish (String dishname, int category, String ingredients, double price) throws SQLException {
-		PreparedStatement s = getStatement("INSERT INTO menu VALUES (?,?,?,?)");
+		PreparedStatement s = getStatement("INSERT INTO menu(dishname, category, ingredients, price) VALUES (?,?,?,?)");
 		s.setString(1, dishname);
 		s.setInt(2, category);
 		s.setString(3, ingredients);
@@ -561,7 +561,7 @@ public class DBConnect {
 			o.setId(r.getInt("o.id"));
 			o.setTableNumber(table);
 			o.setDate(r.getDate("o.date"));
-			o.setDish(r.getString("o.dish"));
+			o.setDishId(r.getInt("o.dish"));
 			o.setPrice(r.getDouble("m.price"));
 			list.add(o);
 		}
@@ -599,15 +599,15 @@ public class DBConnect {
 	}
 	
 	// Adds an order. Used in MenuServlet.
-	public static void addOrder (int table, String dish) throws SQLException {
+	public static void addOrder (int table, int dishId) throws SQLException {
 		java.util.Date javatoday = Calendar.getInstance().getTime();
 		java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
 		Date today = Date.valueOf(dateFormat.format(javatoday));
 
-		PreparedStatement s = getStatement("INSERT INTO menuorder VALUES (?,?,?)");
+		PreparedStatement s = getStatement("INSERT INTO menuorder(tableNumber,date,dishId) VALUES (?,?,?)");
 		s.setInt(1,table);
 		s.setDate(2, today);
-		s.setString(3, dish);
+		s.setInt(3, dishId);
 		
 		s.executeUpdate();
 	}

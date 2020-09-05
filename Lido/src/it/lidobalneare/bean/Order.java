@@ -6,7 +6,7 @@ public class Order {
 	private int id;
 	private int tableNumber;
 	private Date date;
-	private String dish;
+	private int dishId;
 	private double price;	// Not present in DB. Must retrieve from table menu.
 	
 	public int getId() {
@@ -28,11 +28,11 @@ public class Order {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public String getDish() {
-		return dish;
+	public int getDishId() {
+		return dishId;
 	}
-	public void setDish(String dish) {
-		this.dish = dish;
+	public void setDishId(int dishId) {
+		this.dishId = dishId;
 	}
 	public double getPrice() {
 		return price;
