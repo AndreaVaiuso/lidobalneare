@@ -42,44 +42,40 @@ public class MenuEditorServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONObject data;
-		int id, action;
+		int action;
 		String dishname, ingredients;
 		double price;
 		try {
 			data = new JSONObject(request.getParameter("data"));
 			action = data.getInt("action");
-			id = data.getInt("id");
 			dishname = data.getString("dishname");
 			ingredients = data.getString("ingredients");
 			price = data.getDouble("price");
 		} catch (JSONException e) {
-			e.printStackTrace();
+			System.out.println(e);
 			return;
 		}
 
 		switch (action) {
 		
-		case 1:	// Insert a new dish.
+		case 1:	// Insert a new dish. Id not needed.
 			int category;
 			try {
 				category = data.getInt("category");
-			} catch (JSONException e) {
-				e.printStackTrace();
-				return;
-			}
-			try {
 				DBConnect.insertDish(dishname, category, ingredients, price);
-			} catch (SQLException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				System.out.println(e);
 				return;
 			}
 			break;
 			
-		case 2:	// Update an existing dish, except the category.
+		case 2:	// Update an existing dish. Category not needed.
+			int id;
 			try {
+				id = data.getInt("id");
 				DBConnect.updateDish(id, dishname, ingredients, price);
-			} catch (SQLException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				System.out.println(e);
 				return;
 			}
 			break;

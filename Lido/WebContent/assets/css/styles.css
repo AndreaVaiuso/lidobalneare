@@ -259,6 +259,15 @@ body, html {
 	top: 15px;
 }
 
+.price-field {
+	display: inline-block;
+	width: 97%;
+}
+
+.price-span {
+	display: inline-block;
+}
+
 #orderDiv {
 	padding-left: 50px;
 	padding-right: 50px;

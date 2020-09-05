@@ -106,7 +106,8 @@ try {
              <div id="dish_<%= dishes.get(i).getId() %>" class="card category_<%= dishes.get(i).getCategory() %> menuMenuItem" style="display: none">
                 <div class="card-body">
                     <h4 class="card-title"><%= dishes.get(i).getName() %></h4>
-                    <h6 class="text-muted card-subtitle mb-2"><%= dishes.get(i).getPrice() %> &euro;</h6>
+                    <h6 class="price-span text-muted card-subtitle mb-2"><%= dishes.get(i).getPrice() %></h6>
+                    <span class="price-span h6" style="display: inline-block;"> &euro;</span>
                     <p class="card-text"><%= dishes.get(i).getIngredients() %><br /></p>
                     <button class="btn btn-primary" type="button" onclick="dishEdit(<%= dishes.get(i).getId() %>, '<%= dishes.get(i).getCategory() %>')">Edit</button>
                 </div>
@@ -118,8 +119,8 @@ try {
             <div class="card menuMenuItem">
                 <form id="dishAddForm" action="MenuEditorServlet" method="post" class="card-body" style="display: none">
                 	<input id="nameAdd" type="text" class="dishInsert h4" placeholder="Dish name" required />
-                	<input id="priceAdd" type="text" class="dishInsert h6" style="display: inline-block; width: 98%;" placeholder="Price" required />
-                	<span class="h6" style="display: inline-block;">&euro;</span>
+                	<input id="priceAdd" type="number" class="price-field dishInsert h6" placeholder="Price" required />
+                	<span class="price-span h6"> &euro;</span>
                 	<input id="ingrAdd" type="text" class="dishInsert ingredients" style="display: block;" placeholder="Ingredients" required />
                     <button class="btn btn-primary" type="submit">Add</button>
                     <button class="btn btn-primary" type="reset">Reset</button>

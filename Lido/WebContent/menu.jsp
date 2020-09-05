@@ -102,21 +102,15 @@ try {
 			</div>
 		</div>
 		<div class="menuMenuPanel">
-			<%
-				for (int i = 0; i < dishes.size(); i++) {
-			%>
-			<div
-				class="card category_<%=dishes.get(i).getCategory()%> menuMenuItem"
-				style="display: none">
+		<%	for (int i = 0; i < dishes.size(); i++) { %>
+			<div class="card category_<%=dishes.get(i).getCategory()%> menuMenuItem" style="display: none">
 				<div class="card-body">
 					<h4 class="card-title"><%=dishes.get(i).getName()%></h4>
-					<h6 class="text-muted card-subtitle mb-2"><%=dishes.get(i).getPrice()%>&euro;
-					</h6>
-					<p class="card-text"><%=dishes.get(i).getIngredients()%><br />
-					</p>
-					<button class="btn btn-primary" type="button"
-						onclick='addToOrder("<%=dishes.get(i).getName()%>", <%=dishes.get(i).getPrice()%>)'>Add
-						to your order</button>
+					<h6 class="price-span text-muted card-subtitle mb-2"><%=dishes.get(i).getPrice()%></h6>
+					<span class="price-span h6"> &euro;</span>
+					<p class="card-text"><%=dishes.get(i).getIngredients()%></p>
+					<br />
+					<button class="btn btn-primary" type="button" onclick='addToOrder("<%=dishes.get(i).getName()%>", <%=dishes.get(i).getPrice()%>)'>Add to your order</button>
 				</div>
 			</div>
 			<%
@@ -129,7 +123,7 @@ try {
 		<!-- JavaScript will insert the orders here. -->	
 	</div>
 	
-	<hr>
+	<hr />
 
 	<div id="divtotal" class="card menuMenuItemtotal" style="display: none">
 		<div class="card-body">

@@ -89,8 +89,8 @@ function dishEdit (id) {
 	$("#dish_"+id).html(
 		'<form id="dishEditForm_'+id+'" action="MenuEditorServlet" method="post" class="card-body">' +
         	'<input id="nameEdit_'+id+'" type="text" class="dishInsert h4" placeholder="Dish name" value="' + name + '" required />' +
-        	'<input id="priceEdit_'+id+'" type="text" class="dishInsert h6" style="display: inline-block; width: 98%;" placeholder="Price" value="' + price + '" required />' +
-			'<span class="h6" style="display: inline-block;">&euro;</span>' +
+        	'<input id="priceEdit_'+id+'" type="number" class="price-field dishInsert h6" placeholder="Price" value="' + price + '" required />' +
+			'<span class="price-span h6">&euro;</span>' +
         	'<input id="ingrEdit_'+id+'" type="text" class="dishInsert ingredients" style="display: block;" placeholder="Ingredients" value="' + ingredients + '" required />' +
             '<button class="btn btn-primary" type="submit">Confirm</button>' +
 			'<button class="btn btn-danger" type="button" onclick="dishEditCancel('+id+','+name+','+price+','+ingredients+')">Cancel</button>' +
@@ -121,7 +121,9 @@ function dishEditCancel (id, name, price, ingredients) {
 	$("#dish_"+id).html(
 		'<div class="card-body">' +
 	        '<h4 class="card-title">' + name + '</h4>' +
-	        '<h6 class="text-muted card-subtitle mb-2">' + price + ' &euro;</h6>' +
+	        '<h6 class="price-span text-muted card-subtitle mb-2">' + price + '</h6>' +
+			'<span class="price-span h6"> &euro;</span>' +
+			'<br />' +
 	        '<p class="card-text">' + ingredients + '<br /></p>' +
 	        '<button class="btn btn-primary" type="button" onclick="dishEdit('+id+')">Edit</button>' +
 	    '</div>'
@@ -132,7 +134,7 @@ $("#dishAddForm").submit(function (event) {
 	/* stop form from submitting normally */
   	event.preventDefault();
 
-	/* get the action attribute from the <form action=""> element */
+	/* get the action attribute from the <form> element */
 	var $form = $(this),
   		url = $form.attr('action'),
 		data = {
