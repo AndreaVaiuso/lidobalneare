@@ -14,7 +14,7 @@ import it.lidobalneare.db.DBConnect;
 /**
  * Servlet implementation class MenuEditorServlet
  */
-@WebServlet("/MenuEditorServlet")
+@WebServlet({"/MenuEditorServlet","/Menu"})
 public class MenuEditorServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

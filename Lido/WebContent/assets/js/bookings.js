@@ -44,7 +44,7 @@ function editReservation () {
 		$("#booking_edit_form").fadeIn(500);
 		$("#book_email").val(reservation["email"]);
 		$("#book_day").val(reservation["day"]);
-		$("#book_slot").val(reservation["time_slot"]);
+		document.getElementById("book_slot").selectedIndex = reservation["time_slot"];
 		$("#book_seat").val(reservation["seat"]);
 	} else {	// Something has gone wrong.
 		return;
@@ -54,7 +54,7 @@ function editReservation () {
 function apply(){
 	if(reservation.type=="booking"){
 		reservation.new_day=$("#book_day").val();
-		reservation.new_time_slot=$("#book_slot").val();
+		reservation.new_time_slot=document.getElementById("book_slot").selectedIndex;
 		reservation.new_seat=$("#book_seat").val();
 	} else if(reservation.type=="pass"){
 		reservation.new_pass_begin=$("#pass_begin").val();

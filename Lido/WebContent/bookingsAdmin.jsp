@@ -51,8 +51,8 @@ try{
 			<hr class="lidohr" />
 
 			<input id="pass_email" type="text" class="lidoblockstyle" placeholder='Email address' disabled/>
-			<input id="pass_begin" type="text" class="lidoblockstyle" placeholder='Start date' />
-			<input id="pass_end" type="text" class="lidoblockstyle" placeholder='End date' />
+			<input id="pass_begin" type="date" class="lidoblockstyle border rounded border-primary" placeholder='Start date' />
+			<input id="pass_end" type="date" class="lidoblockstyle border rounded border-primary" placeholder='End date' />
 			<input id="pass_seat" type="text" class="lidoblockstyle" placeholder='Seat name' />
 
 			<div class="btn-group lidobtngroup" role="group">
@@ -70,8 +70,13 @@ try{
 			<hr class="lidohr" />
 
 			<input id="book_email" type="text" class="lidoblockstyle" placeholder='Email address' disabled/>
-			<input id="book_day" type="text" class="lidoblockstyle" placeholder='Date' />
-			<input id="book_slot" type="text" class="lidoblockstyle" placeholder='Time slot' />
+			<input id="book_day" type="date" class="lidoblockstyle border rounded border-primary" placeholder='Date' />
+			<select	class="lidoblockstyle border rounded border-primary" id="book_slot" name="timeZone">
+				<option value="0">All Day</option>
+				<option value="1">9:00-12:00</option>
+				<option value="2">12:00-15:00</option>
+				<option value="3">15:00-18:00</option>
+			</select>
 			<input id="book_seat" type="text" class="lidoblockstyle" placeholder='Seat name' />
 
 			<div class="btn-group lidobtngroup" role="group">
