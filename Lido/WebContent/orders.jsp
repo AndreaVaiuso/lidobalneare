@@ -20,7 +20,7 @@ ArrayList<Integer> tables = new ArrayList<Integer>();
 
 try {
 	tables = DBConnect.getTables();
-} catch (Exception e) { System.out.println(e); return; }
+} catch (Exception e) { e.printStackTrace(); return; }
 %>
 
 <!DOCTYPE html>
@@ -70,8 +70,8 @@ try {
 	<%	for (int i = 0; i < tables.size(); i++) { %>
 	        <div id='table_<%= tables.get(i) %>' class="kitchenOrder">
 	        	<a class="btn kitchenOrderButton" data-toggle="collapse" aria-expanded="false"
-	        	  aria-controls="collapse-1" href="#collapse-1" role="button">Table <%= tables.get(i) %></a>   
-	            <div class="collapse" id="collapse-1">
+	        	  aria-controls="collapse-<%= tables.get(i) %>" href="#collapse-<%= tables.get(i) %>" role="button">Table <%= tables.get(i) %></a>   
+	            <div class="collapse" id="collapse-<%= tables.get(i) %>">
 	                <div class="card">
 	                    <div class="card-body">
 	                        <div class="table-responsive">
@@ -87,7 +87,7 @@ try {
 	                                
 	                                try {
 	                                	o = DBConnect.getOrderQuantitiesByTable(tables.get(i));
-	                                } catch (Exception e) { System.out.println(e); return; }
+	                                } catch (Exception e) { e.printStackTrace(); return; }
 	                                
 	                                for (int j = 0; j < o.size(); j++) { %>
 	                                    <tr>
