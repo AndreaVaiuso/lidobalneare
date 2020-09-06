@@ -28,9 +28,15 @@
 				<div class="chairpopup" style="display: none">
 					<span class="popupchairname" id="chair_<%=i%>_name"><%= chairSchema.get(i).getChairname() %></span>
 					<hr>
-					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="updateChairToLayout('<%= chairSchema.get(i).getChairname() %>')">Update</button>
-					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="removeChairFromLayout('<%= chairSchema.get(i).getChairname() %>')">Delete</button>
-					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="duplicateChair('<%= chairSchema.get(i).getChairname() %>')">Duplicate</button>
+					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="updateChairToLayout('<%= chairSchema.get(i).getChairname() %>')">
+					<i class="fa fa-edit"></i>
+					</button>
+					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="removeChairFromLayout('<%= chairSchema.get(i).getChairname() %>')">
+					<i class="fa fa-remove"></i>
+					</button>
+					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="duplicateChair('<%= chairSchema.get(i).getChairname() %>')">
+					<i class="fa fa-clone"></i>
+					</button>
 				</div>
 			</div>
 			<%

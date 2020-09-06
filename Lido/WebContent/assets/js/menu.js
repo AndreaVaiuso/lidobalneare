@@ -55,7 +55,8 @@ function loadOrders () {
 	var count = 0;
 	var total = 0;
 	
-	pendingOrders.forEach(d => {
+	pendingOrders.forEach(function(d){
+		total += d.price;
 		$("#orderDiv").append(
 			'<div class="card menuMenuItem">' +
 				'<div class="card-body">' +
@@ -65,8 +66,6 @@ function loadOrders () {
 				'</div>' +
 			'</div>'
 		);
-		
-		total += d.price;
 		count++;
 	});
 
@@ -83,9 +82,13 @@ function confirmOrder () {
 	$("#paymentScreen").fadeIn(500);
 	
 	$("#paymentyesbtn").click(function(){
-		var url = "MenuServlet?table_number=" + $("#table_number").html();
-	
-		$.post(url, pendingOrders, function(response){
+		var tableNum = $("#table_number").html();
+		var orders = JSON.stringify(pendingOrders)
+		data = {
+				"pendingOrders" : orders,
+				"table_number" : tableNum
+		}
+		$.post("MenuServlet", data, function(response){
 			if (response.type == "error") {
 				location.href = "errorpage.html";
 			} else if (response.type == "success") {

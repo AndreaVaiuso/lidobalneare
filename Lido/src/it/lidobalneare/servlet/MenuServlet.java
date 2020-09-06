@@ -24,54 +24,42 @@ import it.lidobalneare.db.DBConnect;
 @WebServlet("/MenuServlet")
 public class MenuServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public MenuServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 * Used by menu.js to confirm the order.
-	 * Inserts into DB every single order.
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONArray pendingOrders;
 		int tableNumber = Integer.valueOf(request.getParameter("table_number"));
-		
+
 		PrintWriter out = response.getWriter();
 		response.setContentType("application/json");
-		
+
 		try {
-			pendingOrders = new JSONArray(request.getAttribute("pendingOrders"));
+			pendingOrders = new JSONArray(request.getParameter("pendingOrders"));
 		} catch (JSONException e) {
 			e.printStackTrace();
 			out.append("{ \"type\" : \"error\" }");
 			out.close();
 			return; 
 		}
-				
+
 		for (int i = 0; i < pendingOrders.length(); i++) {
 			try {
 				DBConnect.insertOrder(tableNumber, pendingOrders.getJSONObject(i).getInt("dishId"));
 			} catch (Exception e) {
+
 				e.printStackTrace();
 				out.append("{ \"type\" : \"error\" }");
 				out.close();
+
 				return; 
 			}
 		}
-		
+
 		out.append("{ \"type\" : \"success\" }");
 		out.close();
+
+
 	}
 }
