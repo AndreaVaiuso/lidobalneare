@@ -26,7 +26,17 @@ function onDrop(event) {
 	$.get("Admin?request=movechair&chair="+currentDraggingChairName+"&x="+dragx+"&y="+dragy);
 }
 
+function clearForm(){
+	$("#chairname_field").val("");
+	$("#timeslot_price_field").val("");
+	$("#allday_price_field").val("");
+	$("#pass_price_field").val("");
+	$("#note_field").val("");
+}
+
 function updateChairToLayout(chairname){
+	$("#updatechairbtn").show();
+	$("#createchairbtn").hide();
 	let chairinfo;
 	$.get("Admin?request=chairinfo&chair="+chairname,function(response){
 		if(response.type=="success"){
@@ -36,15 +46,19 @@ function updateChairToLayout(chairname){
 			$("#allday_price_field").val(chairinfo.dailyprice);
 			$("#pass_price_field").val(chairinfo.passprice);
 			$("#note_field").val(chairinfo.details);
-			$("#updatechairbtn").show();
-			$("#createchairbtn").hide();
 			$("#newchairwindow").fadeIn(500);
 		} else {
 			showDefaultError();
 			return;
 		}
 	});
+}
 
+function duplicateChair(chairname){
+	updateChairToLayout(chairname);
+	$("#updatechairbtn").hide();
+	$("#createchairbtn").show();
+	$("#newchairwindow").fadeIn(500);
 }
 
 function removeChairFromLayout(chairname){
@@ -65,9 +79,6 @@ function removeChairFromLayout(chairname){
 			});
 		}
 	});
-
-
-
 }
 
 $("#createchairbtn").click(function(){
@@ -117,10 +128,13 @@ $("#cancelbtn").click(function(){
 
 
 $("#addchairbtn").click(function(){
+	clearForm();
 	$("#updatechairbtn").hide();
 	$("#createchairbtn").show();
 	$("#newchairwindow").fadeIn(500);
 });
+
+
 
 window.onload = function() { 
 	var buttonFile = document.getElementById("buttonFile");

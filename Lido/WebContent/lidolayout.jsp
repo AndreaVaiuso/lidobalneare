@@ -30,6 +30,7 @@
 					<hr>
 					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="updateChairToLayout('<%= chairSchema.get(i).getChairname() %>')">Update</button>
 					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="removeChairFromLayout('<%= chairSchema.get(i).getChairname() %>')">Delete</button>
+					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="duplicateChair('<%= chairSchema.get(i).getChairname() %>')">Duplicate</button>
 				</div>
 			</div>
 			<%
