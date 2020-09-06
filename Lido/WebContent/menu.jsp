@@ -134,7 +134,7 @@ try {
 		<div class="card-body">
 			<h4 class="card-title menutitleorder">Table </h4>
 			<h4 id="table_number" class="card-title menutitleorder"><%= request.getParameter("table_number") %></h4>
-			<h4> - Total: </h4>
+			<h4>Total: </h4>
 			<h6 id="total" class="price-span text-muted card-subtitle mb-2 menupriceordertotal"></h6>
 			<span class="price-span h6"> &euro;</span>
 			<button class="btn btn-primary menuRemoveOrder" type="button" onclick="confirmOrder()">Confirm order</button>

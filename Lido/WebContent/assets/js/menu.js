@@ -92,6 +92,7 @@ function confirmOrder () {
 			if (response.type == "error") {
 				location.href = "errorpage.html";
 			} else if (response.type == "success") {
+				location.href = "menu.jsp?table_number=" + tableNum;
 				pendingOrders = [];
 				loadOrders();
 			}
