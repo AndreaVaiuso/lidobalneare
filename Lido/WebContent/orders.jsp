@@ -68,7 +68,8 @@ try {
     <div class="menuContainerDivKitchen">
 	<%	for (int i = 0; i < tables.size(); i++) { %>
 	        <div id='table_<%= tables.get(i) %>' class="kitchenOrder">
-	        	<a class="btn kitchenOrderButton" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-1" href="#collapse-1" role="button">Table <%= tables.get(i) %></a>   
+	        	<a class="btn kitchenOrderButton" data-toggle="collapse" aria-expanded="false"
+	        	  aria-controls="collapse-1" href="#collapse-1" role="button">Table <%= tables.get(i) %></a>   
 	            <div class="collapse" id="collapse-1">
 	                <div class="card">
 	                    <div class="card-body">
