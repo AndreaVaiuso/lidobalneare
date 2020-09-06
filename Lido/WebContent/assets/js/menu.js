@@ -131,7 +131,7 @@ function dishEdit (id) {
 			};
 		
 		$.post(url, data, function(response){
-			if (response.type == "success") location.href = "menuEditor.jsp";
+			if (response.type == "success") location.href = "menuEditor.jsp?openCard="+currentCard;
 		}, "json");
 	});
 }
@@ -167,6 +167,6 @@ $("#dishAddForm").submit(function (event) {
 	
 	/* Send the data */
 	$.post(url, data, function(response){
-		if (response.type == "success") location.href = "menuEditor.jsp";
+		if (response.type == "success") location.href = "menuEditor.jsp?openCard="+currentCard;
 	}, "json");
 });

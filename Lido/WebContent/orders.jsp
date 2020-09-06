@@ -46,15 +46,13 @@ try {
 </head>
 
 <body>
+	<%@ include file="alertbox.html" %>
 	<%@ include file="navRestaurant.html" %>
     <script>
     	document.getElementById("res_orders").classList.add("active");
     </script>
     
     <div id="qrcodescreen" class="alertscreen" style="display : none">
-    	<span class="logindescription"> Table number: </span>
-		<input id="tablein" class="lidoblockstyle" type="number" placeholder="Table number" required />
-		<button type="button" onclick='tableQr()'></button>
 		<div class="qrcodecontainer" onclick="javascript:$('#qrcodescreen').fadeOut(500)">
 			<div id="qrcode"></div>
 		</div>
@@ -62,7 +60,7 @@ try {
 	
     <div class="topDivBkg">
     	<span class="orders" style="padding-top: 80px;">Orders</span>
-    	<button id="show_order_btn" class="btn btn-primary btn-lg" type="button" onclick='$("#qrcodescreen").fadeIn(500)'>Tables QR-code</button>
+    	<button id="show_order_btn" class="btn btn-primary btn-lg" type="button" onclick='generateQr()'>Tables QR-code</button>
     </div>
     
     <div class="menuContainerDivKitchen">

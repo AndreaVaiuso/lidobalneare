@@ -596,9 +596,8 @@ public class DBConnect {
 	// Returns a list of all the tables with any pending order.
 	public static ArrayList<Integer> getTables () throws SQLException {
 		ArrayList<Integer> tables = new ArrayList<Integer>();
-		PreparedStatement s = getStatement("SELECT DISTINCT tableNumber FROM menuorder WHERE paid = 1");
+		PreparedStatement s = getStatement("SELECT DISTINCT tableNumber FROM menuorder");
 		ResultSet r = s.executeQuery();
-		
 		while ( r.next() ) {
 			tables.add(r.getInt("tableNumber"));
 		}
