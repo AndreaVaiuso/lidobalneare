@@ -91,8 +91,8 @@ try {
 	                                
 	                                for (int j = 0; j < o.size(); j++) { %>
 	                                    <tr>
-	                                        <td><%= o.get(i).getDish() %></td>
-	                                        <td><%= o.get(i).getQuantity() %></td>
+	                                        <td><%= o.get(j).getDish() %></td>
+	                                        <td><%= o.get(j).getQuantity() %></td>
 	                                    </tr>
 	                            <%	} %>
 	                                </tbody>

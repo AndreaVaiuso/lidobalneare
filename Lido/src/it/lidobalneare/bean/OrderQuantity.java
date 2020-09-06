@@ -3,6 +3,7 @@ package it.lidobalneare.bean;
 public class OrderQuantity {
 	private String dish;
 	private int quantity;
+	
 	public String getDish() {
 		return dish;
 	}
@@ -15,5 +16,4 @@ public class OrderQuantity {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
 }
