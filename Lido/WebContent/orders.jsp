@@ -61,7 +61,7 @@ try {
 	</div>
 	
     <div class="topDivBkg">
-    	<span id="orders" style="padding-top: 80px;">Orders</span>
+    	<span class="orders" style="padding-top: 80px;">Orders</span>
     	<button id="show_order_btn" class="btn btn-primary btn-lg" type="button" onclick='$("#qrcodescreen").fadeIn(500)'>Tables QR-code</button>
     </div>
     
