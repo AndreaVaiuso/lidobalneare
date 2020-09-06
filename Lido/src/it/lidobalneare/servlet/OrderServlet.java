@@ -41,16 +41,18 @@ public class OrderServlet extends HttpServlet {
 	 * Called by orders.js.
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PrintWriter out = response.getWriter();
+		response.setContentType("application/json");
+		
 		int tableNumber = (int) request.getAttribute("table");
 		try {
 			DBConnect.completeOrders(tableNumber);
+			out.append("{ \"type\" : \"success\" }");
 		} catch (SQLException e) {
-			System.out.println(e);
+			e.printStackTrace();
+			out.append("{ \"type\" : \"error\" }");
 		}
 		
-		PrintWriter out = response.getWriter();
-		response.setContentType("application/json");
-		out.append("{ \"type\" : \"success\" }");
 		out.close();
 	}
 }
