@@ -54,12 +54,9 @@ public class MenuServlet extends HttpServlet {
 		try {
 			pendingOrders = new JSONArray(request.getAttribute("pendingOrders"));
 		} catch (JSONException e) {
-			System.out.println(e);
-			/*
 			e.printStackTrace();
 			out.append("{ \"type\" : \"error\" }");
 			out.close();
-			*/
 			return; 
 		}
 				
@@ -67,12 +64,9 @@ public class MenuServlet extends HttpServlet {
 			try {
 				DBConnect.insertOrder(tableNumber, pendingOrders.getJSONObject(i).getInt("dishId"));
 			} catch (Exception e) {
-				System.out.println(e);
-				/*
 				e.printStackTrace();
 				out.append("{ \"type\" : \"error\" }");
 				out.close();
-				*/
 				return; 
 			}
 		}

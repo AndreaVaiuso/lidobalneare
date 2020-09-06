@@ -55,10 +55,7 @@ function loadOrders () {
 	var count = 0;
 	var total = 0;
 	
-	pendingOrders.forEach(function(d){
-		count++;
-		total += d.price;
-		
+	pendingOrders.forEach(d => {
 		$("#orderDiv").append(
 			'<div class="card menuMenuItem">' +
 				'<div class="card-body">' +
@@ -68,10 +65,15 @@ function loadOrders () {
 				'</div>' +
 			'</div>'
 		);
+		
+		total += d.price;
+		count++;
 	});
 
-	$("#total").html(total);
-	$("#totalDiv").show();
+	if (total > 0) {
+		$("#total").html(total);
+		$("#totalDiv").show();
+	}
 }
 
 // Shows a confirmation window before proceeding to payment.
@@ -107,7 +109,7 @@ function dishEdit (id) {
 	$("#dish_"+id).html(
 		'<form id="dishEditForm_'+id+'" action="MenuEditorServlet" method="post" class="card-body">' +
         	'<input id="nameEdit_'+id+'" type="text" class="dishInsert h4" placeholder="Dish name" value="' + name + '" required />' +
-        	'<input id="priceEdit_'+id+'" type="number" class="price-field dishInsert h6" placeholder="Price" value="' + price + '" required />' +
+        	'<input id="priceEdit_'+id+'" type="number" step="0.1" class="price-field dishInsert h6" placeholder="Price" value="' + price + '" required />' +
 			'<span class="price-span h6">&euro;</span>' +
         	'<input id="ingrEdit_'+id+'" type="text" class="dishInsert ingredients" style="display: block;" placeholder="Ingredients" value="' + ingredients + '" required />' +
             '<button class="btn btn-primary" type="submit">Confirm</button>' +
@@ -131,7 +133,7 @@ function dishEdit (id) {
 			};
 		
 		$.post(url, data, function(response){
-			if (response.type == "success") location.href = "menuEditor.jsp?openCard="+currentCard;
+			if (response.type == "success") location.href = "menuEditor.jsp?openCard=" + currentCard;
 		}, "json");
 	});
 }
@@ -167,6 +169,6 @@ $("#dishAddForm").submit(function (event) {
 	
 	/* Send the data */
 	$.post(url, data, function(response){
-		if (response.type == "success") location.href = "menuEditor.jsp?openCard="+currentCard;
+		if (response.type == "success") location.href = "menuEditor.jsp?openCard=" + currentCard;
 	}, "json");
 });

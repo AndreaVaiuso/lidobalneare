@@ -284,6 +284,7 @@ span.orders {
 	font-family: 'Akronim';
 	font-size: 98px;
 	color: rgb(240, 240, 240);
+	margin-top: 50px;
 }
 
 .topDivBkg {
@@ -526,6 +527,10 @@ span.orders {
 	display: inline-block;
 	right: 30px;
 	margin-top: 10px;
+}
+
+#table_qr_btn {
+	margin-top: 50px;
 }
 
 @media ( max-width : 890px) {

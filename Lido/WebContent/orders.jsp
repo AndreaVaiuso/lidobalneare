@@ -53,6 +53,9 @@ try {
     </script>
     
     <div id="qrcodescreen" class="alertscreen" style="display : none">
+    	<span class="logindescription"> Table number: </span>
+		<input id="tablein" class="lidoblockstyle" type="number" placeholder="Table number" required />
+		<button id="table_qr_btn" type="button" onclick='tableQr()'></button>
 		<div class="qrcodecontainer" onclick="javascript:$('#qrcodescreen').fadeOut(500)">
 			<div id="qrcode"></div>
 		</div>

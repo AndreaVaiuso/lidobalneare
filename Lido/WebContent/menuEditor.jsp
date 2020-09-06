@@ -124,7 +124,7 @@ try {
             <div class="card menuMenuItem">
                 <form id="dishAddForm" action="MenuEditorServlet" method="post" class="card-body" style="display: none">
                 	<input id="nameAdd" type="text" class="dishInsert h4" placeholder="Dish name" required />
-                	<input id="priceAdd" type="number" class="price-field dishInsert h6" placeholder="Price" required />
+                	<input id="priceAdd" type="number" step="0.1" class="price-field dishInsert h6" placeholder="Price" required />
                 	<span class="price-span h6"> &euro;</span>
                 	<input id="ingrAdd" type="text" class="dishInsert ingredients" style="display: block;" placeholder="Ingredients" required />
                     <button class="btn btn-primary" type="submit">Add</button>

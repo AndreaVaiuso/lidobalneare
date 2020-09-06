@@ -51,7 +51,7 @@ public class MenuEditorServlet extends HttpServlet {
 			try {
 				DBConnect.insertDish(dishname, category, ingredients, price);
 			} catch (SQLException e) {
-				System.out.println(e);
+				e.printStackTrace();
 				return;
 			}
 			break;
@@ -61,7 +61,7 @@ public class MenuEditorServlet extends HttpServlet {
 			try {
 				DBConnect.updateDish(id, dishname, ingredients, price);
 			} catch (SQLException e) {
-				System.out.println(e);
+				e.printStackTrace();
 				return;
 			}
 			break;
@@ -72,7 +72,7 @@ public class MenuEditorServlet extends HttpServlet {
 
 		PrintWriter out = response.getWriter();
 		response.setContentType("application/json");
-		out.append("{ \"type\" : \"success\"}");
+		out.append("{ \"type\" : \"success\" }");
 		out.close();
 	}
 
