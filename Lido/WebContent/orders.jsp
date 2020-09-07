@@ -73,7 +73,7 @@ SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 	        <div id='table_<%= tables.get(i).getTableNumber() %>' class="kitchenOrder">
 	        	<a class="btn kitchenOrderButton" data-toggle="collapse" aria-expanded="false"
 	        	  aria-controls="collapse-<%= tables.get(i).getTableNumber() %>" href="#collapse-<%= tables.get(i).getTableNumber() %>" role="button">
-	        	  Table <%= tables.get(i).getTableNumber() %>; time <%= sdf.format(tables.get(i).getDate()) %></a>   
+	        	  Table <%= tables.get(i).getTableNumber() %>; time <%= sdf.format(tables.get(i).getDate().getTime()) %></a>   
 	            <div id="collapse-<%= tables.get(i).getTableNumber() %>" class="collapse">
 	                <div class="card">
 	                    <div class="card-body">
