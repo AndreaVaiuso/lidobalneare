@@ -58,11 +58,11 @@ $(document).ready(function(){
 	for (var i = 0; i < buttons.length; i++) {
 		var btn = buttons[i];
 		var boxes = btn.previousElementSibling.querySelectorAll("td input");
+		var checkedCount = 0;
 		
 		for (var j = 0; j < boxes.length; j++) {
 			boxes[i].addEventListener("click", function(){
 				alert("Box checked");
-				var checkedCount = 0;
 				
 				for (var k = 0; k < boxes.length; k++) {
 					if (boxes[k].checked) {
