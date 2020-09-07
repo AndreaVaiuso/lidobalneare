@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.ArrayList"%>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="it.lidobalneare.db.DBConnect"%>
 <%@ page import="it.lidobalneare.bean.Dish" %>
 <%@ page import="it.lidobalneare.bean.OrderQuantity" %>
@@ -22,6 +23,8 @@ ArrayList<OrderTable> tables = new ArrayList<OrderTable>();
 try {
 	tables = DBConnect.getTables();
 } catch (Exception e) { e.printStackTrace(); return; }
+
+SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 %>
 
 <!DOCTYPE html>
@@ -67,11 +70,11 @@ try {
     
     <div class="menuContainerDivKitchen">
 	<%	for (int i = 0; i < tables.size(); i++) { %>
-	        <div id='table_<%= tables.get(i) %>' class="kitchenOrder">
+	        <div id='table_<%= tables.get(i).getTableNumber() %>' class="kitchenOrder">
 	        	<a class="btn kitchenOrderButton" data-toggle="collapse" aria-expanded="false"
-	        	  aria-controls="collapse-<%= tables.get(i) %>" href="#collapse-<%= tables.get(i) %>" role="button">
-	        	  Table <%= tables.get(i).getTableNumber() %>; time <%= tables.get(i).getDate().getTime() %></a>   
-	            <div id="collapse-<%= tables.get(i) %>" class="collapse">
+	        	  aria-controls="collapse-<%= tables.get(i).getTableNumber() %>" href="#collapse-<%= tables.get(i).getTableNumber() %>" role="button">
+	        	  Table <%= tables.get(i).getTableNumber() %>; time <%= sdf.format(tables.get(i).getDate().getTime()) %></a>   
+	            <div id="collapse-<%= tables.get(i).getTableNumber() %>" class="collapse">
 	                <div class="card">
 	                    <div class="card-body">
 	                        <div class="table-responsive">
