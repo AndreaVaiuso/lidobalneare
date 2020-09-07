@@ -55,12 +55,13 @@ $(document).ready(function(){
 	// This part enables completing an entire order only if every single sub-order is completed (checked).
 	var buttons = document.querySelectorAll(".completeOrderKitchenButton");
 	
-	for (var btn in buttons) {
+	for (var i = 0; i < buttons.length; i++) {
+		var btn = buttons[i];
 		var boxes = btn.previousSibling.querySelectorAll("td input");
 		var checkedCount = 0;
 		
-		for (var i = 0; i < boxes.length; i++) {
-			if (boxes[i].checked) {
+		for (var j = 0; j < boxes.length; j++) {
+			if (boxes[j].checked) {
 				checkedCount++;
 			}
 		}

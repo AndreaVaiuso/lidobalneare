@@ -46,7 +46,8 @@ public class MenuServlet extends HttpServlet {
 			return; 
 		}
 		
-		Date date = new Date(Calendar.getInstance().getTime().getTime());
+		//Date date = new Date(Calendar.getInstance().getTime().getTime());
+		Date date = (Date) Calendar.getInstance().getTime();
 
 		for (int i = 0; i < pendingOrders.length(); i++) {
 			try {

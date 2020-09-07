@@ -570,28 +570,6 @@ public class DBConnect {
 		
 		return tables;
 	}
-	/*
-	// Retrieves, form the orders, the dishes and the corresponding quantities. Previous version.
-	public static ArrayList<OrderQuantity> getOrderQuantitiesByTable (int table) throws SQLException {
-		java.util.Date javatoday = Calendar.getInstance().getTime();
-		java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
-		Date today = Date.valueOf(dateFormat.format(javatoday));
-		
-		PreparedStatement s = getStatement("SELECT count(*) FROM menuorder WHERE tableNumber = ? AND date = ? GROUP BY dish");
-		s.setInt(1, table);
-		s.setDate(2, today);
-		ResultSet r = s.executeQuery();
-		ArrayList<OrderQuantity> list = new ArrayList<OrderQuantity>();
-		
-		while (r.next()) {
-			OrderQuantity o = new OrderQuantity();
-			o.setDish(r.getString("dish"));
-			o.setQuantity(r.getInt("count(*)"));
-			list.add(o);
-		}
-		
-		return list;
-	}*/
 
 	// Retrieves, form the orders, the dishes and the corresponding quantities. Used in orders.jsp.
 	public static ArrayList<OrderQuantity> getOrderQuantitiesByTable (int table) throws SQLException {
