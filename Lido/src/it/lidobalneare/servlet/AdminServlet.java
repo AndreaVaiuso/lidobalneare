@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import it.lidobalneare.bean.Booking;
 import it.lidobalneare.bean.Chair;
-import it.lidobalneare.bean.Message;
 import it.lidobalneare.bean.Pass;
 import it.lidobalneare.bean.User;
 import it.lidobalneare.db.DBConnect;

@@ -79,7 +79,7 @@ Message m = DBConnect.getMessage();
 						<div style="width:100%; display: block">
 							<span class="font-weight-bold" style="display: inline-block; font-size: 25px; font-weight: bold;"><%= m.getTitle() %></span>
 							<hr>
-							<marquee style="display:inline-block" loop="infinite" scrollamount="5" class="marquemessage"><%=m.getDate()%> : <%= m.getMessage() %></marquee>
+							<marquee style="display:inline-block; max-width:340px" loop="infinite" scrollamount="5" class="marquemessage"><%=m.getDate()%> : <%= m.getMessage() %></marquee>
 						</div>
 					</figure>
 					
