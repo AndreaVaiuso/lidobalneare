@@ -2,8 +2,8 @@
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.DateFormat"%>
 <%@ page import="java.text.SimpleDateFormat"%>
-<%@ page import="it.lidobalneare.bean.Chair"%>
 <%@ page import="it.lidobalneare.bean.User"%>
+<%@ page import="it.lidobalneare.bean.Chair"%>
 <%@ page import="it.lidobalneare.db.DBConnect"%>
 <%@ page import="it.lidobalneare.Utility"%>
 
