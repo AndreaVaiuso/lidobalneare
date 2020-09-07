@@ -17,7 +17,7 @@
 
 		<servlet.version>3.1.0</servlet.version>
 		<jsf.version>2.2.19</jsf.version>
-		<tomcat.version>9.0.21</tomcat.version>
+		<tomcat.version>9.0.37</tomcat.version>
 	</properties>
 
 	<dependencies>
