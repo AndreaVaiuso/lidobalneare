@@ -6,7 +6,7 @@
 		maxActive="10"
 		minIdle="2"
 		maxIdle="6"
-		maxWait="1000"
+		maxWait="10000"
 		name="jdbc/lidobalneare"
 		username="admin"
 		password="1526"

@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import javax.mail.MessagingException;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 import it.lidobalneare.Email;
 import it.lidobalneare.bean.Booking;
@@ -43,8 +47,7 @@ public class DBConnect {
 	private static PreparedStatement getStatement(String query) throws SQLException {
 		//try {
 			//Context initContext = new InitialContext();
-			//Context envContext  = (Context)initContext.lookup("java:/comp/env");
-			//DataSource ds = (DataSource)envContext.lookup("jdbc/lidobalneare");
+			//DataSource ds = (DataSource)initContext.lookup("java:comp/env/jdbc/lidobalneare");
 			//Connection con = ds.getConnection();
 			
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver ());
