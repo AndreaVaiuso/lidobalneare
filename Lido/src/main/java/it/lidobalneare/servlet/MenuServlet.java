@@ -2,6 +2,7 @@ package it.lidobalneare.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
@@ -27,8 +28,8 @@ public class MenuServlet extends HttpServlet {
 		double total;
 		
 		try {
-			total = DBConnect.getTotalOfOrder(tableNumber);
-		} catch (SQLExcetpion e) {
+			total = DBConnect.getTotalOfOrders(tableNumber);
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
 		}

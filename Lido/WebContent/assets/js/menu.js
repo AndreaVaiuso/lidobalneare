@@ -52,8 +52,8 @@ function removeFromOrder (index) {
 function loadOrders () {
 	$("#orderDiv").html("");
 	
-	count = 0;
-	var total = 0;
+	let count = 0;
+	let total = 0;
 	
 	pendingOrders.forEach(function(d){
 		total += d.price;
@@ -68,10 +68,17 @@ function loadOrders () {
 		);
 		count++;
 	});
+	
+	var filtered = pendingOrders.filter(function (el) {
+		  return el != "";
+		});
+	pendingOrders = filtered;
 
 	if (total > 0) {
 		$("#total").html(total.toFixed(2) + "&euro;");
 		$("#totalDiv").show();
+	} if (total == 0){
+		$("#totalDiv").hide();
 	}
 }
 
