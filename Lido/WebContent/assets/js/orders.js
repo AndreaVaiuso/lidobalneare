@@ -30,7 +30,7 @@ function completeOrder (table) {
 }
 
 $(document).ready(function(){
-	// This part reloads the entire page every chosen period of time, so that the orders can be reloaded. 
+	// Reloads the entire page every chosen period of time, so that the orders can be reloaded. 
 	// The timer is reset if in input is detected.
 	var time = new Date().getTime();
 	
@@ -50,33 +50,4 @@ $(document).ready(function(){
      }
 
      setTimeout(refresh, 10000);	// Set timeout every 10 seconds.
-	
-	
-	// This part enables completing an entire order only if every single sub-order is completed (checked).
-	var buttons = document.querySelectorAll(".completeOrderKitchenButton");
-	
-	for (var i = 0; i < buttons.length; i++) {
-		var btn = buttons[i];
-		var boxes = btn.previousElementSibling.querySelectorAll("td input");
-		var checkedCount = 0;
-		
-		for (var j = 0; j < boxes.length; j++) {
-			boxes[j].addEventListener("click", function(){
-				alert("Box checked");
-				
-				for (var k = 0; k < boxes.length; k++) {
-					if (boxes[k].checked) {
-						checkedCount++;
-					}
-				}
-				
-				if (checkedCount == boxes.length) {
-					btn.disabled = false;
-					alert("Btn enabled.");
-				} else {
-					btn.disabled = true;
-				}
-			});
-		}
-	}
 });
