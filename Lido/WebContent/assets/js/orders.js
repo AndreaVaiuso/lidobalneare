@@ -60,25 +60,23 @@ $(document).ready(function(){
 		var boxes = btn.previousElementSibling.querySelectorAll("td input");
 		
 		for (var j = 0; j < boxes.length; j++) {
-			boxes[i].addEventListener("click", updateDisplay());
-		}
-		
-		function updateDisplay () {
-			alert("Box checked");
-			var checkedCount = 0;
-			
-			for (var j = 0; j < boxes.length; j++) {
-				if (boxes[j].checked) {
-					checkedCount++;
+			boxes[i].addEventListener("click", function(){
+				alert("Box checked");
+				var checkedCount = 0;
+				
+				for (var j = 0; j < boxes.length; j++) {
+					if (boxes[j].checked) {
+						checkedCount++;
+					}
 				}
-			}
-			
-			if (checkedCount == boxes.length) {
-				btn.disabled = false;
-				alert("Btn enabled.");
-			} else {
-				btn.disabled = true;
-			}
+				
+				if (checkedCount == boxes.length) {
+					btn.disabled = false;
+					alert("Btn enabled.");
+				} else {
+					btn.disabled = true;
+				}
+			});
 		}
 	}
 });
