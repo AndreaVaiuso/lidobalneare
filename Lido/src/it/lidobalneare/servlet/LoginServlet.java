@@ -22,14 +22,6 @@ import it.lidobalneare.bean.User;
 @WebServlet({ "/LoginServlet", "/login" })
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public LoginServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -53,7 +45,6 @@ public class LoginServlet extends HttpServlet {
 			} else {	// Login successful.
 				session = request.getSession();
 				session.setAttribute("connecteduser", user);
-				
 				jsonResponse = "{ \"type\" : \"loginSuccess\" , \"role\" : \"" + user.getRole() + "\"}";
 			}
 		} catch (NullPointerException e) {	// Login failure or wrong password.
@@ -67,4 +58,8 @@ public class LoginServlet extends HttpServlet {
 		out.close();
 		return;
 	}
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	response.sendRedirect("login.html");
+    }
 }

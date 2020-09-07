@@ -2,6 +2,8 @@ package it.lidobalneare.bean;
 
 import java.sql.Date;
 
+import it.lidobalneare.Utility;
+
 public class Booking {
 	private String email;
 	private Date day;
@@ -19,6 +21,10 @@ public class Booking {
 	public Date getDay() {
 		return day;
 	}
+	public String getFormattedDay() {
+		return Utility.defaultDateFormat.format(day);
+	}
+	
 	public void setDay(Date day) {
 		this.day = day;
 	}

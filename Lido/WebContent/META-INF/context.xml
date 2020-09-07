@@ -15,14 +15,4 @@
 		testOnBorrow="true"
 		validationQuery="SELECT 1"
 	></Resource>
-	
-	<Realm className="org.apache.catalina.realm.DataSourceRealm"
-		dataSourceName="jdbc/lidobalneare"
-		localDataSource="true"
-		userTable="customer"
-		userNameCol="email"
-		userCredCol="password"
-		userRoleTable="customer"
-		roleNameCol="role"
-	></Realm>
 </Context>

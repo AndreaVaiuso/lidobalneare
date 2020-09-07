@@ -74,13 +74,11 @@ public class BookingAdminServlet extends HttpServlet {
 				prev.setPass_email(p.getString("pass_email"));
 				prev.setPass_begin(Date.valueOf(p.getString("pass_begin")));
 				prev.setPass_end(Date.valueOf(p.getString("pass_end")));
-				prev.setPass_people_num(p.getInt("pass_people_num"));
 				prev.setSeat(p.getString("seat"));
 				
 				next.setPass_email(n.getString("pass_email"));
 				next.setPass_begin(Date.valueOf(n.getString("pass_begin")));
 				next.setPass_end(Date.valueOf(n.getString("pass_end")));
-				next.setPass_people_num(n.getInt("pass_people_num"));
 				next.setSeat(n.getString("seat"));
 			} catch (JSONException e) {
 	        	e.printStackTrace();

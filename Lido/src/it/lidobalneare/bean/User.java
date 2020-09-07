@@ -1,16 +1,19 @@
 package it.lidobalneare.bean;
 
+import java.sql.Date;
+
+import it.lidobalneare.Utility;
+
 public class User {
 	private String email = "";
 	private String name = "";
 	private String surname = "";
 	private String gender = "";
-	private String birthdate = "";
+	private Date birthdate;
 	private String paypal = "";
 	private String active = "";
 	private String role = "";
-	
-	// Methods
+
 	public String getEmail() {
 		return email;
 	}
@@ -43,11 +46,15 @@ public class User {
 		this.gender = gender;
 	}
 
-	public String getBirthdate() {
+	public Date getBirthdate() {
 		return birthdate;
 	}
+	
+	public String getFormattedBirthDate() {
+		return Utility.defaultDateFormat.format(birthdate);
+	}
 
-	public void setBirthdate(String birthdate) {
+	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
 

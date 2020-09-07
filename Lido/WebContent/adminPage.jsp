@@ -118,7 +118,7 @@
 										<td><%= u.getName() %></td>
 										<td><%= u.getSurname() %></td>
 										<td><%= u.getGender() %></td>
-										<td><%= u.getBirthdate() %></td>
+										<td><%= u.getFormattedBirthDate() %></td>
 									</tr>
 								<% 
                         	}

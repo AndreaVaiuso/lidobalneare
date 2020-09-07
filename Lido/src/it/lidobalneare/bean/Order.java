@@ -2,6 +2,8 @@ package it.lidobalneare.bean;
 
 import java.sql.Date;
 
+import it.lidobalneare.Utility;
+
 public class Order {
 	private int id;
 	private int tableNumber;
@@ -24,6 +26,9 @@ public class Order {
 	
 	public Date getDate() {
 		return date;
+	}
+	public String getFormattetDate() {
+		return Utility.defaultDateFormat.format(date);
 	}
 	public void setDate(Date date) {
 		this.date = date;

@@ -6,12 +6,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.StringTokenizer;
 
 import javax.mail.MessagingException;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 import it.lidobalneare.Email;
 import it.lidobalneare.bean.Booking;
@@ -19,7 +22,6 @@ import it.lidobalneare.bean.Pass;
 import it.lidobalneare.bean.Chair;
 import it.lidobalneare.bean.Dish;
 import it.lidobalneare.bean.Message;
-import it.lidobalneare.bean.Order;
 import it.lidobalneare.bean.OrderQuantity;
 import it.lidobalneare.bean.OrderTable;
 import it.lidobalneare.bean.User;
@@ -43,10 +45,20 @@ public class DBConnect {
 
 
 	private static PreparedStatement getStatement(String query) throws SQLException {
-		DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver ());
-		Connection con = DriverManager.getConnection(url, user, password);
-		PreparedStatement st = con.prepareStatement(query);
-		return st;
+		//try {
+			//Context initContext = new InitialContext();
+			//Context envContext  = (Context)initContext.lookup("java:/comp/env");
+			//DataSource ds = (DataSource)envContext.lookup("jdbc/lidobalneare");
+			//Connection con = ds.getConnection();
+			
+			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver ());
+			Connection con = DriverManager.getConnection(url, user, password);
+			PreparedStatement st = con.prepareStatement(query);
+			return st;
+		//} catch (NamingException e) {
+		//	e.printStackTrace();
+		//	return null;
+		//}
 	}
 
 	public static User login(String email, String password) throws NullPointerException, SQLException {
@@ -62,7 +74,7 @@ public class DBConnect {
 			u.setGender(rs.getString("sex"));
 			u.setActive(rs.getString("active"));
 			u.setPaypal(rs.getString("paypal"));
-			u.setBirthdate(rs.getDate("birthdate").toString());
+			u.setBirthdate(rs.getDate("birthdate"));
 			u.setRole(rs.getString("role"));
 			return u;
 		} else {
@@ -82,7 +94,7 @@ public class DBConnect {
 			u.setGender(r.getString("sex"));
 			u.setActive(r.getString("active"));
 			u.setPaypal(r.getString("paypal"));
-			u.setBirthdate(r.getDate("birthdate").toString());
+			u.setBirthdate(r.getDate("birthdate"));
 			u.setRole(r.getString("role"));
 			return u;
 		} else {
@@ -142,7 +154,7 @@ public class DBConnect {
 			u.setGender(r.getString("sex"));
 			u.setActive(r.getString("active"));
 			u.setPaypal(r.getString("paypal"));
-			u.setBirthdate(r.getDate("birthdate").toString());
+			u.setBirthdate(r.getDate("birthdate"));
 			u.setRole(r.getString("role"));
 
 			list.add(u);

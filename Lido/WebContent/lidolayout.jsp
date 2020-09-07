@@ -5,70 +5,68 @@
 <%@ page import="it.lidobalneare.bean.Chair"%>
 <%@ page import="it.lidobalneare.bean.User"%>
 <%@ page import="it.lidobalneare.db.DBConnect"%>
-<%@ page import="it.lidobalneare.UtilityFunc"%>
+<%@ page import="it.lidobalneare.Utility"%>
 
 <div class="contentdivscreen-layout">
 	<div style="overflow-x: auto">
 		<div id="beachlayoutdiv" class="beachlayoutdiv"	ondragover="onDragOver(event);" ondrop="onDrop(event);">
 			<%
-			User cntusr = (User) session.getAttribute("connecteduser");
-			if(cntusr == null){
-				response.sendRedirect("login.html");
-				return;
-			}
-			ArrayList<Chair> chairSchema = DBConnect.getChairLayout();
-			for(int i = 0; i<chairSchema.size();i++){
-				
-				if(cntusr.isAdmin()){
-					%>
+				User cntusr = (User) session.getAttribute("connecteduser");
+				if(cntusr == null){
+					response.sendRedirect("login.html");
+					return;
+				}
+				ArrayList<Chair> chairSchema = DBConnect.getChairLayout();
+				for(int i = 0; i<chairSchema.size();i++){
+					
+					if(cntusr.isAdmin()){
+			%>
 			<div class="chair" id="chair_<%=i%>" draggable="true" 
-			  ondragstart="onDragStart(event,'chair_<%=i%>','<%= chairSchema.get(i).getChairname() %>')"
+			  ondragstart="onDragStart(event,'chair_<%=i%>','<%=chairSchema.get(i).getChairname()%>')"
 			  onmouseover="showChairPopup('chair_<%=i%>')"
-			  onmouseout="hideChairPopup()" style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
+			  onmouseout="hideChairPopup()" style="top: <%=chairSchema.get(i).getY()%>px; left: <%=chairSchema.get(i).getX()%>px;">
 				<div class="chairpopup" style="display: none">
-					<span class="popupchairname" id="chair_<%=i%>_name"><%= chairSchema.get(i).getChairname() %></span>
+					<span class="popupchairname" id="chair_<%=i%>_name"><%=chairSchema.get(i).getChairname()%></span>
 					<hr>
-					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="updateChairToLayout('<%= chairSchema.get(i).getChairname() %>')">
+					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="updateChairToLayout('<%=chairSchema.get(i).getChairname()%>')">
 					<i class="fa fa-edit"></i>
 					</button>
-					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="removeChairFromLayout('<%= chairSchema.get(i).getChairname() %>')">
+					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="removeChairFromLayout('<%=chairSchema.get(i).getChairname()%>')">
 					<i class="fa fa-remove"></i>
 					</button>
-					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="duplicateChair('<%= chairSchema.get(i).getChairname() %>')">
+					<button class="btn btn-primary btn-sm popupbutton" type="button" onclick="duplicateChair('<%=chairSchema.get(i).getChairname()%>')">
 					<i class="fa fa-clone"></i>
 					</button>
 				</div>
 			</div>
 			<%
 				} else if(cntusr.isCustomer() || cntusr.isTicket() || cntusr.isLifeGuard() || cntusr.isInfoMonitor()){
-					String date = request.getParameter("date");
-					if(date==null){
-						DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-						Date d = new Date();
-						date = dateFormat.format(d);
-					}
-					int timeslot = UtilityFunc.getCurrentTimeSlot();
-					
-					boolean isPass = false;
-					String customerOccupied = DBConnect.getChairOccupied(chairSchema.get(i).getChairname(),date,timeslot);
-					
-					try{
-						if(!cntusr.isLifeGuard() && !cntusr.isInfoMonitor()){
-							isPass = request.getParameter("prenpass").equals("YES");
-							if(isPass) {customerOccupied = DBConnect.getChairPassOccupied(chairSchema.get(i).getChairname(),date,timeslot+1);}
+						String date = request.getParameter("date");
+						if(date==null){
+							date = Utility.sqlDateFormat.format(new Date());
 						}
-						timeslot = Integer.valueOf(request.getParameter("timeslot"));
-					} catch (Exception e){}
-					
-					double price;
-					if(timeslot == 0){
-						price = chairSchema.get(i).getDailyPrice();
-					} else {
-						price = chairSchema.get(i).getPrice(); 
-					}
+						int timeslot = Utility.getCurrentTimeSlot();
+						
+						boolean isPass = false;
+						String customerOccupied = DBConnect.getChairOccupied(chairSchema.get(i).getChairname(),date,timeslot);
+						
+						try{
+							if(!cntusr.isLifeGuard() && !cntusr.isInfoMonitor()){
+								isPass = request.getParameter("prenpass").equals("YES");
+								if(isPass) {customerOccupied = DBConnect.getChairPassOccupied(chairSchema.get(i).getChairname(),date,timeslot+1);}
+							}
+							timeslot = Integer.valueOf(request.getParameter("timeslot"));
+						} catch (Exception e){}
+						
+						double price;
+						if(timeslot == 0){
+							price = chairSchema.get(i).getDailyPrice();
+						} else {
+							price = chairSchema.get(i).getPrice(); 
+						}
 
-					if(customerOccupied.isEmpty()){
-						%>
+						if(customerOccupied.isEmpty()){
+			%>
 			<div class="chair" id="chair_<%=i%>" onmouseover="showChairPopup('chair_<%=i%>')" onmouseout="hideChairPopup()"
 			  style="top: <%= chairSchema.get(i).getY() %>px; left: <%= chairSchema.get(i).getX() %>px;">
 				<div class="chairpopup" style="display: none">

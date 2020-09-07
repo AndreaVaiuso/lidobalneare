@@ -65,8 +65,8 @@ for (int i = 0; i < passes.size(); i++) { %>
 					   %>') ">
 			<i class="fa fa-edit"></i>
 		</button>
-		<span class="prenparag">PASS: Valid from <%= passes.get(i).getPass_begin() %>
-											  to <%= passes.get(i).getPass_end() %></span>
+		<span class="prenparag">PASS: Valid from <%= passes.get(i).getFormattedPass_begin() %>
+											  to <%= passes.get(i).getFormattedPass_end() %></span>
 		<span class="prenparag" style="color: limegreen; font-weight: bold">VALID</span>
    		<%
    	} else {
@@ -75,15 +75,15 @@ for (int i = 0; i < passes.size(); i++) { %>
 																				   %>','<%= passes.get(i).getPass_email() %>')">
 			<i class="fa fa-qrcode"></i>
 		</button>
-		<span class="prenparag">PASS: Valid from <%= passes.get(i).getPass_begin() %>
-											  to <%= passes.get(i).getPass_end() %></span>
+		<span class="prenparag">PASS: Valid from <%= passes.get(i).getFormattedPass_begin() %>
+											  to <%= passes.get(i).getFormattedPass_end() %></span>
 		<span class="prenparag" style="color: limegreen; font-weight: bold">VALID</span>
 	<% } else { %>
 		<button class="btn btn-outline-secondary showqrcodebutton" type="button" disabled>
 			<i class="fa fa-qrcode"></i>
 		</button>
-		<span class="prenparag">PASS: Valid from <%= passes.get(i).getPass_begin() %>
-											  to <%= passes.get(i).getPass_end() %></span>
+		<span class="prenparag">PASS: Valid from <%= passes.get(i).getFormattedPass_begin() %>
+											  to <%= passes.get(i).getFormattedPass_end() %></span>
 		<span class="prenparag" style="color: red; font-weight: bold">EXPIRED</span>
 	<% } %>
 	</div>
@@ -117,7 +117,7 @@ for (int i = 0; i < bookings.size(); i++) { %>
    	}
     %>
 	
-	<span class="prentitle"><% if(unregistered){%><%=bookings.get(i).getEmail()%>: <%}%>Valid for: <%= bookings.get(i).getDay() %></span>
+	<span class="prentitle"><% if(unregistered){%><%=bookings.get(i).getEmail()%>: <%}%>Valid for: <%= bookings.get(i).getFormattedDay() %></span>
 	<%
 	switch ( bookings.get(i).getTime_slot() ) {
 		case 0 : %>

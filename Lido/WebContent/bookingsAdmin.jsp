@@ -96,7 +96,7 @@ try{
 		<div class="contentscreen">
 			<span class="toptitle">Reservations</span>
 			<% 
-			if(unreg){
+			if(!unreg){
 				%>
 				<span class="logindescription" style="background-color: rgb(220, 220, 220);">Customer: <%= session.getAttribute("customer") %></span>
 				<%
@@ -113,7 +113,6 @@ try{
 			<hr>
 
 			<div class="buttoncontainer">
-				<button class="btn btn-primary" type="button" onclick="editReservation()">Edit reservation</button>
 				<button class="btn btn-primary" type="button" onclick="back()">Back</button>
 			</div>
 		</div>

@@ -83,14 +83,6 @@ public class AdminServlet extends HttpServlet {
 				DBConnect.sendMessage(request.getParameter("title"),request.getParameter("message"),request.getParameter("messagetype"));
 				out.append(jsonResponse);
 				break;
-			case "updatebooking":
-				break;
-			case "updatepass":
-				break;
-			case "deletebooking":
-				break;
-			case "deletepass":
-				break;
 			default:
 				response.sendRedirect("errorpage.html");
 				break;
