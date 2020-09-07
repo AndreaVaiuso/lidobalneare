@@ -20,11 +20,11 @@ function generateQr(){
 }
 
 function completeOrder (table) {
-	$.post("OrderServlet", table, function(response){
+	$.get("OrderServlet?table="+table, function(response){
 		if (response.type == "success") {
 			location.href = "orders.jsp";
 		} else {
-			location.href = "errorpage.html";
+			showDefaultError();
 		}
 	}, "json")
 }

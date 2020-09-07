@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import it.lidobalneare.bean.User;
 import it.lidobalneare.db.DBConnect;
 
 /**
@@ -31,28 +32,37 @@ public class OrderServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 * Completes a paid order by removing the records from the DB.
-	 * Called by orders.js.
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User user = (User) request.getSession().getAttribute("connecteduser");
 		PrintWriter out = response.getWriter();
 		response.setContentType("application/json");
-		
-		int tableNumber = (int) request.getAttribute("table");
+		String jsonResponse = "{ \"type\" : \"success\" }";
+		if(user == null) {
+			response.sendRedirect("login.html");
+			out.close();
+			return;
+		}
+		if(!user.isCook()) {
+			response.sendRedirect("login.html");
+			out.close();
+			return;
+		}
+		response.setContentType("application/json");
 		try {
+			int tableNumber = Integer.valueOf(request.getParameter("table"));
 			DBConnect.completeOrders(tableNumber);
-			out.append("{ \"type\" : \"success\" }");
+			out.append(jsonResponse);
 		} catch (SQLException e) {
+			e.printStackTrace();
+			out.append("{ \"type\" : \"error\" }");
+		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			out.append("{ \"type\" : \"error\" }");
 		}
 		
 		out.close();
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 	}
 }
