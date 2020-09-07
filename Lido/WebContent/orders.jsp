@@ -33,6 +33,7 @@ try {
     <title>LidoBalneare</title>    
     
     <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/qrcode.min.js"></script>
 
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
@@ -52,7 +53,7 @@ try {
     	document.getElementById("res_orders").classList.add("active");
     </script>
     
-    <div id="qrcodescreen" class="alertscreen" style="display : none">
+    <div id="qrcodescreen" class="alertscreen" style="display: none">
     	<span class="logindescription"> Table number: </span>
 		<input id="tablein" class="lidoblockstyle" type="number" placeholder="Table number" required />
 		<button id="table_qr_btn" type="button" onclick='tableQr()'></button>
@@ -63,7 +64,7 @@ try {
 	
     <div class="topDivBkg">
     	<span class="orders" style="padding-top: 80px;">Orders</span>
-    	<button id="show_order_btn" class="btn btn-primary btn-lg" type="button" onclick='generateQr()'>Tables QR-code</button>
+    	<button id="show_order_btn" class="btn btn-primary btn-lg orderButton" type="button" onclick='generateQr()'>Tables QR-code</button>
     </div>
     
     <div class="menuContainerDivKitchen">
@@ -71,7 +72,7 @@ try {
 	        <div id='table_<%= tables.get(i) %>' class="kitchenOrder">
 	        	<a class="btn kitchenOrderButton" data-toggle="collapse" aria-expanded="false"
 	        	  aria-controls="collapse-<%= tables.get(i) %>" href="#collapse-<%= tables.get(i) %>" role="button">Table <%= tables.get(i) %></a>   
-	            <div class="collapse" id="collapse-<%= tables.get(i) %>">
+	            <div id="collapse-<%= tables.get(i) %>" class="collapse">
 	                <div class="card">
 	                    <div class="card-body">
 	                        <div class="table-responsive">
@@ -107,7 +108,6 @@ try {
 	<%	} %>
 	</div>
 
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/orders.js"></script>
 </body>
 
