@@ -41,13 +41,13 @@ public class MenuServlet extends HttpServlet {
 			return; 
 		}
 		
-		//Date date = new Date(Calendar.getInstance().getTime().getTime());
-		Date date = (Date) Calendar.getInstance().getTime();
+		Timestamp ts = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
 		for (int i = 0; i < pendingOrders.length(); i++) {
 			try {
 				DBConnect.insertOrder(tableNumber, ts, pendingOrders.getJSONObject(i).getInt("dishId"));
 			} catch (Exception e) {
+
 				e.printStackTrace();
 				out.append("{ \"type\" : \"error\" }");
 				out.close();
