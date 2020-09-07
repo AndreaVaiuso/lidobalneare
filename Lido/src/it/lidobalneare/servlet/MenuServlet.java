@@ -2,7 +2,9 @@ package it.lidobalneare.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Calendar;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,10 +45,12 @@ public class MenuServlet extends HttpServlet {
 			out.close();
 			return; 
 		}
+		
+		Date date = new Date(Calendar.getInstance().getTime().getTime());
 
 		for (int i = 0; i < pendingOrders.length(); i++) {
 			try {
-				DBConnect.insertOrder(tableNumber, pendingOrders.getJSONObject(i).getInt("dishId"));
+				DBConnect.insertOrder(tableNumber, date, pendingOrders.getJSONObject(i).getInt("dishId"));
 			} catch (Exception e) {
 
 				e.printStackTrace();

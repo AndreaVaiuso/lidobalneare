@@ -3,6 +3,7 @@
 <%@ page import="it.lidobalneare.db.DBConnect"%>
 <%@ page import="it.lidobalneare.bean.Dish" %>
 <%@ page import="it.lidobalneare.bean.OrderQuantity" %>
+<%@ page import="it.lidobalneare.bean.OrderTable" %>
 <jsp:useBean id="connecteduser" class="it.lidobalneare.bean.User" scope="session" />
 
 <% 
@@ -16,7 +17,7 @@ try{
 	return;
 }
 
-ArrayList<Integer> tables = new ArrayList<Integer>();
+ArrayList<OrderTable> tables = new ArrayList<OrderTable>();
 
 try {
 	tables = DBConnect.getTables();
@@ -62,7 +63,7 @@ try {
 		</div>
 	</div>
 	
-    <div class="topDivBkg">
+    <div class="topDivBkg" style="padding-top: 50px;">
     	<span class="orders" style="padding-top: 80px;">Orders</span>
     	<button id="show_order_btn" class="btn btn-primary btn-lg orderButton" type="button" onclick='generateQr()'>Tables QR-code</button>
     </div>
@@ -71,7 +72,8 @@ try {
 	<%	for (int i = 0; i < tables.size(); i++) { %>
 	        <div id='table_<%= tables.get(i) %>' class="kitchenOrder">
 	        	<a class="btn kitchenOrderButton" data-toggle="collapse" aria-expanded="false"
-	        	  aria-controls="collapse-<%= tables.get(i) %>" href="#collapse-<%= tables.get(i) %>" role="button">Table <%= tables.get(i) %></a>   
+	        	  aria-controls="collapse-<%= tables.get(i) %>" href="#collapse-<%= tables.get(i) %>" role="button">
+	        	  Table <%= tables.get(i).getTableNumber() %>; time <%= tables.get(i).getDate().getTime() %></a>   
 	            <div id="collapse-<%= tables.get(i) %>" class="collapse">
 	                <div class="card">
 	                    <div class="card-body">
@@ -79,28 +81,32 @@ try {
 	                            <table class="table">
 	                                <thead>
 	                                    <tr>
+	                                    	<th>Checked</th>
 	                                        <th class="tableHeader" style="width: 70%;">Dish</th>
 	                                        <th>Quantity</th>
+	                                        <th>Time</th>
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
 	                            <%	ArrayList<OrderQuantity> o = new ArrayList<OrderQuantity>();
 	                                
 	                                try {
-	                                	o = DBConnect.getOrderQuantitiesByTable(tables.get(i));
+	                                	o = DBConnect.getOrderQuantitiesByTable(tables.get(i).getTableNumber());
 	                                } catch (Exception e) { e.printStackTrace(); return; }
 	                                
 	                                for (int j = 0; j < o.size(); j++) { %>
 	                                    <tr>
+	                                    	<td><input type="checkbox"/></td>
 	                                        <td><%= o.get(j).getDish() %></td>
 	                                        <td><%= o.get(j).getQuantity() %></td>
+	                                        <td></td>
 	                                    </tr>
 	                            <%	} %>
 	                                </tbody>
 	                            </table>
 	                        </div>
 	                        
-	                    	<button class="btn completeOrderKitchenButton" type="button" onclick='completeOrder(<%= tables.get(i) %>)'>Complete order</button>
+	                    	<button class="btn completeOrderKitchenButton" type="button" onclick='completeOrder(<%= tables.get(i) %>)' disabled>Complete order</button>
 	                    </div>
 	                </div>
 	            </div>

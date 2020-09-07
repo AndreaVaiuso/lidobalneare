@@ -30,9 +30,45 @@ function completeOrder (table) {
 }
 
 $(document).ready(function(){
+	// This part reloads the entire page every chosen period of time, so that the orders can be reloaded. 
+	// The timer is reset if in input is detected.
 	var time = new Date().getTime();
 	
-	if (new Date().getTime() - time > 1000*3) {	// 1000*60*5 milliseconds = 5 minutes.
+	$(document.body).bind("mousemove keypress", function() {
+         time = new Date().getTime();
+     });
+
+	if (new Date().getTime() - time > 1000*3) {	
 		window.location.reload(true);
+	}
+	
+	function refresh() {
+         if(new Date().getTime() - time >= 1000*3) // 1000*60*5 milliseconds = 5 minutes.
+             window.location.reload(true);
+         else 
+             setTimeout(refresh, 10000);
+     }
+
+     setTimeout(refresh, 10000);	// Set timeout every 10 seconds.
+	
+	
+	// This part enables completing an entire order only if every single sub-order is completed (checked).
+	var buttons = document.querySelectorAll(".completeOrderKitchenButton");
+	
+	for (var btn in buttons) {
+		var boxes = btn.previousSibling.querySelectorAll("td input");
+		var checkedCount = 0;
+		
+		for (var i = 0; i < boxes.length; i++) {
+			if (boxes[i].checked) {
+				checkedCount++;
+			}
+		}
+		
+		if (checkedCount === boxes.length) {
+			btn.disabled = false;
+		} else {
+			btn.disabled = true;
+		}
 	}
 });

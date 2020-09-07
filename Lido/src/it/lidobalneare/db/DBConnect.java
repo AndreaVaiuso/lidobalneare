@@ -21,6 +21,7 @@ import it.lidobalneare.bean.Dish;
 import it.lidobalneare.bean.Message;
 import it.lidobalneare.bean.Order;
 import it.lidobalneare.bean.OrderQuantity;
+import it.lidobalneare.bean.OrderTable;
 import it.lidobalneare.bean.User;
 
 public class DBConnect {
@@ -532,14 +533,10 @@ public class DBConnect {
 	}
 
 	// Adds an order. Used in MenuServlet.
-	public static void insertOrder (int table, int dishId) throws SQLException {
-		java.util.Date javatoday = Calendar.getInstance().getTime();
-		java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
-		Date today = Date.valueOf(dateFormat.format(javatoday));
-
+	public static void insertOrder (int table, Date date, int dishId) throws SQLException {
 		PreparedStatement s = getStatement("INSERT INTO menuorder(tableNumber, date, dishId) VALUES (?,?,?)");
 		s.setInt(1,table);
-		s.setDate(2, today);
+		s.setDate(2, date);
 		s.setInt(3, dishId);
 		s.executeUpdate();
 	}
@@ -552,12 +549,15 @@ public class DBConnect {
 	}
 	
 	// Returns a list of all the tables with any pending order.
-	public static ArrayList<Integer> getTables () throws SQLException {
-		ArrayList<Integer> tables = new ArrayList<Integer>();
-		PreparedStatement s = getStatement("SELECT DISTINCT tableNumber FROM menuorder");
+	public static ArrayList<OrderTable> getTables () throws SQLException {
+		ArrayList<OrderTable> tables = new ArrayList<OrderTable>();
+		PreparedStatement s = getStatement("SELECT DISTINCT tableNumber, date FROM menuorder");
 		ResultSet r = s.executeQuery();
 		while ( r.next() ) {
-			tables.add(r.getInt("tableNumber"));
+			OrderTable t = new OrderTable();
+			t.setTableNumber(r.getInt("tableNumber"));
+			t.setDate(r.getDate("date"));
+			tables.add(t);
 		}
 		
 		return tables;
