@@ -1,10 +1,10 @@
 package it.lidobalneare.bean;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class OrderTable {
 	private int tableNumber;
-	private Date date;
+	private Timestamp date;
 	
 	public int getTableNumber() {
 		return tableNumber;
@@ -12,10 +12,10 @@ public class OrderTable {
 	public void setTableNumber(int tableNumber) {
 		this.tableNumber = tableNumber;
 	}
-	public Date getDate() {
+	public Timestamp getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(Timestamp date) {
 		this.date = date;
 	}
 }

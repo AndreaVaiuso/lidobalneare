@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.StringTokenizer;
@@ -541,10 +542,10 @@ public class DBConnect {
 	}
 
 	// Adds an order. Used in MenuServlet.
-	public static void insertOrder (int table, Date date, int dishId) throws SQLException {
+	public static void insertOrder (int table, Timestamp date, int dishId) throws SQLException {
 		PreparedStatement s = getStatement("INSERT INTO menuorder(tableNumber, date, dishId) VALUES (?,?,?)");
 		s.setInt(1,table);
-		s.setDate(2, date);
+		s.setTimestamp(2, date);
 		s.setInt(3, dishId);
 		s.executeUpdate();
 	}
@@ -564,7 +565,7 @@ public class DBConnect {
 		while ( r.next() ) {
 			OrderTable t = new OrderTable();
 			t.setTableNumber(r.getInt("tableNumber"));
-			t.setDate(r.getDate("date"));
+			t.setDate(r.getTimestamp("date"));
 			tables.add(t);
 		}
 		

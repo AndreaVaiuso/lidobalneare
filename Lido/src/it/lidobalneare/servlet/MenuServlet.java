@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Calendar;
 
 import javax.servlet.ServletException;
@@ -46,14 +47,12 @@ public class MenuServlet extends HttpServlet {
 			return; 
 		}
 		
-		//Date date = new Date(Calendar.getInstance().getTime().getTime());
-		Date date = (Date) Calendar.getInstance().getTime();
+		Timestamp date = new Timestamp(Calendar.getInstance().getTime().getTime());
 
 		for (int i = 0; i < pendingOrders.length(); i++) {
 			try {
 				DBConnect.insertOrder(tableNumber, date, pendingOrders.getJSONObject(i).getInt("dishId"));
 			} catch (Exception e) {
-
 				e.printStackTrace();
 				out.append("{ \"type\" : \"error\" }");
 				out.close();

@@ -1,13 +1,13 @@
 package it.lidobalneare.bean;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import it.lidobalneare.Utility;
 
 public class Order {
 	private int id;
 	private int tableNumber;
-	private Date date;
+	private Timestamp date;
 	private int dishId;
 	private double price;	// Not present in DB. Must retrieve from table menu.
 	
@@ -23,15 +23,14 @@ public class Order {
 	public void setTableNumber(int tableNumber) {
 		this.tableNumber = tableNumber;
 	}
-	
-	public Date getDate() {
+	public Timestamp getDate() {
 		return date;
+	}
+	public void setDate(Timestamp date) {
+		this.date = date;
 	}
 	public String getFormattetDate() {
 		return Utility.defaultDateFormat.format(date);
-	}
-	public void setDate(Date date) {
-		this.date = date;
 	}
 	public int getDishId() {
 		return dishId;
