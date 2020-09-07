@@ -52,7 +52,7 @@ function removeFromOrder (index) {
 function loadOrders () {
 	$("#orderDiv").html("");
 	
-	var count = 0;
+	count = 0;
 	var total = 0;
 	
 	pendingOrders.forEach(function(d){
@@ -77,12 +77,17 @@ function loadOrders () {
 
 // Shows a confirmation window before proceeding to payment.
 function confirmOrder () {
-	var total = $("#total").html();
+	var tableNum = $("#table_number").html();
+	var total;
+	
+	$.get("MenuServlet?table_number="+tableNum, function(tot){
+		total = tot;
+	});
+	
 	$("#price_label").html(total);
 	$("#paymentScreen").fadeIn(500);
 	
 	$("#paymentyesbtn").click(function(){
-		var tableNum = $("#table_number").html();
 		var orders = JSON.stringify(pendingOrders)
 		data = {
 				"pendingOrders" : orders,

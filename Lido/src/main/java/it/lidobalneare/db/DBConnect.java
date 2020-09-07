@@ -549,6 +549,13 @@ public class DBConnect {
 		s.executeUpdate();
 	}
 	
+	public static double getTotalOfOrders (int tableNumber) throws SQLException {
+		PreparedStatement s = getStatement("SELECT sum(price) FROM menu m, menuorder o WHERE m.id = o.dishId AND tableNumber = ?");
+		ResultSet r = s.executeQuery();
+		r.next();
+		return r.getDouble("sum(price)");
+	}
+	
 	// Removes all paid orders of a single table. Called by OrderServlet.
 	public static void completeOrders (int tableNumber) throws SQLException {
 		PreparedStatement s = getStatement("DELETE FROM menuorder WHERE tableNumber = ?");

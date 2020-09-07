@@ -23,6 +23,18 @@ public class MenuServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int tableNumber = Integer.valueOf(request.getParameter("table_number"));
+		double total;
+		
+		try {
+			total = DBConnect.getTotalOfOrder(tableNumber);
+		} catch (SQLExcetpion e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		System.out.println("PayPal payment - price: ");
+		System.out.println(total);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
