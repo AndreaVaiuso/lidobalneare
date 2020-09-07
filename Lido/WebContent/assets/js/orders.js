@@ -57,7 +57,7 @@ $(document).ready(function(){
 	
 	for (var i = 0; i < buttons.length; i++) {
 		var btn = buttons[i];
-		var boxes = btn.previousSibling.querySelectorAll("td input");
+		var boxes = btn.previousElementSibling.querySelectorAll("td input");
 		var checkedCount = 0;
 		
 		for (var j = 0; j < boxes.length; j++) {
