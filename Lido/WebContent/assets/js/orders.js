@@ -38,12 +38,12 @@ $(document).ready(function(){
          time = new Date().getTime();
      });
 
-	if (new Date().getTime() - time > 1000*3) {	
+	if (new Date().getTime() - time > 1000*60*10) {	
 		window.location.reload(true);
 	}
 	
 	function refresh() {
-         if(new Date().getTime() - time >= 1000*3) // 1000*60*5 milliseconds = 5 minutes.
+         if(new Date().getTime() - time >= 1000*60*10)
              window.location.reload(true);
          else 
              setTimeout(refresh, 10000);
