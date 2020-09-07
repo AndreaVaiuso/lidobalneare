@@ -11,10 +11,6 @@ import java.util.Calendar;
 import java.util.StringTokenizer;
 
 import javax.mail.MessagingException;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 
 import it.lidobalneare.Email;
 import it.lidobalneare.bean.Booking;
