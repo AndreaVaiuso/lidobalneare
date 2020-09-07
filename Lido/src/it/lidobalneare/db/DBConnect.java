@@ -530,27 +530,7 @@ public class DBConnect {
 		s.setInt(4, id);
 		s.executeUpdate();
 	}
-	/*
-	// Method for getting the orders of a specific customer sit at a specific table. Used in menu.jsp.
-	public static ArrayList<Order> getOrdersByTable (int table) throws SQLException {
-		PreparedStatement s = getStatement("SELECT * FROM menuorder o, menu m, WHERE o.tableNumber = ? AND o.dish = m.dishname");
-		s.setInt(1, table);
-		ResultSet r = s.executeQuery();
-		ArrayList<Order> list = new ArrayList<Order>();
-		
-		while (r.next()) {
-			Order o = new Order();
-			o.setId(r.getInt("o.id"));
-			o.setTableNumber(table);
-			o.setDate(r.getDate("o.date"));
-			o.setDishId(r.getInt("o.dish"));
-			o.setPrice(r.getDouble("m.price"));
-			list.add(o);
-		}
-		
-		return list;
-	}
-	*/
+
 	// Adds an order. Used in MenuServlet.
 	public static void insertOrder (int table, int dishId) throws SQLException {
 		java.util.Date javatoday = Calendar.getInstance().getTime();
@@ -583,7 +563,7 @@ public class DBConnect {
 		return tables;
 	}
 	/*
-	// Retrieves, form the orders, the dishes and the corresponding quantities. Used in orders.jsp.
+	// Retrieves, form the orders, the dishes and the corresponding quantities. Previous version.
 	public static ArrayList<OrderQuantity> getOrderQuantitiesByTable (int table) throws SQLException {
 		java.util.Date javatoday = Calendar.getInstance().getTime();
 		java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
@@ -607,14 +587,14 @@ public class DBConnect {
 
 	// Retrieves, form the orders, the dishes and the corresponding quantities. Used in orders.jsp.
 	public static ArrayList<OrderQuantity> getOrderQuantitiesByTable (int table) throws SQLException {
-		PreparedStatement s = getStatement("SELECT count(*) FROM menuorder WHERE tableNumber = ? GROUP BY dish");
+		PreparedStatement s = getStatement("SELECT count(*), dishname FROM menu m, menuorder o WHERE m.id = o.dishId AND o.tableNumber = ? GROUP BY m.dishname");
 		s.setInt(1, table);
 		ResultSet r = s.executeQuery();
 		ArrayList<OrderQuantity> list = new ArrayList<OrderQuantity>();
 		
 		while (r.next()) {
 			OrderQuantity o = new OrderQuantity();
-			o.setDish(r.getString("dish"));
+			o.setDish(r.getString("dishname"));
 			o.setQuantity(r.getInt("count(*)"));
 			list.add(o);
 		}
