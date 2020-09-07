@@ -64,8 +64,8 @@ $(document).ready(function(){
 				alert("Box checked");
 				var checkedCount = 0;
 				
-				for (var j = 0; j < boxes.length; j++) {
-					if (boxes[j].checked) {
+				for (var k = 0; k < boxes.length; k++) {
+					if (boxes[k].checked) {
 						checkedCount++;
 					}
 				}
