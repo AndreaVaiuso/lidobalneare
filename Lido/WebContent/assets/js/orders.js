@@ -61,7 +61,7 @@ $(document).ready(function(){
 		var checkedCount = 0;
 		
 		for (var j = 0; j < boxes.length; j++) {
-			boxes[i].addEventListener("click", function(){
+			boxes[j].addEventListener("click", function(){
 				alert("Box checked");
 				
 				for (var k = 0; k < boxes.length; k++) {
