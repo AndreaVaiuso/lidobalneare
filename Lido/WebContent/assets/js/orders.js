@@ -58,18 +58,25 @@ $(document).ready(function(){
 	for (var i = 0; i < buttons.length; i++) {
 		var btn = buttons[i];
 		var boxes = btn.previousElementSibling.querySelectorAll("td input");
-		var checkedCount = 0;
 		
 		for (var j = 0; j < boxes.length; j++) {
-			if (boxes[j].checked) {
-				checkedCount++;
-			}
+			boxes[i].addEventListener("click", updateDisplay());
 		}
 		
-		if (checkedCount === boxes.length) {
-			btn.disabled = false;
-		} else {
-			btn.disabled = true;
+		function updateDisplay () {
+			var checkedCount = 0;
+			
+			for (var j = 0; j < boxes.length; j++) {
+				if (boxes[j].checked) {
+					checkedCount++;
+				}
+			}
+			
+			if (checkedCount === boxes.length) {
+				btn.disabled = false;
+			} else {
+				btn.disabled = true;
+			}
 		}
 	}
 });
