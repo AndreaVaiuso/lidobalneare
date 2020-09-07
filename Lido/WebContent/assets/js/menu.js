@@ -70,7 +70,7 @@ function loadOrders () {
 	});
 
 	if (total > 0) {
-		$("#total").html(total);
+		$("#total").html(total.toFixed(2) + "&euro;");
 		$("#totalDiv").show();
 	}
 }

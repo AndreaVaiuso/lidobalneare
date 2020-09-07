@@ -12,7 +12,7 @@ $("#configurepaypalbtn").click(function(){
 		let newpaypalemail = $("#alertinput").val();
 		$("#alertscreen").fadeOut(500);
 		$("#alertinput").hide();
-		$.get("Customer?request=paypalchange&paypal="+newpaypalemail,function(data){
+		$.post("Customer?request=paypalchange&paypal="+newpaypalemail,function(data){
 			if(data.type="success"){
 				showalert("Done","Now you can make payment quickly with your PayPal account");
 				$("#alertyesbtn").click(function(){location.reload()});

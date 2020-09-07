@@ -84,7 +84,6 @@ SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 	                                    	<th>Checked</th>
 	                                        <th class="tableHeader" style="width: 70%;">Dish</th>
 	                                        <th>Quantity</th>
-	                                        <th>Time</th>
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
@@ -99,7 +98,6 @@ SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 	                                    	<td><input type="checkbox"/></td>
 	                                        <td><%= o.get(j).getDish() %></td>
 	                                        <td><%= o.get(j).getQuantity() %></td>
-	                                        <td></td>
 	                                    </tr>
 	                            <%	} %>
 	                                </tbody>

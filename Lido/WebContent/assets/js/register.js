@@ -22,7 +22,9 @@ $("#registerbuttonreg").click(
 					"birthdate" : birthdate,
 					"gender" : gender,
 			};
+			$("#ajaxloaderscreen").toggle();
 			$.post("RegisterServlet",userdata,function(data,status,xhr){
+				$("#ajaxloaderscreen").toggle();
 				response = data;
 				if(response.type == "typerror"){
 					showerror("You must compile all fields!",response.missingField + " field is empty");

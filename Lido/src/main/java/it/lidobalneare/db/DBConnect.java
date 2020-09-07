@@ -110,7 +110,7 @@ public class DBConnect {
 
 	public static void register(String email, String password, String birthdate, String gender, String name, String surname) throws SQLException, MessagingException, IllegalArgumentException {
 		String code = randomAlphaNumeric(20);
-		PreparedStatement st = getStatement("INSERT INTO user VALUES (?,?,?,?,?,?,null,?,'user')");
+		PreparedStatement st = getStatement("INSERT INTO user VALUES (?,?,?,?,?,?,null,?,'customer')");
 		st.setString(1,email);
 		st.setString(2,password);
 		st.setString(3,name);
