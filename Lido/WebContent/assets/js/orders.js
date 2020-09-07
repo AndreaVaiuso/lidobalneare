@@ -64,6 +64,7 @@ $(document).ready(function(){
 		}
 		
 		function updateDisplay () {
+			alert("Box checked");
 			var checkedCount = 0;
 			
 			for (var j = 0; j < boxes.length; j++) {
@@ -72,8 +73,9 @@ $(document).ready(function(){
 				}
 			}
 			
-			if (checkedCount === boxes.length) {
+			if (checkedCount == boxes.length) {
 				btn.disabled = false;
+				alert("Btn enabled.");
 			} else {
 				btn.disabled = true;
 			}

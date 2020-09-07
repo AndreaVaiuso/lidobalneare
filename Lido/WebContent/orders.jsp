@@ -106,7 +106,7 @@ SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 	                            </table>
 	                        </div>
 	                        
-	                    	<button class="btn completeOrderKitchenButton" type="button" onclick='completeOrder(<%= tables.get(i) %>)' disabled>Complete order</button>
+	                    	<button class="btn completeOrderKitchenButton" type="button" onclick='completeOrder(<%= tables.get(i).getTableNumber() %>)' disabled>Complete order</button>
 	                    </div>
 	                </div>
 	            </div>
