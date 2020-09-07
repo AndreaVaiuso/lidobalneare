@@ -85,11 +85,9 @@ function loadOrders () {
 // Shows a confirmation window before proceeding to payment.
 function confirmOrder () {
 	var tableNum = $("#table_number").html();
-	var total;
+	var total = $("#total").html();
 	
-	$.get("MenuServlet?table_number="+tableNum, function(tot){
-		total = tot;
-	});
+	$.get("MenuServlet?table_number="+tableNum);
 	
 	$("#price_label").html(total);
 	$("#paymentScreen").fadeIn(500);
