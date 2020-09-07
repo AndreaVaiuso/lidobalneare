@@ -356,6 +356,8 @@ span.orders {
 
 .completeOrderKitchenButton:disabled {
 	background-color: white;
+	color: lightgrey;
+	font-style: italic;
 }
 
 .lidoparagraph {
