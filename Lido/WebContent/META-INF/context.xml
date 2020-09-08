@@ -3,7 +3,7 @@
 	<Resource auth="Container"
 		driverClassName="com.mysql.cj.jdbc.Driver"
 		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
-		maxActive="10"
+		maxActive="50"
 		minIdle="2"
 		maxIdle="6"
 		maxWait="10000"

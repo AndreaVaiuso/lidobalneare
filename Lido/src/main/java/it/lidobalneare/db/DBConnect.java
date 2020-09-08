@@ -27,11 +27,6 @@ import it.lidobalneare.bean.OrderTable;
 import it.lidobalneare.bean.User;
 
 public class DBConnect {
-	private static String url = "jdbc:mysql://localhost:3306/lidobalneare?useSSL=false&serverTimezone=UTC";
-	private static String user = "admin";
-	private static String password = "1526";
-	private static Connection con;
-
 
 	private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -44,26 +39,24 @@ public class DBConnect {
 		return builder.toString();
 	}
 
-
+	/*
 	private static PreparedStatement getStatement(String query) throws SQLException {
-		/*
-		try (Connection con = DriverManager.getConnection(url, user, password)) {
-			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver ());
-			try(PreparedStatement st = con.prepareStatement(query)){
-				return st;
-			} catch (SQLException e) {
-				throw e;
-			}
-		} catch (SQLException e) {
-			throw e;
-		}
-		 */
 		try {
 			Context initContext = new InitialContext();
-			DataSource ds = (DataSource)initContext.lookup("java:comp/env/jdbc/lidobalneare");
+
 			con = ds.getConnection();
-			PreparedStatement st = con.prepareStatement(query);
-			return st;
+			PreparedStatement s = con.prepareStatement(query);
+			return s;
+		} catch (NamingException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	 */
+	public static DataSource getContext() {
+		try {
+			Context c = new InitialContext();
+			return (DataSource)c.lookup("java:comp/env/jdbc/lidobalneare");
 		} catch (NamingException e) {
 			e.printStackTrace();
 			return null;
@@ -71,418 +64,412 @@ public class DBConnect {
 	}
 
 	public static User login(String email, String password) throws NullPointerException, SQLException {
-		PreparedStatement s = getStatement("SELECT * FROM user WHERE email=? AND password=?");
-		s.setString(1,email);
-		s.setString(2,password);
-		ResultSet rs = s.executeQuery();
-		if (rs.next()) {
-			User u = new User();
-			u.setEmail(rs.getString("email"));
-			u.setName(rs.getString("name"));
-			u.setSurname(rs.getString("surname"));
-			u.setGender(rs.getString("sex"));
-			u.setActive(rs.getString("active"));
-			u.setPaypal(rs.getString("paypal"));
-			u.setBirthdate(rs.getDate("birthdate"));
-			u.setRole(rs.getString("role"));
-			con.close();
-			s.close();
-			return u;
-		} else {
-			con.close();
-			s.close();
-			throw new NullPointerException();
-		}
-
-	}
-
-	public static User getUserName(String email) throws SQLException, NullPointerException {
-		PreparedStatement st = getStatement("SELECT * FROM user WHERE email = ?");
-		st.setString(1, email);
-		ResultSet r = st.executeQuery();
-		if(r.next()) {
-			User u = new User();
-			u.setEmail(r.getString("email"));
-			u.setName(r.getString("name"));
-			u.setSurname(r.getString("surname"));
-			u.setGender(r.getString("sex"));
-			u.setActive(r.getString("active"));
-			u.setPaypal(r.getString("paypal"));
-			u.setBirthdate(r.getDate("birthdate"));
-			u.setRole(r.getString("role"));
-			con.close();
-			st.close();
-			return u;
-		} else {
-			User u = new User();
-			u.setEmail("Not registered user");
-			StringTokenizer stok = new StringTokenizer(email);
-			if(stok.hasMoreTokens()) {
-				u.setName(stok.nextToken());
-				while(stok.hasMoreTokens()) {
-					u.setSurname(u.getSurname()+stok.nextToken());
-				}
-				con.close();
-				st.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT * FROM user WHERE email=? AND password=?");){
+			s.setString(1,email);
+			s.setString(2,password);
+			ResultSet rs = s.executeQuery();
+			if (rs.next()) {
+				User u = new User();
+				u.setEmail(rs.getString("email"));
+				u.setName(rs.getString("name"));
+				u.setSurname(rs.getString("surname"));
+				u.setGender(rs.getString("sex"));
+				u.setActive(rs.getString("active"));
+				u.setPaypal(rs.getString("paypal"));
+				u.setBirthdate(rs.getDate("birthdate"));
+				u.setRole(rs.getString("role"));
 				return u;
 			} else {
-				con.close();
-				st.close();
 				throw new NullPointerException();
 			}
 		}
 	}
 
+	public static User getUserName(String email) throws SQLException, NullPointerException {
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT * FROM user WHERE email = ?");){
+			s.setString(1, email);
+			ResultSet r = s.executeQuery();
+			if(r.next()) {
+				User u = new User();
+				u.setEmail(r.getString("email"));
+				u.setName(r.getString("name"));
+				u.setSurname(r.getString("surname"));
+				u.setGender(r.getString("sex"));
+				u.setActive(r.getString("active"));
+				u.setPaypal(r.getString("paypal"));
+				u.setBirthdate(r.getDate("birthdate"));
+				u.setRole(r.getString("role"));
+				return u;
+			} else {
+				User u = new User();
+				u.setEmail("Not registered user");
+				StringTokenizer stok = new StringTokenizer(email);
+				if(stok.hasMoreTokens()) {
+					u.setName(stok.nextToken());
+					while(stok.hasMoreTokens()) {
+						u.setSurname(u.getSurname()+stok.nextToken());
+					}
+
+
+					return u;
+				} else {
+					throw new NullPointerException();
+				}
+			}
+		}
+
+	}
+
 	public static void register(String email, String password, String birthdate, String gender, String name, String surname) throws SQLException, MessagingException, IllegalArgumentException {
 		String code = randomAlphaNumeric(20);
-		PreparedStatement st = getStatement("INSERT INTO user VALUES (?,?,?,?,?,?,null,?,'customer')");
-		st.setString(1,email);
-		st.setString(2,password);
-		st.setString(3,name);
-		st.setString(4,surname);
-		st.setString(5,gender);
-		st.setDate(6, Date.valueOf(birthdate));
-		st.setString(7, code);
-		st.executeUpdate();
-		Email.sendRegisterConfirmation(email, code);
-		con.close();
-		st.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("INSERT INTO user VALUES (?,?,?,?,?,?,null,?,'customer')");){
+			s.setString(1,email);
+			s.setString(2,password);
+			s.setString(3,name);
+			s.setString(4,surname);
+			s.setString(5,gender);
+			s.setDate(6, Date.valueOf(birthdate));
+			s.setString(7, code);
+			s.executeUpdate();
+			Email.sendRegisterConfirmation(email, code);
+		}
 	}
 
 
 	public static void unlockAccount(String code) throws SQLException, NullPointerException {
-		PreparedStatement st = getStatement("UPDATE user SET active = 'Y' WHERE active = ?");
-		st.setString(1, code);
-		int affected = st.executeUpdate();
-		if(affected == 0) {
-			st.close();
-			throw new NullPointerException();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("UPDATE user SET active = 'Y' WHERE active = ?");){
+			s.setString(1, code);
+			int affected = s.executeUpdate();
+			if(affected == 0) {
+
+				throw new NullPointerException();
+			}
 		}
-		con.close();
-		st.close();
 	}
 
 	// Executes a query that returns the list of every user registered, including special ones.
 	public static ArrayList<User> getUserList(int from, int to) throws SQLException, NullPointerException {
 		// Preparing the query.
-		PreparedStatement s = getStatement("SELECT * FROM user ORDER BY email LIMIT ?,?");
-		s.setInt(1, from);
-		s.setInt(2, to);
-		ResultSet r = s.executeQuery(); 
-		ArrayList<User> list = new ArrayList<User>();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT * FROM user ORDER BY email LIMIT ?,?");){
+			s.setInt(1, from);
+			s.setInt(2, to);
+			ResultSet r = s.executeQuery(); 
+			ArrayList<User> list = new ArrayList<User>();
 
-		// Generate the ArrayList.
-		while (r.next()) {
-			User u = new User();
-			u.setEmail(r.getString("email"));
-			u.setName(r.getString("name"));
-			u.setSurname(r.getString("surname"));
-			u.setGender(r.getString("sex"));
-			u.setActive(r.getString("active"));
-			u.setPaypal(r.getString("paypal"));
-			u.setBirthdate(r.getDate("birthdate"));
-			u.setRole(r.getString("role"));
+			// Generate the ArrayList.
+			while (r.next()) {
+				User u = new User();
+				u.setEmail(r.getString("email"));
+				u.setName(r.getString("name"));
+				u.setSurname(r.getString("surname"));
+				u.setGender(r.getString("sex"));
+				u.setActive(r.getString("active"));
+				u.setPaypal(r.getString("paypal"));
+				u.setBirthdate(r.getDate("birthdate"));
+				u.setRole(r.getString("role"));
+				list.add(u);
+			}
 
-			list.add(u);
+			return list;
 		}
-		con.close();
-		s.close();
-		return list;
+
 	}
 
 	// Returns the number of entries of the User table.
 	public static int getUserNumber() throws SQLException, NullPointerException {
-		PreparedStatement s = getStatement("SELECT count(*) FROM user");
-		ResultSet r = s.executeQuery();
-		r.next();
-		int count = r.getInt("count(*)");
-		con.close();
-		s.close();
-		return count;
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT count(*) FROM user");){
+			ResultSet r = s.executeQuery();
+			r.next();
+			int count = r.getInt("count(*)");
+
+
+			return count;
+		}
 	}
 
 	//Change user's Paypal account
 	public static void setUserPaypal(String email, String paypal) throws SQLException {
-		PreparedStatement s = getStatement("UPDATE user SET paypal=? WHERE email=?");
-		s.setString(1, paypal);
-		s.setString(2, email);
-		s.executeUpdate();
-		con.close();
-		s.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("UPDATE user SET paypal=? WHERE email=?");){
+			s.setString(1, paypal);
+			s.setString(2, email);
+			s.executeUpdate();
+		}
+
 	}
 
 	public static Pass getCustomerPass(String email, String pass_id) throws SQLException {
-		PreparedStatement s = getStatement("SELECT * FROM pass WHERE pass_email = ? AND pass_id = ?");
-		s.setString(1, email);
-		s.setString(2, pass_id);
-		ResultSet r = s.executeQuery();
-		Pass p = new Pass();
-		if (r.next()) {
-			p.setPass_email(r.getString("pass_email"));
-			p.setPass_begin(r.getDate("pass_begin"));
-			p.setPass_end(r.getDate("pass_end"));
-			p.setSeat(r.getString("seat"));
-			p.setPass_id(r.getString("pass_id"));
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT * FROM pass WHERE pass_email = ? AND pass_id = ?");){
+			s.setString(1, email);
+			s.setString(2, pass_id);
+			ResultSet r = s.executeQuery();
+			Pass p = new Pass();
+			if (r.next()) {
+				p.setPass_email(r.getString("pass_email"));
+				p.setPass_begin(r.getDate("pass_begin"));
+				p.setPass_end(r.getDate("pass_end"));
+				p.setSeat(r.getString("seat"));
+				p.setPass_id(r.getString("pass_id"));
+			}
+			return p;
 		}
-		con.close();
-		s.close();
-		return p;
 	}
 
 	public static Booking getCustomerBooking(String email, String booking_id) throws SQLException, NullPointerException {
-		PreparedStatement s = getStatement("SELECT * FROM booking WHERE email = ? AND booking_id = ?");
-		s.setString(1, email);
-		s.setString(2, booking_id);
-		ResultSet r = s.executeQuery();
-		Booking b = new Booking();
-		if (r.next()) {
-			b.setEmail(r.getString("email"));
-			b.setDay(r.getDate("day"));
-			b.setTime_slot(r.getInt("time_slot"));
-			b.setSeat(r.getString("seat"));
-			b.setBooking_id(r.getString("booking_id"));
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT * FROM booking WHERE email = ? AND booking_id = ?");){
+			s.setString(1, email);
+			s.setString(2, booking_id);
+			ResultSet r = s.executeQuery();
+			Booking b = new Booking();
+			if (r.next()) {
+				b.setEmail(r.getString("email"));
+				b.setDay(r.getDate("day"));
+				b.setTime_slot(r.getInt("time_slot"));
+				b.setSeat(r.getString("seat"));
+				b.setBooking_id(r.getString("booking_id"));
+			}
+			return b;
 		}
-		con.close();
-		s.close();
-		return b;
+
 	}
 
 
 	public static ArrayList<Booking> getNotRegisteredBookings() throws SQLException{
-		PreparedStatement s = getStatement("SELECT * FROM booking b WHERE NOT EXISTS(SELECT * FROM user u WHERE u.email = b.email)");
-		ResultSet r = s.executeQuery();
-		ArrayList<Booking> list = new ArrayList<Booking>();
-		while (r.next()) {
-			Booking b = new Booking();
-			b.setEmail(r.getString("email"));
-			b.setDay(r.getDate("day"));
-			b.setTime_slot(r.getInt("time_slot"));
-			b.setSeat(r.getString("seat"));
-			b.setBooking_id(r.getString("booking_id"));
-			list.add(b);
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT * FROM booking b WHERE NOT EXISTS(SELECT * FROM user u WHERE u.email = b.email)");){
+			ResultSet r = s.executeQuery();
+			ArrayList<Booking> list = new ArrayList<Booking>();
+			while (r.next()) {
+				Booking b = new Booking();
+				b.setEmail(r.getString("email"));
+				b.setDay(r.getDate("day"));
+				b.setTime_slot(r.getInt("time_slot"));
+				b.setSeat(r.getString("seat"));
+				b.setBooking_id(r.getString("booking_id"));
+				list.add(b);
+			}
+			return list;
 		}
-		con.close();
-		s.close();
-		return list;
 	}
 
 
 	public static ArrayList<Pass> getCustomerPasses(String email) throws SQLException, NullPointerException {
-		PreparedStatement s = getStatement("SELECT * FROM pass WHERE pass_email = ?");
-		s.setString(1, email);
-		ResultSet r = s.executeQuery();
-		ArrayList<Pass> list = new ArrayList<Pass>();
-
-		while (r.next()) {
-			Pass p = new Pass();
-			p.setPass_email(r.getString("pass_email"));
-			p.setPass_begin(r.getDate("pass_begin"));
-			p.setPass_end(r.getDate("pass_end"));
-			p.setSeat(r.getString("seat"));
-			p.setPass_id(r.getString("pass_id"));
-			list.add(p);
-		}
-		con.close();
-		s.close();
-		return list;
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT * FROM pass WHERE pass_email = ?");){
+			s.setString(1, email);
+			ResultSet r = s.executeQuery();
+			ArrayList<Pass> list = new ArrayList<Pass>();
+			while (r.next()) {
+				Pass p = new Pass();
+				p.setPass_email(r.getString("pass_email"));
+				p.setPass_begin(r.getDate("pass_begin"));
+				p.setPass_end(r.getDate("pass_end"));
+				p.setSeat(r.getString("seat"));
+				p.setPass_id(r.getString("pass_id"));
+				list.add(p);
+			}
+			return list;
+		}	
 	}
 
 	public static ArrayList<Booking> getCustomerBookings(String email) throws SQLException, NullPointerException {
-		PreparedStatement s = getStatement("SELECT * FROM booking WHERE email = ?");
-		s.setString(1, email);
-		ResultSet r = s.executeQuery();
-		ArrayList<Booking> list = new ArrayList<Booking>();
-
-		while (r.next()) {
-			Booking b = new Booking();
-			b.setEmail(r.getString("email"));
-			b.setDay(r.getDate("day"));
-			b.setTime_slot(r.getInt("time_slot"));
-			b.setSeat(r.getString("seat"));
-			b.setBooking_id(r.getString("booking_id"));
-			list.add(b);
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT * FROM booking WHERE email = ?");){
+			s.setString(1, email);
+			ResultSet r = s.executeQuery();
+			ArrayList<Booking> list = new ArrayList<Booking>();
+			while (r.next()) {
+				Booking b = new Booking();
+				b.setEmail(r.getString("email"));
+				b.setDay(r.getDate("day"));
+				b.setTime_slot(r.getInt("time_slot"));
+				b.setSeat(r.getString("seat"));
+				b.setBooking_id(r.getString("booking_id"));
+				list.add(b);
+			}
+			return list;
 		}
-		con.close();
-		s.close();
-		return list;
 	}
 
 	public static void updatePass(Pass prev, Pass next) throws SQLException, NullPointerException {
-		PreparedStatement s = getStatement("UPDATE pass "
-				+ "SET pass_begin = ?, pass_end = ?, seat = ? "
-				+ "WHERE pass_email = ? AND pass_begin = ? AND pass_end = ? AND seat = ?");
-		s.setDate(1, next.getPass_begin());
-		s.setDate(2, next.getPass_end());
-		s.setString(3, next.getSeat());
-		s.setString(4, prev.getPass_email());
-		s.setDate(5, prev.getPass_begin());
-		s.setDate(6, prev.getPass_end());
-		s.setString(7, prev.getSeat());
-		s.executeUpdate();
-		con.close();
-		s.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("UPDATE pass "
+						+ "SET pass_begin = ?, pass_end = ?, seat = ? "
+						+ "WHERE pass_email = ? AND pass_begin = ? AND pass_end = ? AND seat = ?");){
+			s.setDate(1, next.getPass_begin());
+			s.setDate(2, next.getPass_end());
+			s.setString(3, next.getSeat());
+			s.setString(4, prev.getPass_email());
+			s.setDate(5, prev.getPass_begin());
+			s.setDate(6, prev.getPass_end());
+			s.setString(7, prev.getSeat());
+			s.executeUpdate();
+		}
 	}
 
 	public static void updateBooking(Booking prev, Booking next) throws SQLException, NullPointerException {
-		PreparedStatement s = getStatement("UPDATE booking "
-				+ "SET day = ?, time_slot = ?, seat = ? "
-				+ "WHERE email = ? AND day = ? AND time_slot = ? AND seat = ?;");
-		s.setDate(1, next.getDay());
-		s.setInt(2, next.getTime_slot());
-		s.setString(3, next.getSeat());
-		s.setString(4, prev.getEmail());
-		s.setDate(5, prev.getDay());
-		s.setInt(6, prev.getTime_slot());
-		s.setString(7, prev.getSeat());
-		s.executeUpdate();
-		con.close();
-		s.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("UPDATE booking "
+						+ "SET day = ?, time_slot = ?, seat = ? "
+						+ "WHERE email = ? AND day = ? AND time_slot = ? AND seat = ?;");){
+			s.setDate(1, next.getDay());
+			s.setInt(2, next.getTime_slot());
+			s.setString(3, next.getSeat());
+			s.setString(4, prev.getEmail());
+			s.setDate(5, prev.getDay());
+			s.setInt(6, prev.getTime_slot());
+			s.setString(7, prev.getSeat());
+			s.executeUpdate();
+
+		}
 	}
 
 	public static void deletePass(String email, String begin, String end, String seat) throws SQLException {
-		PreparedStatement s = getStatement("DELETE FROM pass WHERE pass_email=? AND pass_begin=? AND pass_end=? AND seat=?");
-		s.setString(1, email);
-		s.setDate(2, Date.valueOf(begin));
-		s.setDate(3, Date.valueOf(end));
-		s.setString(4, seat);
-		s.executeUpdate();
-		con.close();
-		s.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("DELETE FROM pass WHERE pass_email=? AND pass_begin=? AND pass_end=? AND seat=?");){
+			s.setString(1, email);
+			s.setDate(2, Date.valueOf(begin));
+			s.setDate(3, Date.valueOf(end));
+			s.setString(4, seat);
+			s.executeUpdate();
+		}
 	}
 
 
 	public static void deleteBooking(String email , String day, int timeSlot, String seat) throws SQLException {
-		PreparedStatement s = getStatement("DELETE FROM booking WHERE email=? AND day=? AND time_slot=? AND seat=?");
-		s.setString(1, email);
-		s.setDate(2, Date.valueOf(day));
-		s.setInt(3, timeSlot);
-		s.setString(4, seat);
-		s.executeUpdate();
-		con.close();
-		s.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("DELETE FROM booking WHERE email=? AND day=? AND time_slot=? AND seat=?");){
+			s.setString(1, email);
+			s.setDate(2, Date.valueOf(day));
+			s.setInt(3, timeSlot);
+			s.setString(4, seat);
+			s.executeUpdate();
+		}
 	}
 
 	public static ArrayList<Chair> getChairLayout() throws SQLException {
-		PreparedStatement s = getStatement("SELECT * FROM chair_schema");
-		ResultSet r = s.executeQuery(); 
-		ArrayList<Chair> list = new ArrayList<Chair>();
-		while (r.next()) {
-			Chair c = new Chair();
-			c.setChairname(r.getString("chairname"));
-			c.setPrice(r.getDouble("price"));
-			c.setX(r.getInt("pos_x"));
-			c.setY(r.getInt("pos_y"));
-			c.setDailyPrice(r.getDouble("dailyprice"));
-			c.setPassPrice(r.getDouble("passprice"));
-			c.setDetails(r.getString("details"));
-			list.add(c);
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT * FROM chair_schema");){
+			ResultSet r = s.executeQuery(); 
+			ArrayList<Chair> list = new ArrayList<Chair>();
+			while (r.next()) {
+				Chair c = new Chair();
+				c.setChairname(r.getString("chairname"));
+				c.setPrice(r.getDouble("price"));
+				c.setX(r.getInt("pos_x"));
+				c.setY(r.getInt("pos_y"));
+				c.setDailyPrice(r.getDouble("dailyprice"));
+				c.setPassPrice(r.getDouble("passprice"));
+				c.setDetails(r.getString("details"));
+				list.add(c);
+			}
+			return list;
 		}
-		con.close();
-		s.close();
-		return list;
 	}
 
 
 
 	public static void addChairToLayout(String chairname, double price, double dailyPrice, double passPrice, int x, int y, String note) throws SQLException {
-		PreparedStatement s = getStatement("INSERT INTO chair_schema VALUES (?,?,?,?,?,?,?) ");
-		s.setString(1, chairname);
-		s.setInt(2, x);
-		s.setInt(3, y);
-		s.setDouble(4, price);
-		s.setDouble(5, dailyPrice);
-		s.setDouble(6, passPrice);
-		s.setString(7, note);
-		s.executeUpdate();
-		con.close();
-		s.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("INSERT INTO chair_schema VALUES (?,?,?,?,?,?,?) ");){
+			s.setString(1, chairname);
+			s.setInt(2, x);
+			s.setInt(3, y);
+			s.setDouble(4, price);
+			s.setDouble(5, dailyPrice);
+			s.setDouble(6, passPrice);
+			s.setString(7, note);
+			s.executeUpdate();
+		}
 	}
 
 
 	public static void moveChair(String chairname, Integer x, Integer y) throws SQLException {
-		PreparedStatement s = getStatement("UPDATE chair_schema SET pos_x=?,pos_y=? WHERE chairname=?");
-		s.setInt(1, x);
-		s.setInt(2, y);
-		s.setString(3, chairname);
-		s.executeUpdate();
-		con.close();
-		s.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("UPDATE chair_schema SET pos_x=?,pos_y=? WHERE chairname=?");){
+			s.setInt(1, x);
+			s.setInt(2, y);
+			s.setString(3, chairname);
+			s.executeUpdate();
+		}
 	}
 
 	public static void updateChair(String chairname, double price, double dailyPrice, double passPrice, String note) throws SQLException {
-		PreparedStatement s = getStatement("UPDATE chair_schema SET chairname=?, price=?, dailyprice=?, passprice=?, details=? WHERE chairname=?");
-		s.setString(1, chairname);
-		s.setDouble(2, price);
-		s.setDouble(3,dailyPrice);
-		s.setDouble(4, passPrice);
-		s.setString(5, note);
-		s.setString(6, chairname);
-		s.executeUpdate();
-		con.close();
-		s.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("UPDATE chair_schema SET chairname=?, price=?, dailyprice=?, passprice=?, details=? WHERE chairname=?");){
+			s.setString(1, chairname);
+			s.setDouble(2, price);
+			s.setDouble(3,dailyPrice);
+			s.setDouble(4, passPrice);
+			s.setString(5, note);
+			s.setString(6, chairname);
+			s.executeUpdate();
+		}
 	}
 
 	public static Chair getChairInfo(String chair) throws SQLException {
-		PreparedStatement s = getStatement("SELECT * FROM chair_schema WHERE chairname = ?");
-		s.setString(1, chair);
-		ResultSet r = s.executeQuery(); 
-		Chair c = new Chair();
-		if (r.next()) {
-			c.setChairname(r.getString("chairname"));
-			c.setPrice(r.getDouble("price"));
-			c.setX(r.getInt("pos_x"));
-			c.setY(r.getInt("pos_y"));
-			c.setDailyPrice(r.getDouble("dailyprice"));
-			c.setPassPrice(r.getDouble("passprice"));
-			c.setDetails(r.getString("details"));
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT * FROM chair_schema WHERE chairname = ?");){
+			s.setString(1, chair);
+			ResultSet r = s.executeQuery(); 
+			Chair c = new Chair();
+			if (r.next()) {
+				c.setChairname(r.getString("chairname"));
+				c.setPrice(r.getDouble("price"));
+				c.setX(r.getInt("pos_x"));
+				c.setY(r.getInt("pos_y"));
+				c.setDailyPrice(r.getDouble("dailyprice"));
+				c.setPassPrice(r.getDouble("passprice"));
+				c.setDetails(r.getString("details"));
+			}
+			return c;
 		}
-		con.close();
-		s.close();
-		return c;
+
 	}
 
 	public static boolean existsPrenotation(String chairname) throws SQLException {
-		PreparedStatement s = getStatement("(SELECT seat FROM booking WHERE seat = ?) UNION (SELECT seat FROM pass WHERE seat = ?)");
-		s.setString(1, chairname);
-		s.setString(2, chairname);
-		ResultSet rs = s.executeQuery();
-		if(rs.next()) {
-			con.close();
-			s.close();
-			return true; 
-		} else {
-			con.close();
-			s.close();
-			return false;
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("(SELECT seat FROM booking WHERE seat = ?) UNION (SELECT seat FROM pass WHERE seat = ?)");){
+			s.setString(1, chairname);
+			s.setString(2, chairname);
+			ResultSet rs = s.executeQuery();
+			if(rs.next()) return true; else return false;
 		}
+
 	}
 
 	public static void deleteChair(String chairname) throws SQLException {
-		PreparedStatement s = getStatement("DELETE FROM chair_schema WHERE chairname=?");
-		s.setString(1, chairname);
-		s.executeUpdate();
-		con.close();
-		s.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("DELETE FROM chair_schema WHERE chairname=?");){
+			s.setString(1, chairname);
+			s.executeUpdate();
+		}
 	}
 
 	public static String getChairOccupied(String chair, String date, int timeslot) {
-		try {
-			PreparedStatement s = null;
-			String q1;
-			if(timeslot == 0) {
-				q1 = ("("
-						+ "SELECT email FROM booking b "
-						+ "WHERE b.seat = ? AND b.day = ? OR ? = -1) )");
-			} else {
-				q1 = ("("
-						+ "SELECT email FROM booking b "
-						+ "WHERE b.seat = ? AND b.day = ? AND (b.time_slot = ? OR b.time_slot = 0) )");
-			}
-			String q2 = ("("
-					+ "SELECT pass_email email FROM pass p "
-					+ "WHERE p.seat = ? AND p.pass_begin <= ? AND ? <= p.pass_end )");
-			s = getStatement(q1 + " UNION " + q2);
-
+		String q1;
+		if(timeslot == 0) {
+			q1 = ("("
+					+ "SELECT email FROM booking b "
+					+ "WHERE b.seat = ? AND b.day = ? OR ? = -1) )");
+		} else {
+			q1 = ("("
+					+ "SELECT email FROM booking b "
+					+ "WHERE b.seat = ? AND b.day = ? AND (b.time_slot = ? OR b.time_slot = 0) )");
+		}
+		String q2 = ("("
+				+ "SELECT pass_email email FROM pass p "
+				+ "WHERE p.seat = ? AND p.pass_begin <= ? AND ? <= p.pass_end )");
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement(q1 + " UNION " + q2);){
 			s.setString(1, chair);
 			s.setDate(2, Date.valueOf(date));
 			s.setInt(3, timeslot);
@@ -492,244 +479,217 @@ public class DBConnect {
 			ResultSet r = s.executeQuery();
 			if(r.next()) {
 				String email = r.getString("email");
-				PreparedStatement s1 = getStatement("SELECT name, surname FROM user WHERE email = ?");
-				s1.setString(1, email);
-				ResultSet r1 = s1.executeQuery();
-				// If user is registered, return name and surname, else return name surname saved in email column
-				if(r1.next()) {
-					s.close();
-					s1.close();
-					con.close();
-					return r1.getString("name") + " " + r1.getString("surname");
-				} else {
-					s.close();
-					s1.close();
-					con.close();
-					return email;
+				try(Connection con1 = getContext().getConnection();
+						PreparedStatement s1 = con1.prepareStatement("SELECT name, surname FROM user WHERE email = ?");){
+					s1.setString(1, email);
+					ResultSet r1 = s1.executeQuery();
+					// If user is registered, return name and surname, else return name surname saved in email column
+					if(r1.next())
+						return r1.getString("name") + " " + r1.getString("surname");
+					else return email;
 				}
-			} else {
-				s.close();
-				con.close();
-				return "";
-			}
+			} else return "";
 		} catch (SQLException e) {
-			try {
-				con.close();
-			} catch (SQLException e1) {
-				e.printStackTrace();
-				return "ERROR - CHECK DATABASE";
-			}
 			e.printStackTrace();
 			return "ERROR - CHECK DATABASE";
 		}
 	}
 
 	public static String getChairPassOccupied(String chair, String begin, int timeinterval) {
-		try {
+		try(Connection con = getContext().getConnection();
+				Connection con2 = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement(""
+						+ "SELECT * FROM pass p "
+						+ "WHERE p.seat = ? AND ((p.pass_begin <= ? AND ? <= p.pass_end) OR (p.pass_begin <= ? AND ? <= p.pass_end))");
+				PreparedStatement s2 = con2.prepareStatement(""
+						+ "SELECT * FROM booking b "
+						+ "WHERE b.seat = ? AND (? <= b.day AND b.day <= ?)");){
 			Date beg = Date.valueOf(begin);
 			Date end = new Date(beg.getTime() +  (31l*24l*60l*60l*1000l)*timeinterval);
-			PreparedStatement s = getStatement(""
-					+ "SELECT * FROM pass p "
-					+ "WHERE p.seat = ? AND ((p.pass_begin <= ? AND ? <= p.pass_end) OR (p.pass_begin <= ? AND ? <= p.pass_end))");
 			s.setString(1, chair);
 			s.setDate(2, beg);
 			s.setDate(3, beg);
 			s.setDate(4, end);
 			s.setDate(5, end);
-			PreparedStatement s2 = getStatement(""
-					+ "SELECT * FROM booking b "
-					+ "WHERE b.seat = ? AND (? <= b.day AND b.day <= ?)");
 			s2.setString(1, chair);
 			s2.setDate(2, beg);
 			s2.setDate(3, end);
 			ResultSet r1 = s.executeQuery();
 			ResultSet r2 = s2.executeQuery();
-			if(r1.next() || r2.next()) {
-				s.close();
-				s2.close();
-				con.close();
-				return "OCCUPIED"; 
-			} else {
-				s.close();
-				s2.close();
-				con.close();
-				return "";
-			}
+			if(r1.next() || r2.next()) return "OCCUPIED"; else return "";
 		} catch (SQLException e) {
-			try {
-				con.close();
-			} catch (SQLException e1) {
-				e.printStackTrace();
-				return "ERROR - CHECK DATABASE";
-			}
+			e.printStackTrace();
+			return "ERROR - CHECK DATABASE";
+		} catch (NullPointerException e) {
 			e.printStackTrace();
 			return "ERROR - CHECK DATABASE";
 		}
 	}
 
-
 	public static void makeReservation(String email, String chair, String date, int timeslot) throws SQLException {
-		PreparedStatement s = getStatement("INSERT INTO booking VALUES (?,?,?,?,?)");
-		s.setString(1, email);
-		s.setDate(2, Date.valueOf(date));
-		s.setInt(3, timeslot);
-		s.setString(4, chair);
-		s.setString(5, randomAlphaNumeric(10));
-		s.executeUpdate();
-		con.close();
-		s.close();
+		try(Connection con = getContext().getConnection();	
+				PreparedStatement s = con.prepareStatement("INSERT INTO booking VALUES (?,?,?,?,?)");){
+			s.setString(1, email);
+			s.setDate(2, Date.valueOf(date));
+			s.setInt(3, timeslot);
+			s.setString(4, chair);
+			s.setString(5, randomAlphaNumeric(10));
+			s.executeUpdate();
+		}
 	}
 
 	public static String makeReservation(String name, String surname, String chair, String date, int timeslot) throws SQLException {
-		PreparedStatement s = getStatement("INSERT INTO booking VALUES (?,?,?,?,?)");
-		s.setString(1, name + " " + surname);
-		s.setDate(2, Date.valueOf(date));
-		s.setInt(3, timeslot);
-		s.setString(4, chair);
-		String code = randomAlphaNumeric(10);
-		s.setString(5, code);
-		s.executeUpdate();
-		con.close();
-		s.close();
-		return code;
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("INSERT INTO booking VALUES (?,?,?,?,?)");){
+			s.setString(1, name + " " + surname);
+			s.setDate(2, Date.valueOf(date));
+			s.setInt(3, timeslot);
+			s.setString(4, chair);
+			String code = randomAlphaNumeric(10);
+			s.setString(5, code);
+			s.executeUpdate();
+			return code;
+		}	
 	}
 
-	public static void makePass(String email, String begin, int timeinterval, String chair) throws SQLException {
-		Date beg = Date.valueOf(begin);
-		Date end = new Date(beg.getTime() +  (31l*24l*60l*60l*1000l)*timeinterval);
-		PreparedStatement s = getStatement("INSERT INTO pass VALUES (?,?,?,?,?)");
-		s.setString(1, email);
-		s.setDate(2, beg);
-		s.setDate(3, end);
-		s.setString(4, chair);
-		s.setString(5, randomAlphaNumeric(10));
-		s.executeUpdate();
-		con.close();
-		s.close();
+	public static void makePass(String email, String begin, int timeinterval, String chair) throws SQLException, NullPointerException {
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("INSERT INTO pass VALUES (?,?,?,?,?)");){
+			Date beg = Date.valueOf(begin);
+			Date end = new Date(beg.getTime() +  (31l*24l*60l*60l*1000l)*timeinterval);
+			s.setString(1, email);
+			s.setDate(2, beg);
+			s.setDate(3, end);
+			s.setString(4, chair);
+			s.setString(5, randomAlphaNumeric(10));
+			s.executeUpdate();
+		} catch (NullPointerException e) {
+			throw e;
+		}
 	}
 
 	// Returns the list of all dishes. Used in menu.jsp.
 	public static ArrayList<Dish> getDishes () throws SQLException {
-		PreparedStatement s = getStatement("SELECT * FROM menu");
-		ResultSet r = s.executeQuery();
-		ArrayList<Dish> list = new ArrayList<Dish>();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT * FROM menu");){
+			ResultSet r = s.executeQuery();
+			ArrayList<Dish> list = new ArrayList<Dish>();
 
-		while (r.next()) {
-			Dish d = new Dish();
-			d.setId(r.getInt("id"));
-			d.setName(r.getString("dishname"));
-			d.setCategory(r.getInt("category"));
-			d.setIngredients(r.getString("ingredients"));
-			d.setPrice(r.getDouble("price"));
-			list.add(d);
-		}
-		con.close();
-		s.close();
-		return list;
+			while (r.next()) {
+				Dish d = new Dish();
+				d.setId(r.getInt("id"));
+				d.setName(r.getString("dishname"));
+				d.setCategory(r.getInt("category"));
+				d.setIngredients(r.getString("ingredients"));
+				d.setPrice(r.getDouble("price"));
+				list.add(d);
+			}
+			return list;
+		}		
 	}
 
 	// Inserts a new dish with the submitted form values. Used in menuEditor.
 	public static void insertDish (String dishname, int category, String ingredients, double price) throws SQLException {
-		PreparedStatement s = getStatement("INSERT INTO menu(dishname, category, ingredients, price) VALUES (?,?,?,?)");
-		s.setString(1, dishname);
-		s.setInt(2, category);
-		s.setString(3, ingredients);
-		s.setDouble(4, price);
-		s.executeUpdate();
-		con.close();
-		s.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("INSERT INTO menu(dishname, category, ingredients, price) VALUES (?,?,?,?)");){
+			s.setString(1, dishname);
+			s.setInt(2, category);
+			s.setString(3, ingredients);
+			s.setDouble(4, price);
+			s.executeUpdate();
+		}
 	}
 
 	// Updates the chosen dish, except the category. Used in menuEditor.
 	public static void updateDish (int id, String dishname, String ingredients, double price) throws SQLException {
-		PreparedStatement s = getStatement("UPDATE menu SET dishname = ?, ingredients = ?, price = ? WHERE id = ?");
-		s.setString(1, dishname);
-		s.setString(2, ingredients);
-		s.setDouble(3, price);
-		s.setInt(4, id);
-		s.executeUpdate();
-		con.close();
-		s.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("UPDATE menu SET dishname = ?, ingredients = ?, price = ? WHERE id = ?");){
+			s.setString(1, dishname);
+			s.setString(2, ingredients);
+			s.setDouble(3, price);
+			s.setInt(4, id);
+			s.executeUpdate();
+		}
 	}
 
 	// Adds an order. Used in MenuServlet.
 	public static void insertOrder (int table, Timestamp date, int dishId) throws SQLException {
-		PreparedStatement s = getStatement("INSERT INTO menuorder(tableNumber, date, dishId) VALUES (?,?,?)");
-		s.setInt(1,table);
-		s.setTimestamp(2, date);
-		s.setInt(3, dishId);
-		s.executeUpdate();
-		con.close();
-		s.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("INSERT INTO menuorder(tableNumber, date, dishId) VALUES (?,?,?)");){
+			s.setInt(1,table);
+			s.setTimestamp(2, date);
+			s.setInt(3, dishId);
+			s.executeUpdate();
+		}
 	}
 
 	public static double getTotalOfOrders (int tableNumber) throws SQLException {
-		PreparedStatement s = getStatement("SELECT sum(price) sum FROM menu m, menuorder o WHERE m.id = o.dishId AND tableNumber = ?");
-		s.setInt(1, tableNumber);
-		ResultSet r = s.executeQuery();
-		r.next();
-		double sum = r.getDouble("sum");
-		con.close();
-		s.close();
-		return sum;
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT sum(price) sum FROM menu m, menuorder o WHERE m.id = o.dishId AND tableNumber = ?");){
+			s.setInt(1, tableNumber);
+			ResultSet r = s.executeQuery();
+			r.next();
+			double sum = r.getDouble("sum");
+			return sum;
+		}	
 	}
 
 	// Removes all paid orders of a single table. Called by OrderServlet.
 	public static void completeOrders (int tableNumber) throws SQLException {
-		PreparedStatement s = getStatement("DELETE FROM menuorder WHERE tableNumber = ?");
-		s.setInt(1, tableNumber);
-		s.executeUpdate();
-		con.close();
-		s.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("DELETE FROM menuorder WHERE tableNumber = ?");){
+			s.setInt(1, tableNumber);
+			s.executeUpdate();
+		}
 	}
 
 	// Returns a list of all the tables with any pending order.
 	public static ArrayList<OrderTable> getTables () throws SQLException {
 		ArrayList<OrderTable> tables = new ArrayList<OrderTable>();
-		PreparedStatement s = getStatement("SELECT DISTINCT tableNumber, date FROM menuorder");
-		ResultSet r = s.executeQuery();
-		while ( r.next() ) {
-			OrderTable t = new OrderTable();
-			t.setTableNumber(r.getInt("tableNumber"));
-			t.setDate(r.getTimestamp("date"));
-			tables.add(t);
-		}
-		con.close();
-		s.close();
-		return tables;
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT DISTINCT tableNumber, date FROM menuorder");){
+			ResultSet r = s.executeQuery();
+			while ( r.next() ) {
+				OrderTable t = new OrderTable();
+				t.setTableNumber(r.getInt("tableNumber"));
+				t.setDate(r.getTimestamp("date"));
+				tables.add(t);
+			}
+			return tables;
+		}			
 	}
 
 	// Retrieves, form the orders, the dishes and the corresponding quantities. Used in orders.jsp.
 	public static ArrayList<OrderQuantity> getOrderQuantitiesByTable (int table) throws SQLException {
-		PreparedStatement s = getStatement("SELECT count(*), dishname FROM menu m, menuorder o WHERE m.id = o.dishId AND o.tableNumber = ? GROUP BY m.dishname");
-		s.setInt(1, table);
-		ResultSet r = s.executeQuery();
-		ArrayList<OrderQuantity> list = new ArrayList<OrderQuantity>();
-
-		while (r.next()) {
-			OrderQuantity o = new OrderQuantity();
-			o.setDish(r.getString("dishname"));
-			o.setQuantity(r.getInt("count(*)"));
-			list.add(o);
-		}
-		con.close();
-		s.close();
-		return list;
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT count(*), dishname FROM menu m, menuorder o WHERE m.id = o.dishId AND o.tableNumber = ? GROUP BY m.dishname");){
+			s.setInt(1, table);
+			ResultSet r = s.executeQuery();
+			ArrayList<OrderQuantity> list = new ArrayList<OrderQuantity>();
+			while (r.next()) {
+				OrderQuantity o = new OrderQuantity();
+				o.setDish(r.getString("dishname"));
+				o.setQuantity(r.getInt("count(*)"));
+				list.add(o);
+			}
+			return list;
+		}	
 	}
 
 	public static void sendMessage(String title,String message,String type) throws SQLException {
-		PreparedStatement s = getStatement("INSERT INTO message VALUES (now(),?,?,?)");
-		s.setString(1, title);
-		s.setString(2, message);
-		s.setString(3, type);
-		s.executeUpdate();
-		con.close();
-		s.close();
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("INSERT INTO message VALUES (now(),?,?,?)");){
+			s.setString(1, title);
+			s.setString(2, message);
+			s.setString(3, type);
+			s.executeUpdate();
+		}
 	}
 
 	public static Message getMessage() {
 		Message m = new Message();
-		try (PreparedStatement s = getStatement("SELECT * FROM message ORDER BY date DESC")){
+		try(Connection con = getContext().getConnection();
+				PreparedStatement s = con.prepareStatement("SELECT * FROM message ORDER BY date DESC")){
 			ResultSet r = s.executeQuery();
 			if(r.next()) {
 				m.setMessage(r.getString("message"));
