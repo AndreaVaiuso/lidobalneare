@@ -41,22 +41,12 @@
 			</div>
 			<%
 				} else if(cntusr.isCustomer() || cntusr.isTicket() || cntusr.isLifeGuard() || cntusr.isInfoMonitor()){
-						String date = request.getParameter("date");
-						if(date==null){
-							date = Utility.sqlDateFormat.format(new Date());
-						}
-						int timeslot = Utility.getCurrentTimeSlot();
+						String date = Utility.getDate(request);
+						int timeslot = Utility.getTimeSlot(cntusr, request);
+						boolean isPass = Utility.isPass(cntusr, request);
 						
-						boolean isPass = false;
 						String customerOccupied = DBConnect.getChairOccupied(chairSchema.get(i).getChairname(),date,timeslot);
-						
-						try{
-							if(!cntusr.isLifeGuard() && !cntusr.isInfoMonitor()){
-								isPass = request.getParameter("prenpass").equals("YES");
-								if(isPass) {customerOccupied = DBConnect.getChairPassOccupied(chairSchema.get(i).getChairname(),date,timeslot+1);}
-							}
-							timeslot = Integer.valueOf(request.getParameter("timeslot"));
-						} catch (Exception e){}
+						if(isPass) {customerOccupied = DBConnect.getChairPassOccupied(chairSchema.get(i).getChairname(),date,timeslot+1);}
 						
 						double price;
 						if(timeslot == 0){

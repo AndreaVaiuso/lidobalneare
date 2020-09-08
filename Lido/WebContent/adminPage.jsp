@@ -9,12 +9,10 @@
 <% 
 	try{
 		if(!connecteduser.isAdmin()){
-			System.out.println("NOT ADMIN!");
 			response.sendRedirect("./errorpage.html");
 			return;
 		}
 	} catch (NullPointerException e){
-		System.out.println("Session deleted");
 		response.sendRedirect("login.html");
 		return;
 	}

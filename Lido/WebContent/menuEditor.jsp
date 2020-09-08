@@ -18,7 +18,11 @@ try {
 ArrayList<Dish> dishes = new ArrayList<Dish>();
 try {
 	dishes = DBConnect.getDishes();
-} catch (Exception e) {	System.out.println(e); return; }
+} catch (Exception e) {	
+	e.printStackTrace();
+	response.sendRedirect("./errorpage.html");
+	return;
+}
 %>
 
 <!DOCTYPE html>

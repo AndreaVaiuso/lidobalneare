@@ -4,14 +4,12 @@
 	scope="session" />
 
 <%
-	try {
+try {
 	if (!connecteduser.isAdmin()) {
-		System.out.println("NOT ADMIN!");
 		response.sendRedirect("./errorpage.html");
 		return;
 	}
 } catch (NullPointerException e) {
-	System.out.println("Session deleted");
 	response.sendRedirect("login.html");
 	return;
 }
@@ -94,8 +92,10 @@
 		<div class="contentscreen">
 			<span class="toptitle">Lido layout editor</span><span
 				class="logindescription"
-				style="background-color: rgb(220, 220, 220);">To edit your layout, add a new chair with the button below. Then, drag and drop the chair inside the layout.
-				You can also modify, delete or clone the chair once created.</span>
+				style="background-color: rgb(220, 220, 220);">To edit your
+				layout, add a new chair with the button below. Then, drag and drop
+				the chair inside the layout. You can also modify, delete or clone
+				the chair once created.</span>
 
 			<%@include file="lidolayout.jsp"%>
 

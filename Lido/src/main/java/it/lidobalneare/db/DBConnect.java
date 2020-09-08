@@ -459,7 +459,7 @@ public class DBConnect {
 		if(timeslot == 0) {
 			q1 = ("("
 					+ "SELECT email FROM booking b "
-					+ "WHERE b.seat = ? AND b.day = ? OR ? = -1) )");
+					+ "WHERE b.seat = ? AND b.day = ? OR ? = -1 )");
 		} else {
 			q1 = ("("
 					+ "SELECT email FROM booking b "
